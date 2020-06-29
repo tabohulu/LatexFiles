@@ -1,0 +1,216 @@
+\documentclass[fontsize=12pt]{article}
+%\usepackage{xeCJK}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage[dvipdfmx]{graphicx}
+%\setCJKmainfont{SimSun}
+\title{Reed-Solomon Decoding} 
+\author{Kwame Ackah Bohulu}
+\date{\today}
+\begin{document}
+\maketitle
+
+\newpage
+\section{Introduction}
+ (n,k) Reed-Solomon (RS) code is capable of correcting up to $t$-symbol burst errors, $t=n-k=2t$
+ and $n=2^m-1, k=2^m-1-2t$.
+ In the case where the symbol burst error exceeds $t$, decoding fails and depending on the system being used a retransmission of the failed codeword is requested.
+In order to prevent decoding failure, a number of methods have been used, including interleaving the codeword before transmission and the combination of other RS codes via interleaver to form a code with a larger value of $t$.
+
+\begin{equation}
+r(X)=r_0+r_1X^1+r_2X^2+\cdot\cdot\cdot+r_{n-1}X^{n-1}
+\label{1}
+\end{equation}
+
+Also for each codeword $\mathbf{c} \in \mathbb{C}$ in polynomial form
+\begin{equation}
+c(X)=c_0+c_1X^1+c_2X^2+\cdot\cdot\cdot+c_{n-1}X^{n-1}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+&c(\alpha^{1})=c_0+c_1\alpha^1+c_2\alpha^2+\cdot\cdot\cdot+c_{n-1}\alpha^{n-1}=0\\
+&c(\alpha^{2})=c_0+c_1(\alpha^1)^2+c_2(\alpha^2)^2+\cdot\cdot\cdot+c_{n-1}(\alpha^{n-1})^2=0\\
+&\cdot\\
+  &\cdot\\
+   &\cdot\\
+&c(\alpha^{2t})=c_0+r_1(\alpha^1)^{2t}+r_2(\alpha^2)^{2t}+\cdot\cdot\cdot+r_{n-1}(\alpha^{n-1})^{2t}=0
+\end{split}
+\label{2}
+\end{equation}
+Which means $\mathbf{c}\mathbf{H}^T=\mathbf{0}_{2t}$
+We also define the following matrices
+\begin{equation}
+\mathbf{H}=
+\begin{bmatrix}
+    1       &  \alpha^{1}  &  \alpha^{2}  & \dots &  \alpha^{(2^m-1)}  \\
+    1      &  ( \alpha )^2 &   \alpha^{(2)2}  & \dots &  \alpha^{2(2^m-1)}  \\
+    &&&\vdots{} \\
+    1       &  (\alpha^{2t-1}) & \alpha^{(2t-1)2}  & \dots &  \alpha^{(2t-1)(2^m-1)}  \\
+    1       &  ( \alpha^{2t} ) &  \alpha^{(2t)2}  & \dots &  \alpha^{2t(2^m-1)}  \\
+\end{bmatrix}
+\end{equation}
+
+\begin{equation}
+\mathbf{G}=
+\begin{bmatrix}
+    1       &  \alpha^{2t+1}  &  \alpha^{(2t+1)2}  & \dots &  \alpha^{(2t+1)(2^m-1)}  \\
+    1      &  ( \alpha )^{2t+2} &   \alpha^{(2t+2)2}  & \dots &  \alpha^{(2t+2)(2^m-1)}  \\
+    &&&\vdots{} \\
+    1       &  (\alpha^{2^m-2}) & \alpha^{(2^m-2)2}  & \dots &  \alpha^{(2^m-2)(2^m-1)}  \\
+    1       & 1&  1 & \dots & 1  \\
+\end{bmatrix}
+\end{equation}
+
+
+Where $\mathbf{H}$ and $\mathbf{G}$ are the Parity-Check and Generator matrices
+for the transmitted RS code.
+We then proceed to define $\mathbf{A}$ as follows
+
+\begin{equation}
+\mathbf{A}=
+\begin{bmatrix}
+    \mathbf{H}   \\
+    \mathbf{G}       \\
+\end{bmatrix}
+\end{equation}
+We note that inverse of $\mathbf{A}$ is its conjugate.
+Assuming the received sequence is in error, we may write $\mathbf{r}$ as
+ 
+ \begin{equation}
+ \mathbf{r}=\mathbf{c}+\mathbf{e}
+ \end{equation}
+ 
+ where $\mathbf{c}=\begin{bmatrix}
+    c_{0} & c_{1} & \dots{} & c_{n-2}& c_{n-1}   
+\end{bmatrix}$ is the codeword vector and
+
+where $\mathbf{e}=\begin{bmatrix}
+    e_{0} & e_{1} & \dots{} & e_{n-2}& e_{n-1}   
+\end{bmatrix}$ is the error vector 
+
+multiplying $\mathbf{r}$ by $\mathbf{A}$ gives us
+
+\begin{equation}
+\mathbf{r} \cdot \mathbf{A}^T =\mathbf{c}\mathbf{A}^T+\mathbf{e}\mathbf{A}^T
+\label{8}
+\end{equation}
+
+We know that $$\mathbf{c}\mathbf{A}^T=\begin{bmatrix} \mathbf{0}_{2t}& \mathbf{u}_k \end{bmatrix}$$
+and 
+$$\mathbf{e}\mathbf{A}^T=\begin{bmatrix} \mathbf{s}& \mathbf{v} \end{bmatrix}$$
+
+where $\mathbf{s}=\mathbf{e}\mathbf{H}^T$ is the syndrome and $\mathbf{v}=\mathbf{e}\mathbf{G}^T$
+
+%Therefore we may rewrite $\mathbf{r}\mathbf{H}^T$ as
+
+%\begin{equation}
+%\begin{split}
+% \mathbf{rH}^T=\mathbf{d}&=\begin{bmatrix} \mathbf{0}_{2t}& \mathbf{u}_k \end{bmatrix}+
+ %\begin{bmatrix} \mathbf{S}& \mathbf{v} \end{bmatrix}\\
+ %&=\begin{bmatrix} \mathbf{S} &
+ %\mathbf{u}_k+\mathbf{v} \end{bmatrix}\\
+ %\end{split}
+ %\end{equation}
+
+We seek to find $\min w_{\min}(\mathbf{e})$ such that $\mathbf{e}\cdot\mathbf{H}^T=\mathbf{e}_H$
+\begin{equation}
+\begin{split}
+&\mathbf{e}\cdot \mathbf{A}^T =\begin{bmatrix} \mathbf{s} &
+\mathbf{v} \end{bmatrix}\\
+&\mathbf{e}\cdot \mathbf{A}^T\cdot\mathbf{A}^{H}=\mathbf{e}\mathbf{I}=
+\begin{bmatrix} \mathbf{s} &
+\mathbf{v} \end{bmatrix}\cdot\mathbf{A}^{H}\\
+&=\begin{bmatrix} \mathbf{s} &
+\mathbf{0}\end{bmatrix}\mathbf{A}^{H}
++
+=\begin{bmatrix} \mathbf{0} &\mathbf{v} 
+\end{bmatrix}\mathbf{A}^{H}\\
+\end{split}
+\end{equation}
+
+which means 
+\begin{equation}
+\mathbf{e}=\mathbf{s}\mathbf{H}^{*}+\mathbf{v}\mathbf{G}^{*}
+\label{10}
+\end{equation}
+ where $\mathbf{H}^{*},\mathbf{G}^{*}$ are the conjugates of $\mathbf{H}$ and
+ $\mathbf{G}$ respectively.
+ \begin{equation}
+\mathbf{H}^{*}=
+\begin{bmatrix}
+    1        &  \alpha^{(2^m-1)} &  \alpha^{(2^m-2)}  & \dots  &  \alpha^{1} \\
+    1      &  \alpha^{2(2^m-1)} &   \alpha^{(2)(2^m-2)}  & \dots   &  ( \alpha )^2\\
+    &&&\vdots{} \\
+    1       &  \alpha^{2t-1(2^m-1)}& \alpha^{(2t-1)(2^m-2)}  & \dots &  (\alpha^{2t-1})   \\
+    1       &  ( \alpha^{2t} ) &  \alpha^{(2t)2}  & \dots &  \alpha^{2t(2^m-1)}  \\
+\end{bmatrix}
+\end{equation}
+
+\begin{equation}
+\mathbf{G}^{*}=
+\begin{bmatrix}
+    1       &  \alpha^{2t+1(2^m-1)}   &  \alpha^{(2t+1)(2^m-2)}  & \dots &  \alpha^{2t+1}  \\
+    1       &  \alpha^{2t+2(2^m-1)}  &   \alpha^{(2t+2)(2^m-2)}  & \dots   &  ( \alpha )^{2t+2} \\
+    &&&\vdots{} \\
+    1       &  \alpha^{2^m-2(2^m-1)}& \alpha^{(2^m-2)(2^m-2)}  & \dots  &  (\alpha_{2^m-2}) \\
+    1       & 1&  1 & \dots & 1  \\
+\end{bmatrix}
+\end{equation}
+
+And 
+\begin{equation}
+\mathbf{A}^{H}=
+\begin{bmatrix}
+    \mathbf{H}^{*}   \\
+    \mathbf{G}^{*}       \\
+\end{bmatrix}
+\end{equation}
+
+We rewrite (\ref{8}) as
+\begin{equation}
+\begin{split}
+\mathbf{r}\mathbf{A}^T=&\begin{bmatrix} \mathbf{rH}^{T}& \mathbf{rG}^{T} \end{bmatrix}\\
+=&\begin{bmatrix} \mathbf{s}& \mathbf{w} \end{bmatrix}
+\end{split}
+\label{13}
+\end{equation}
+where $\mathbf{s}=\mathbf{rH}^{T}$ and $\mathbf{w}=\mathbf{rG}^{T}$
+
+which means 
+
+\begin{equation}
+\begin{split}
+\mathbf{r}\cdot \mathbf{A}^T\cdot \mathbf{A}^H=&\begin{bmatrix} \mathbf{s}& \mathbf{w} \end{bmatrix}\mathbf{A}^H\\
+\mathbf{r}=&\mathbf{s}\mathbf{H}^{*}+ \mathbf{w}\mathbf{G}^{*} \\
+ \mathbf{s}\mathbf{H}^{*}=& \mathbf{w}\mathbf{G}^{*} + \mathbf{r}
+\end{split}
+\label{15}
+\end{equation}
+
+Substituting (\ref{15}) into (\ref{10}) we get
+\begin{equation}
+\begin{split}
+\mathbf{e}=& \mathbf{w}\mathbf{G}^{*} + \mathbf{r}+\mathbf{v}\mathbf{G}^{*}\\
+&= (\mathbf{w}+\mathbf{v})\mathbf{G}^{*} + \mathbf{r}
+\end{split}
+\label{16}
+\end{equation}
+
+Assuming that the weight of the codeword is the summation of the decimal
+representation of the  non-zero elements of the codeword, we want to find a value of $v$
+that when inserted into (\ref{10}) gives an error vector $\mathbf{e}$ with weight less
+than or equal to $\mathbf{r}$. 
+
+\section{Decoding Algorithm}
+\begin{itemize}
+\item set  $\mathbf{w}= \mathbf{v}+\begin{bmatrix} \alpha^{i}& \mathbf{0}_{k-1} \end{bmatrix}
+, i=1,2,...,n-1$
+\item for each value of $\mathbf{w}$ find the corresponding value $\mathbf{e}$ 
+using (\ref{16}) and
+weight $W_H(\mathbf{e}_i)$of $\mathbf{e}$
+\item select 
+\end{itemize}
+\end{document}

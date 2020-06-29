@@ -1,0 +1,66 @@
+\documentclass[11pt, oneside, dvipdfmx]{book}
+\newcommand{\folder}{/usr/local/share/texmf}
+\input{\folder/hfiles/ebook}
+\usepackage{graphics}
+%\setCJKmainfont{SimSun}
+\title{``
+Coset Interleaver Idea Progress'' }
+\author{Kwame Ackah Bohulu}
+\date{\today}
+\begin{document}
+
+\maketitle
+
+
+
+
+\section{March 2nd -March 4th}
+An idea for the coset interleaving method is presented for interlearver length $N=n\tau,~n=\{9,10,...\}$. The interleaving method is further grouped 2 cases 
+\begin{enumerate}
+\item case where $N \mod \tau \neq 0$
+\item case where $N \mod \tau = 0$
+\end{enumerate}
+The notations to be used are listed below.
+
+ \subsection{Notations}
+ \begin{enumerate}
+ \item $N$ :- Interleaver Length, Interleaver size.
+  \item $\mathbf{C}^i$ :- Coset ,$i,~i=\{0,1,...,\tau-1 \}$
+ \item $l=N/\tau$ :- Coset length, Coset size.
+ \item $\tau$ :- Cycle length of RSC encoder ($\tau= 3$ for $5/7$RSC encoder)
+ 
+ \item Seperation:- Assume that there is a set $A=\{a,b,c,...\},~b>a,c>b,$ etc. For any 2 elements in set, the \texit{seperation} is defined as the difference between the elements. For example, the seperation between $b$ and $a$ is $b-a$
+ \item Step:- Assume that there is a set $A=\{a,b,c,...\},~b>ac>b,$ etc . For any 2 elements in set, the step is defined as the number of shifts required to get to a desired element in a set from a reference element. For example, from $a$ to $b$ as step of $1$ is required and from $a$ to $c$ a step of $2$ is required.
+ \item $D_1$ :-Interleaving step
+ \item $s$ :- post-interleaving seperation
+ \item $t$ :- pre-interleaving seperation
+
+ \end{enumerate}
+ 
+ \subsection{case where $N \mod \tau \neq 0$}
+ 
+ We wish to maximize the seperation($s$) for all pairs of elements with a seperation of $3\tau $in a coset are mapped to a pair of elements in the same coset. 
+ 
+For a given coset length $l$, $s_{\text{max}}\leq\lfloor\frac{l}{2}\rfloor$ and $\text{gcd}(s_{\text{max}},l)=1$ (Working on proof)
+ 
+ \subsection{Interleaving Idea and Procedure}
+ The idea for coset interleaving is as follows. We know that for the $5/7$ RSC encoder ,weight $2$ error inputs, the ``1'' bit have a seperation of $\tau m=3m$, where $m$ is an integer value greater than $0$. For a given interleaver length, we take the bit indices from $0 ~\text{to}~N-1$ and group them into $\tau$ cosets,$\mathbf{C}^0,\mathbf{C}^1,\mathbf{C}^2$. We can observe that the difference between any 2 elements within a given coset is an integer multiple of $3$. This means that during the process of interleaving, weight $2$ error inputs occur when element pairs are mapped to the same coset. A good method to avoid this would be to make sure that if the first element in the pair is mapped to the same coset, the second element in the pair should be mapped to a different coset. This is only possible to a certain extent and sometime during the interleaving process, element pairs are mapped to other elements in the same coset. The next best thing is to make sure that when such a situation happens, the seperation between the interleaved pairs is made as large as possible.
+ %from here
+ The procedure for interleaving is as follows. We focus on$\mathbf{C}^0$ and come up with an interleaving pattern such that the  elements with a pre-interleaving seperation of $t=3\tau$ are mapped to elements with seperation $s_{\text{max}}$. To acheive this, we make sure elements in coset 0 with a seperation $\tau-1,\tau-2$ are maped to coset 1 or coset 2.
+ Let $D_1$ be the step. Since we want to amke sure that elements with a seperation of $\tau$ are mapped to elements with seperation $s_{\text{max}}$ we have to find $D_1$ such that 
+ \begin{equation}
+ D_1\tau=s_{\text{max}} \mod l
+ \end{equation}
+ 
+ \paragraph{Example}
+ For the $5/7$ RSC encoder, $\tau=3$.
+ Let $N=27$ and $N_c=9$ $\mathbf{C}_0=\{0,3,6,9,12,15,18,21,24\},\mathbf{C}_1=\{1,4,7,10,13,16,19,22,25\},\mathbf{C}_2=\{2,5,8,11,14,17,20,23,26\}$
+ 
+$\mathbf{m}^{(0)}=\{0,5,1\},\mathbf{m}^{(1)}=\{7,3,8\},\mathbf{m}^{(2)}=\{5,1,6\},\mathbf{m}^{(8)}=\{2,7,3\}$
+
+$\pi(x)=\{0,15,13,22,10,25,17,5,20,9,24,12,4,19,7,26,14,2,18,6,21,13,1,16,8,23,11\}$
+
+ 
+ 
+ 
+ \end{document}

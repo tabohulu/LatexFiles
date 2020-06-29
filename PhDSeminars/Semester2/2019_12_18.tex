@@ -1,0 +1,785 @@
+\documentclass[fontsize=12pt]{article}
+%\usepackage{xeCJK}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+\usepackage{relsize}
+\usepackage{bm}
+\usepackage[dvipdfmx]{graphicx}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+%\setCJKmainfont{SimSun}
+\title{An Innovations Approach To Viterbi Decoding of Convolutional Codes} 
+\author{Kwame Ackah Bohulu}
+\date{\today}
+\begin{document}
+\maketitle
+
+\newpage
+
+
+\section{Introduction}
+
+\begin{enumerate}
+
+\item {Scarce-State-Transition (SST) Viterbi Decoding}
+\begin{itemize}
+\item Proposed by Kubota et al in 1985 [17]. The main purpose was for the decoding of Quick-Look-In (QLI) codes[23] but was extended to general convolutional codes.
+
+\item As shown in Fig 1, the SST viterbi decoder is made up of a pre-decoder and the conventional viterbi decoder
+
+\item {SST Viterbi Decoding Process}
+\begin{itemize}
+\item Get estimate of transmitted information using precoder (inverse encoder) at the pre-decoder stage.
+
+\item Decode estimation error of the above stage using the viterbi decoder at main decoder stage.
+
+\item Finally, combine the output of the two decoders to produce the final decoder output.
+\end{itemize}
+
+\item The SST decoder had advantages in hardware implementation and power consumption reduction.
+
+\item Since the estimation error is decoded in the main viterbi decoder, it can be seen as similar to syndrome decoding [2] -[4], [28]-[30]based on error trellis which was proved to be so under certain conditions[37],[38].
+\end{itemize}
+
+\item {Innovations}
+\begin{itemize}
+\item In relation to stochastic processes, extracting innovations from a complex process is not a new concept and has been discussed for a long time [1],[10],[11],[16],[20],[41]
+
+\item Let $X(t)$ be a stochastic
+process. Suppose that during an infinitesimal interval $[t, t +
+dt)$, $X(t)$ obtains new information which is independent of
+the information obtained by $X(t)$ prior to time $t$. The newly
+obtained information is called the "innovation" associated
+with $X(t)$.
+
+\item This idea of innovations was applied by Kailith to the linear filtering problem [5],[12],[14], [20], [27], [40] and also extended by Kailith and Frost to the linear smoothing problem [12], [15], [27]
+
+\item In the linear filtering
+theory, the innovation associated with an observation is defined
+by the difference between the observation and the estimate of a signal, or equivalently, the sum of the estimation error and a
+noise [14], [15]. From the above definition, the authors thought that there must be some connection with SST Viterbi decoding in the coding theory.
+\end{itemize}
+
+
+\item {Purpose of Paper}
+\begin{itemize}
+\item Compare results in linear filtering theory to derive an innovation corresponding to the recived data for a viterbi decoder 
+
+\item Use the obtained innovation to derive the structure of the SST viterbi decoder in a natural manner. Similar results are obtained for QLI codes.
+
+\item show that the reduction in decoding complexity from using innovation is a result of biased distributions (both state and probability) in the main decoder under moderately noisy conditions.
+
+\item Show that an innovation can be extracted in connection to ML decoding of block codes[22]
+\end{itemize}
+
+\item {Terms to be used in the Paper}
+\begin{itemize}
+\item All operations are done in GF(2). $G(D)$ and $H(D)$ correspond to the generator matrix and parity check matrix (in $D$ notation) of a $(n_0,k_0)$ convolutional code . They are assumed to be in canonical form, both with constraint length $v$
+
+\item $\mathbf{i}=\{ \mathbf{i}_k\}~\text{and}~ \mathbf{y}=\{ \mathbf{y}_k\}$ represent the information sequence and corrsponding code sequence respectively where $ \mathbf{i}_k=(i_k^{(1)},...,i_k^{(k_0)}) ~\text{and}~ \mathbf{y}_k=(y_k^{(1)},...y_k^{(n_0)})$ are the information block and encoded block at time $t=k$. Further more, it is assumed that the $\mathbf{y}$ is transmitted symbol by symbol over a memoryless AWGN channel using BPSK modulation.
+
+\item Let the received sequence be denoted by $\mathbf{z}=\{ \mathbf{z}_k\}$, where $\mathbf{z}_k=(z_k^{(1)},...z_k^{(n_0)})$ is the received block at time $t=k$. Each component $z_j$ of $\mathbf{z}$ is modeled as 
+
+\begin{equation}
+z_j = x_j\sqrt{2E_s/N_0} +w_j,~x_j=\pm1
+\end{equation}
+where $E_s,~N_0$ represent the Energy per channel symbol and the one-sided noise spectral density repectively. $w_j$ is a zero-mean unit variance Gaussian random variable with probability density function 
+
+\begin{equation}
+q(y) =\frac{1}{\sqrt{2\pi}}\exp{(-\frac{y^2}{2})}
+\end{equation}
+each $w_j$ is independent of all others
+
+\item $p(z_j|y_j)$ is the conditional probability density function of $z_j$ given $y_j$ 
+
+\item The hard decisioned data of $z_j$ is given by
+\begin{equation}
+    z_j^h \triangleq
+    \begin{cases}
+      0, & L(z_j|y_j) \geq 0 \\
+      1, & L(z_j|y_j) <0
+    \end{cases}
+  \end{equation}
+
+where
+ \begin{equation}
+ L(z_j|y_j) \triangleq \log \frac{p(z_j|y_j=0)}{p(z_j|y_j=1)}
+\end{equation}
+ is the log likelihood ratio conditioned on $y_j$
+
+\item In this paper, this is equivalent to 
+\begin{equation}
+    z_j^h \triangleq
+    \begin{cases}
+      0, & z_j \geq 0 \\
+      1, & z_j <0
+    \end{cases}
+  \end{equation}
+
+\item In fig.1  the main decoder input $r_k^{(l)}(1 \leq l \leq n_0)$ is given by 
+\begin{equation}
+    r_k^{(l)} =
+    \begin{cases}
+      |z_k^{(l)}|, &  r_k^{(l)}= 0 \\
+      |z_k^{(l)}|, & r_k^{(l)}=1
+    \end{cases}
+  \end{equation}
+
+\item Let $v_k = (v_k^1,...., v_k^n)$
+ be an $n$-tuple of variables. Also, let
+$p(D) = (p_1(D),...., p_n(D))$ be an n-tuple of polynomials
+in $D$. Since each $p_i (D)$ is a delay operator with respect
+to $k$, $\sum_{i=1}^{n}p_i(D)v_k^i$
+is well defined, where $\mathbf{D}^mv^i_k
+=v^i_{k-m}$
+In this paper, noting that $v_k$ is a row vector, we express the
+above variable as $\mathbf{v}_k \mathbf{p}^T (D)$ ("T " means transpose). Using this
+notation, we have 
+
+\begin{equation}
+mathbf{y}_k =\mathbf{i}_kG(D)
+\end{equation}
+
+\item the syndrome  at $t=k$ is defined by
+
+\begin{equation}
+\mathbf{\zeta}_k =\mathbf{i}_k^hH^T(D) ~\text{or} ~ \mathbf{\zeta}_k =\mathbf{e}_k^hH^T(D)
+\end{equation}
+where $\mathbf{e}_k=(e_k^{(1)},...e_k^{(n_0)})$ is the error at $t=k$
+\end{itemize}
+
+\end{enumerate}
+
+
+\section{An innovations Approach To Viterbi Decoding of Convolutional Codes}
+Viterbi decoding of convolutional code from
+an innovation viewpoint is investigated.
+ \subsection{Innovations Accociated with Received Data for a Viterbi Decoder}
+\begin{enumerate}
+\item Beginning with the linear filtering problem, let 
+
+\begin{equation}
+y(t) = C(t)x(t) +w(t)
+\end{equation}
+be the observation corresponding to a signal $x(t)$, where $C(t),~y(t)$ are the coefficient matrix and white Gaussian noise respectively. According to [14], the innovation $v(t)$ associated with y(t) is defined below as
+
+\begin{equation}
+v(t) =w(t) - C(t)
+\end{equation}
+ where, $\hat{x}(t|t)$ is a linear function of all the data $\{y(s),s<t\}$ which minimizes the mean-square error
+
+\item Returning to convolutional encoding, we can write the received data as 
+\begin{equation}
+\mathbf{z}_k^h = \mathbf{i}_kG(D) + \mathbf{e}_k
+\end{equation}
+
+\item comparing to the linear filtering problem, we may conclude that the 
+\begin{equation}
+\mathbf{r}_k^h = \mathbf{z}_h^k + \hat{\mathbf{i}}(k|k)~(\text{operations done in GF(2)})
+\end{equation}
+corresponds to the innovation $v(t)$ and $\hat{\mathbf{i}}(k|k)$ is an estimate of $i_k$ based on $\{z_k^h, ~s\leq k\}$
+
+\item If $\hat{\mathbf{i}}(k|k)$  is a linear combination of the received data $\{\mathbf{z}_k^h, ~s\leq k\}$ with the form 
+\begin{equation}
+\hat{\mathbf{i}}(k|k) = \mathbf{z}^h_kP(D)
+\end{equation}
+where P(D) is a polynomial matrix. We then have
+\begin{equation}
+\begin{aligned}
+\mathbf{r}_{k}^{h} &=\mathbf{z}_{k}^{h}+\mathbf{z}_{k}^{h} P(D) G(D) \\
+&=\left(\mathbf{i}_{k} G(D)+\mathbf{e}_{k}\right)+\left(\mathbf{i}_{k} G(D)+\mathbf{e}_{k}\right) P(D) G(D) \\
+&=\mathbf{i}_{k}\left(I_{k_{0}}+G(D) P(D)\right) G(D)+\mathbf{e}_{k} P(D) G(D)+\mathbf{e}_{k}
+\end{aligned}
+\end{equation}
+where $I_{k_{0}}$ is the identity matrix of size $k_0 \times k_0$
+
+\item If $\left(I_{k_{0}}+G(D) P(D)\right) G(D) = G(D)+G(D) P(D)G(D) $ or 
+
+\begin{equation}
+G(D)=G(D) P(D)G(D) 
+\end{equation}
+then it means $\mathbf{r}^h_k$ is independent of $\mathbf{i}_k$. It also means that $P(D)$ is a generalized inverse of $G(D)$ and can be represented by $G^{-1}(D)$ which is the right inverse of $G(D)$
+
+\item Since $\mathbf{r}^h_k$ is independent of $\mathbf{i}_k$, we get 
+\begin{equation}
+\begin{aligned}
+\mathbf{r}_{k}^{h} &=(\mathbf{e}_kG^{-1}) G +\mathbf{e}_k\\
+&=\mathbf{u}_kG + \mathbf{e}_k,~\mathbf{u}_k \triangleq \mathbf{e}_kG^{-1}\\
+&=\mathbf{e}_k(G^{-1}G )+ I_{n_0})
+\end{aligned}
+\end{equation}
+
+\item The author remarks that the
+right-hand side is just the input to the main decoder in an
+SST Viterbi decoder, where the inverse encoder $G^{-1}$ is used
+as a pre-decoder as shown in fig1.
+
+\item Also $\mathbf{r}_k^h$ and $\mathbf{z}_k^h$ produce the same syndrome $\zeta_{k}$ since 
+
+\begin{equation}
+\begin{aligned}
+\mathbf{r}_{k}^{h} H^{T}(D)&=\mathbf{z}_{k}^{h}H^{T}(D)+\mathbf{z}_{k}^{h} P(D) G(D)H^{T}(D) \\
+&= \mathbf{z}_{k}^{h}H^{T}(D)\\
+&=\zeta_{k}
+\end{aligned}
+\end{equation}
+irrespective of $P(D)$
+
+\item An alternate expression for $\mathbf{r}^h_k$ exists. Let 
+\begin{equation}
+G = A \times \Gamma \times B
+\end{equation}
+be an invariant-factor decomposition [6] of $G(D)$. As earlier stated,$G(D)$ is in cannonical form, and it is therefore safe to assume that the first $k_o$ rows of $B$ and the last $n_o-k_o$ columns of $B^{-1}$ coincide with  $G(D)$ and $H(D)$ respectively
+
+\item We therefore have,
+\begin{equation}
+\begin{aligned}
+I_{n_{0}} &=B^{-1} B \\
+&=\left(\begin{array}{cc}
+{G^{-1}} & {H^{T}}
+\end{array}\right)\left(\begin{array}{c}
+{G} \\
+{\left(H^{-1}\right)^{T}}
+\end{array}\right) \\
+&=G^{-1} G+H^{T}\left(H^{-1}\right)^{T}
+\end{aligned}
+\end{equation}
+which means 
+
+\begin{equation}
+\begin{aligned}
+\mathbf{r}^h_k &=\mathbf{e}_k(G^{-1} G +I_{n_0})\\
+& = \mathbf{e}_kH^{T}(H^{-1})^{T}  = \zeta_k(H^{-1})^{T}
+\end{aligned}
+\end{equation}
+ and again we have, 
+\begin{equation}
+\mathbf{r}^h_kH^T =\zeta_k(H^{-1})^{T}H^T = \zeta_k
+\end{equation}
+(Same results as equation 17)
+
+\item $\mathbf{r}^h_k$ has the following properties
+\begin{enumerate}
+\item $\mathbf{r}^h_k =\mathbf{e}_k(G^{-1} G +I_{n_0})$ holds. This means that $\mathbf{r}^h_k $ consists of errors $\{\mathbf{e}_s,~s \leq k\} $ and there is a correspondence between $\mathbf{e}_k$ and $\mathbf{r}_k^h$ in the sense that they generate the same syndrome $\mathbf{\zeta}_k$
+
+\item $\{\mathbf{r}_s^h,~s \leq k\} $ and $\{\mathbf{z}_s^h,~s \leq k\} $ generate the same syndrome sequence $\{\mathbf{\zeta}_s,~s \leq k\} $ 
+\end{enumerate} 
+
+\item The second property implies that, the original received data and the associated innovation have the same information, since they produce the same syndrome.
+
+\item it is worth noting that $\{\mathbf{r}_s^h\}$ does not have the same properties as the innovation defined in linear filtering theory and is thus reffered to as the innovation associated with the received information in a weak sense.
+
+\item The following definition is derived from the previous statement. 
+
+\begin{definition}
+Let $\{\mathbf{z}_k^h\}$ be the received data. Here assume
+the following: For $\{\mathbf{z}_k^h\}$
+, there exists  $\{\mathbf{r}_k^h\}$
+which consists of errors
+$\{\mathbf{e}_s,~s \leq k\} $ such that for each k,  $\{\mathbf{r}_s^h,~s \leq k\} $ and $\{\mathbf{z}_s^h,~s \leq k\} $ generate the same syndrome sequence $\{\mathbf{\zeta}_s,~s \leq k\} $ In this
+case, we call  $\{\mathbf{r}_k^h\}$ the innovations associated with  $\{\mathbf{z}_k^h\}$.
+\end{definition}
+
+\item In the innovations
+approach to linear filtering problems, the observed data is
+whitened by a causal [6] and invertible operation. However, with respect to viterbi decoding, the following proposition can be made.
+
+\item (Proposition 1: ) The mapping  $\mathbf{r}_k^h  \mapsto \mathbf{z}_k^h = \mathbf{z}_k^h( I_{n_0} + G^{-1}G ) $. is not invertible. The proof is shown in the main Paper.
+
+\item (Proposition 2: ) In the relation   $\mathbf{r}_k^h=  \mathbf{z}_k^h( I_{n_0} + G^{-1}G ) $, replace $\mathbf{z}_k^h$ on the right hand side by $\mathbf{r}_k^h$. We have again $\mathbf{r}_k^h$ The proof is shown in the main Paper.
+
+\end{enumerate}
+
+\subsection{Relationship Between General Codes and QLI codes}
+\begin{enumerate}
+\item With reference to [17] which dealt with QLI codes, let the generator matrix be defined by
+\begin{equation}
+\begin{aligned}
+&G(D) =(g_1(D), g_2(D))\\
+&(g_1+g_2 =D^L~,~1 \leq L \leq v-1
+\end{aligned}
+\end{equation}
+where $v$ is the constriant length of $G(D)$
+
+
+\item Next, consider the following equation
+\begin{equation}
+\begin{aligned}
+\eta_{k-L}^h &= \mathbf{z}_{k-L}^h - \hat{\mathbf{i}}(k-L|k)G(D)\\
+&= \mathbf{z}_{k-L}^h + \hat{\mathbf{i}}(k-L|k)G(D)
+\end{aligned}
+\end{equation}
+where $\hat{\mathbf{i}}(k-L|k)$ denotes an estimate of ${\mathbf{i}}_{k-L}$ based on $\{\mathbf{z}_s^h,~s \leq k  \}$. This corresponds to
+\begin{equation}
+y(t) -C(t)\hat{x}(t|b)~ (t<b)
+\end{equation}
+
+ in linear filtering/smoothing theory
+
+\item $\eta_{k-L}^h$ is a little different from the innovations assocated with the observation $\mathbf{z}_{k-L}^h $ and is called the linear smoothed estimate of $i_{k-L}$
+
+\item Similar to the previous section, $\hat{x}(t|b)$ is the estimate of $x(t)~(t<b)$ based on the observation of $y(s)~(y<b)$. Since more observations are used in the estimation of $x(t)$ in this case, the accuracy of $\hat{x}(t|b)$ may increase when compared to $\hat{x}(t|t)$
+
+\item Next, we assume that $\hat{i}(k-L|k)$ has the form 
+\begin{equation}
+\hat{i}(k-L|k)=\mathbf{z}_{k}^hQ(D)
+\end{equation}
+where $Q(D)$ is a polynomial matrix
+\item We then have 
+\begin{equation}
+\begin{aligned}
+\eta_{k-L}^h &= \mathbf{z}_{k-L}^h - \mathbf{z}_{k}^hQ(D)G(D)\\
+&=\left(\mathbf{i}_{k-L} G(D)+\mathbf{e}_{k-L}\right)+\left(\mathbf{i}_{k} G(D)+\mathbf{e}_{k}\right) Q(D) G(D) \\
+&=\mathbf{i}_{k}\left(D^L+G(D) Q(D)\right) G(D)+\mathbf{e}_{k} Q(D) G(D)+\mathbf{e}_{k-L}
+\end{aligned}
+\end{equation}
+
+\item If $\left(D^L+G(D) Q(D)\right) G(D) = D^LG(D)+G(D) Q(D)G(D) $ or 
+
+\begin{equation}
+G(D)=G(D)D^{-L}P(D)G(D) 
+\end{equation}
+
+holds, $\eta_{k-L}^h$ is independent of $i_k$ and $D^{-L}Q(D)$ is a generalized inverse of $Q(D)$ and $Q(D)=\mathbf{F}\triangleq \left(\begin{array}{c}
+{1} \\
+{1}
+\end{array}\right)$
+Then 
+\begin{equation}
+\begin{aligned}
+\eta_{k-L}^h &= (\mathbf{e}_{k} \mathbf{F})\mathbf{G}+\mathbf{e}_{k-L}\\
+&=\mathbf{u}_k\mathbf{G}+\mathbf{e}_{k-L},~(\mathbf{u}_k=(\mathbf{e}_{k} \mathbf{F} ))\\
+&=\mathbf{e}_k(\mathbf{F}\mathbf{G}+ D^LI_2)
+\end{aligned}
+\end{equation}
+
+\item It is worth noting that 
+\begin{equation}
+\begin{aligned}
+\eta_{k-L}^hH^T(D)&= z_{k-L}^hH^T(D) -\mathbf{z}_{k}^hQ(D)G(D)H^T(D) \\
+&=z_{k-L}^hH^T(D)=\zeta_{k-L}
+\end{aligned}
+\end{equation}
+ holds irrespective of $Q(D)$ and both $ \eta_{k-L}^h$ and $z_{k-L}$ generate the same syndrome $\zeta_k$
+
+\item An alternate expression exists for $\eta_{k-L}^h$ We have 
+
+\begin{equation}
+\begin{aligned}
+FD+D^LI^2&=\left(\begin{array}{cc}
+g_1 + D^L & g_2\\
+g_1 & g_2 + D^L
+\end{array}\right)\\
+&=\left(\begin{array}{cc}
+g_2 & g_2\\
+g_1 & g_1
+\end{array}\right)\\
+&=\left(\begin{array}{cc}
+H^T & H^T\\
+\end{array}\right),~H^T = \left(\begin{array}{c}
+g_2 \\
+g_1 
+\end{array}\right)
+\end{aligned}
+\end{equation}
+Then, $\eta_{k-L}^h=e_k\left(\begin{array}{cc}
+H^T & H^T\\
+\end{array}\right) = (\begin{array}{cc}
+\zeta_k & \zeta_k
+\end{array})$
+
+And 
+\begin{equation}
+\begin{aligned}
+\eta_{k-L}^hH^T(D)&= (\begin{array}{cc}
+\zeta_k & \zeta_k
+\end{array}) \left(\begin{array}{c}
+g_2 \\ g_1
+\end{array}\right)\\
+&=\zeta_k(g1+g2)\\
+&=\zeta_kD^L \\
+&= \zeta_{k-L}
+\end{aligned}
+\end{equation}
+
+\item From the above we conclude that $\eta_{k-L}^h$ has the following properties
+
+\begin{enumerate}
+\item $\eta_{k-L}^h$ depends on the errors $\{e_s,~s\leq k-L\}$ and $\{e_s,~s\leq k-L <s \leq k\}$ in general. Also $e_k$ generates the syndrome $\zeta_k$ whiles $\eta_{k-L}^h$ generates the syndrome $\zeta_{k-L}$
+
+\item $\{\eta_{s}^h,~s\leq k-L\} $ and $\{z_s^h,~s\leq k-L\}$ generate the same syndrome sequence $\zeta_{s},~s\leq k-L$
+\end{enumerate}
+\item The above means that 
+\begin{equation}
+\eta_{k-L}^h=z_{k-L}^h +(z_k^hF)G=z_k^h(D^LI_2+FG)
+\end{equation}
+is not the innovations corresponding to $z_{k-L}$ as stated in Definition 1
+
+\item With respect to the mapping $z_k^h \mapsto \eta_{k-L}^h$, we have  proposition 4, which states that the above mapping is not invertible. (proof in main paper)
+
+\item \item (Proposition 5: ) In the relation   $\eta_{k-L}^h=  \mathbf{z}_k^h(D^LI_2+FG)$, replace $\mathbf{z}_k^h$ on the right hand side by $\mathbf{\eta}_k^h$. We have again $\eta_{k-L}^h$ (proof in main paper)
+
+\item Consider a QLI code defined by $G(D)$. It can be regarded
+as a general code as well. Hence, we can apply the argument
+in the preceding section to it. Let $\hat{i}(k-L|k)$ be the estimate
+of $i(k-L|k)$ derived as a QLI code, whereas let $\hat{i}(k-L|k-L)$ be
+the estimate of $i(k-L)$ derived as a general code. Then we have
+the Proposition 6.
+
+\item ( Proposition 6) Let $G =(g_1,g_2),~(g_1+g_2=D^L)$ be a
+generator matrix for a QLI code. Define as follows
+\begin{equation}
+\hat{i}(k-L|k) \triangleq z_k^hF
+\end{equation}
+
+\begin{equation}
+\hat{i}(k-L|k-L) \triangleq z_{k-L}^hG^{-1}
+\end{equation}
+Then we have 
+\begin{equation}
+\hat{i}(k-L|k) = \hat{i}(k-L|k-L)+ \zeta_k
+\end{equation}
+(proof in main paper)
+
+\item (Corollary 7) Given the same conditions as  Proposition 6 $$ \eta_{k-L}^h = r_{k-L}^h + \zeta_kG$$ holds. (proof in main paper)
+
+\item Let $P(\cdot)$ be the probability and $\in = 1\sqrt{2\pi} \mathlarger{\int_{\sqrt{2E_s/N_o}}^{\infty}~e^{-\frac{y^2}{2}}}dy \triangleq Q(\sqrt{2E_s/N_o})$ We have the following proposition.
+
+\item (Proposition 8) Let $$p_f \triangleq P(\hat{i}(k-L|k-L) \neq i_{k-L})=P(e_{k-L}G^{-1} =1)$$ and $$p_s \triangleq P(\hat{i}(k-L|k) \neq i_{k-L})=P(e_{k}F =1)$$. Then $p_s \leq p_f$ for $0\leq \in \leq 1/2$ (proof in main Paper)
+\end{enumerate}
+
+
+\section{Distributions Related to the Main Decoder of the SST Viterbi Decoder}
+In this section it is shown that the distribution of the input to the
+main decoder is biased under low to moderate channel noise
+level.Also, it is shown that the state distribution in the code
+trellis for the main decoder as well as the state distribution
+in the error trellisis also biased under the same
+channel conditions. In either case, a QLI code is used in the
+discussion. This is because a QLI code is regarded as a general
+code as well and then we can compare two distributions,
+i.e., the one obtained as a general code and the other obtained
+as a QLI code. 
+
+\subsection{Information Obtained Throught Observations[5]}
+\begin{enumerate}
+\item From the channel model in section 1, we have $$z_j = x_j \sqrt{2E_s/N_o} + w_j = cx_j + w_j,~c\triangleq \sqrt{2E_s/N_o}$$ The conditional entropy $H[z|x]$ of the observation $z_j$ is equal to the entropy $H[w]$ of $w_j$ where $H[w]$ is given by 
+\begin{equation}
+H[w] =\frac{1}{2} \log(2\pi e)
+\end{equation}
+
+\item Assuming $y_j$ has values $0,1$ with equal probability, the PDF of $z_j$ given by p(y) is
+
+\begin{equation}
+p(y) = \frac{1}{2}q(y-c) + \frac{1}{2} q(y+c),~q(y) = \frac{1}{\sqrt{2\pi} }e^{-\frac{y^2}{2}}
+\end{equation}
+ 
+\item To calculate the entropy $H[z]$ of $z_j$, we note that 
+
+$$ \int_{-\infty}^{\infty} yp(y) dy = \frac{c}{2} + \frac{-c}{2} =0$$ and 
+
+$$ \int_{-\infty}^{\infty} y^2p(y) dy = \frac{1+c^2}{2} + \frac{1+c^2}{2} =1+c^2$$
+and we get
+
+\begin{equation}
+H[z] = -\int_{-\infty}^{\infty} p(y)\log(p(y)) dy \leq \frac{1}{2} \log(2\pi \exp(1+c^2))
+\end{equation}
+with equality when $p(y)$ is Gaussian. This means
+\begin{equation}
+\begin{split}
+H[x;z] =& H[z]-H[w] =  \frac{1}{2} \log(2\pi \exp(1+c^2)) -  \frac{1}{2} \log(2\pi e)\\
+&= \frac{1}{2} \log(1+c^2)
+\end{split}
+\end{equation}
+
+Where $H[x;z]$ represents the information obtained through  the observation [5]
+
+\item It is worth noting that as $c$ approaches zero, $\log(1+c^2)\approx c^2$ and $H[x;z]\approx \frac{1}{2}2E_s/N_o = E_s/N_o$
+\end{enumerate}
+
+\subsection{Entropy Associated with the Distribution of the input to the Main Decoder}
+\paragraph{1. General Codes:}
+
+\begin{enumerate}
+\item We begin by assuming that the inverse decoder $G^-1(D)$ is used as a pre-decoder and we let $\mathbf{r}_k^{(l)} =(r_k^{(1)},...,r_k^{(n_o)})$ be the input to the main decoder in the SST Viterbi decoder. We have the following Proposition
+
+\item (Proposition 12:) The distribution of $r_k^{(l)}~~(1 \leq l \leq n_o)$ is given by
+
+\begin{equation}
+p_r(y) = (1-\alpha)q(y-c) + \alpha q(y+c),~ \alpha \triangleq P(e_k^{(l)} = 0, r_k^{(l)h} =1) + P(e_k^{(l)} = 1, r_k^{(l)h} =0)
+\end{equation}
+(proof in main paper)
+
+\item Next we calculate the entropy for $r_k^{(l)} 
+$ denoted by $H[r]$. This requires the calculation of the varance of $p_r(y),~\sigma_r^2$
+
+\begin{equation*}
+\begin{aligned}
+m_r = &\int_{-\infty}^{\infty} yp_r(y) dy \\
+=&(1-\alpha) \int_{-\infty}^{\infty} yq(y-c) dy + \alpha\int_{-\infty}^{\infty} yq(y+c) dy\\
+&=(1-\alpha)c +(\alpha)(-c) = c(1-2\alpha)
+\end{aligned}
+\end{equation*}
+
+\begin{equation*}
+\begin{aligned}
+n_r = &\int_{-\infty}^{\infty} y^2p_r(y) dy \\
+=&(1-\alpha) \int_{-\infty}^{\infty} y^2q(y-c) dy + \alpha\int_{-\infty}^{\infty} y^2q(y+c) dy\\
+&=(1-\alpha)(1+c^2) +(\alpha)(1+c^2) = 1+c^2
+\end{aligned}
+\end{equation*}
+Then 
+
+\begin{equation*}
+\begin{aligned}
+\sigma_r^2 = &n_r-m_r^2 \\
+&= 1+c^2 - c^2(1-2\alpha)^2 = 1+4c^2\alpha(1-\alpha)
+\end{aligned}
+\end{equation*}
+
+And finally, 
+
+\begin{equation}
+H[r] = -\int_{-\infty}^{\infty} p_r(y)\log(p_r(y)) dy \leq \frac{1}{2} \log(2\pi \exp(1+4c^2\alpha(1-\alpha)))
+\end{equation}
+With equality when $p_r(y) $ is Gaussian.
+
+\item Considering the difference $H[z] - H[r]$, we need the following Lemma: 
+for $0\leq \in \leq 1/2$ we have for $0\leq \alpha\leq 1/2$ (proof in Appendix A)
+
+\item It is worth noting that $p_r(y)$ becomes more biased as $\alpha$ becomes smaller. This means $H[z]-H[r] \geq 0$ and it grows bigger as $\alpha$ becomes smaller
+
+\item We proceed to consider the right hand side of  $H[z]-H[r]$ which is  
+
+\begin{equation}
+\begin{aligned}
+&\frac{1}{2} \log(2\pi \exp(1+c^2))-
+\frac{1}{2} \log(2\pi \exp(1+4c^2\alpha(1-\alpha)))\\
+&=\frac{1}{2} \log\left(\frac{1+c^2}{1+4c^2\alpha(1-\alpha)}\right)
+\end{aligned}
+\end{equation}
+
+\item We note that since $0\leq \alpha\leq 1/2$, we have $0\leq 4\alpha(1-\alpha) \leq 1$ Furthurmore we consider the following special cases 
+
+\item ($\in \rightarrow 0$): We have $p_r(y) \rightarrow q(y-c)$ where $q(y-c)$ is Gaussian and we have $H[z]-H[r] \approx \frac{1}{2} \log(1+c^2)~(c \rightarrow \infty)$
+
+\item ($\in \rightarrow 1/2$):  We have $p(y) \rightarrow q(y)$ where $q(y)$ is Gaussian and we have $H[z]-H[r] \approx \frac{1}{2} \log(\frac{1+c^2}{1+c^2}) = 0 ~(c \rightarrow \infty)$
+
+\item that $H[z]-H[r] \approx \frac{1}{2} \log\left(\frac{1+c^2}{1+4c^2\alpha(1-\alpha)}\right)$ and this applies only to a single component of the branch code. To compute the entropy associated with the composite probability distribution, we need to sum the entropy associated with each code symbol. This works because the model used in the research paper assumes symbol by symbol transmission of the symbols which means each probability distributuon is statistically independent.
+
+\end{enumerate}
+
+\paragraph{2. QLI Codes:}
+\begin{enumerate}
+\item We begin by defining the generator matrix of the QLI code as  $G(D)=(g_1(D), g_s(D)),~D~L =g_1+g_2$. Next we assume that $F=(1,1)^T$ is used as a pre-decoder and we let $\mathbf{\eta}_{k-L}^{(l)} =({\eta}_{k-L}^{(1)},{\eta}_{k-L}^{(2)})$ be the input to the main decoder in the SST Viterbi decoder. We have the following Proposition
+
+\item (Proposition 14:) The distribution of ${\eta}_{k-L}^{(l)}~~(l=1,2)$ is given by
+
+\begin{equation}
+p_{\eta}(y) = (1-\beta)q(y-c) + \beta q(y+c),~ \beta \triangleq P(e_{k-L}^{(l)} = 0, \zeta_k^{(l)h} =1) + P(e_{k-L}^{(l)} = 1, \zeta_k^{(l)h} =0)
+\end{equation}
+(proof in main paper)
+
+\item Next we calculate the entropy for $r_k^{(l)} 
+$ denoted by $H[r]$ using the procedure from the previous section. We have  
+
+\begin{equation}
+H[\eta] = -\int_{-\infty}^{\infty} p_\eta(y)\log(p_\eta(y)) dy \leq \frac{1}{2} \log(2\pi \exp(1+4c^2\beta(1-\beta)))
+\end{equation}
+With equality when $p_\eta(y) $ is Gaussian.
+
+\item that $H[z]-H[\eta] \approx \frac{1}{2} \log\left(\frac{1+c^2}{1+4c^2\beta(1-\beta)}\right)$ 
+
+\item Considering the difference $H[z] - H[r]$, we need the following Lemma: 
+for $0\leq \in \leq 1/2$ we have for $0\leq \beta\leq 1/2$ (proof in Appendix B)
+\end{enumerate}
+
+\subsection{State Distribution in the Code Trellis for the Main Decoder}
+\begin{enumerate}
+\item In this section, it is shown that the state distribution for the main decoder is biased under similar channel conditions defined in the previous section. 
+
+\item QLI codes are used in the explanation since they can be regarded as general codes and thus have 2 state expressions for the main decoder. This makes it possible to evaluate the likelihood concentration in the main decoder by comparing the 2 state distributions.
+
+\item It is worth noting that the code trellis module can be constructed
+as an error trellis module based on the syndrome
+former (Parity Check Matrix) and for a high-rate code, the resulting code
+trellis module has less complexity than that of the conventional
+one [31], [42]. Lee et al. [21] used this method when they
+applied the SST scheme to $(n_0, n_0-1)$ convolutional codes.
+
+\item Consider a QLI code defined by $G(D) =(g_1(D),g_2(D))$ . A Likelihood concentration in the main decoder depends heavily on the choice of the precoder.
+
+\item Roughly speaking, if the input the information $u_k$ to the main decoder has a smaller number of error terms, then a higher likelihood concentration occurs.
+
+\item First we assume that $F=(1,1)^T$ is used as a pre-decoder. This means $u_k =e_k^{(1)}+e_k^{(2)}$
+
+\item The next case is when $G^-1 =(b_1, b2)^T$ is used as a pre-decoder, where $b_1,b_2$ are polynomials in D. If they consist of a smaller number of terms then $u_k = \mathbf{e}_k\mathbf{G}$ will also consist of a small number of terms and by extension a high likelihood concentration
+
+\item let $n_e$ be the number of error terms in $u_k$. In general, $n_e>2$ and QLI codes are preferred in terms of likelihood concentration in the main decoder. On the other hand, the free distance for the QLI codes is a little less than that of thhe best general code.
+
+\item To cope with the problem of likelihood concentration in the case of general codes, Ping et al[25] searched for a good non-systematic encoder whose inverse encoder consists of a small number of terms. For constraint length $v=6$ the generator matrix \begin{equation}
+G(D)=\left(1+D+D^{4}+D^{5}+D^{6}, 1+D^{2}+D^{3}+D^{4}+D^{6}\right)
+\end{equation} with 
+
+\begin{equation}
+G^{-1}= \left(\begin{array}{c}
+D \\ 1 + D
+\end{array}\right)
+\end{equation}
+was found. This is an optimal distance profile(ODP) encoding matrix. with free distance of $10$ It was shown that 
+\begin{equation}
+G(D)=\left(1+D+D^{4}, 1+D^{2}+D^{3}+D^{4}\right) 
+\end{equation}
+which is also an ODP encoding matrix has the same inverse encoder.
+
+\item Note that the components of the state are not
+statistically independent of each other in general.  Even though, $n_e$
+alone does not affect the state distribution, it still
+provides useful information about a likelihood concentration
+in the main decoder.
+
+\end{enumerate}
+
+\subsection{State distribution in the Error Trellis}
+\begin{enumerate}
+\item It has been shown [37], [38] that SST Viterbi decoding
+based on a code trellis and syndrome decoding based on the
+corresponding error trellis are equivalent.
+
+\item Let $k_0=n_0-1$ for simplicity. This means the size of $H(D)$ is $1 \times n_o$. Also, let $v,\mathbf{s}_k,\sigma_k$ be the constraint length of $H(D)$, the state at $t = k$ in the code trellis for the main
+decoder and the state at $t = k$ in the error trellis, respectively
+
+\item Based on the observer-caanonocal form of $H^T,~\sigma_k$ can be expressed as 
+\begin{equation}
+\sigma_k = e_kU(D)
+\end{equation}
+$where U(D)$ is an $n_0 \times v$ matrix whose entries are polynomials in $D$
+
+\item We then have 
+
+\begin{equation}
+\begin{aligned}
+\sigma_k =&(\mathbf{u}_kG + r_k^h)U \\
+=&\mathbf{u}_kGU + \zeta_k(H^{-T})U
+\end{aligned}
+\end{equation}
+\item Noting that That is, $\mathbf{u}_kGU $ is the
+dual (physical) state [7] corresponding to the encoder state $s_k$, and that
+since the space of encoder states and that of the corresponding
+dual states are isomorphic, the correspondence between $\mathbf{s}_k$ and $\sigma_k$ is one-to-one.
+
+\item Also,the term $ \zeta_k(H^{-T})U$ is
+common to every state $\mathbf{s}_k$. And the correspondence between
+ $\mathbf{s}_k$ and $\sigma_k$ is also one-to-one. This fact implies that the state
+distribution in a code trellis for the main decoder is closely
+related to that in the corresponding error trellis. 
+
+\item This fact implies that the state
+distribution in a code trellis for the main decoder is closely
+related to that in the corresponding error trellis.
+\end{enumerate}
+\section{Complexity Reduction In The Main Decoder In An SST Viterbi Decoder}
+\begin{enumerate}
+\item In this section it is shown that the state distribution bias brings about complexity reduction in the main decoder. Two Reduction methods will be discussed, which involve the direct and indirect use of the biased state distribution in the complexity reduction
+
+\item There have been several
+related works [2], [4], [25], [33], [35], [36] since the SST
+scheme was proposed. Hence, the discussion in the former part
+is mainly based on these known works. The known material
+is also dealt with in the latter part, but some original results
+are contained. In particular, we give an approximate criterion
+for complexity reduction in the main decoder in relation to
+the second reduction method.
+\end{enumerate}
+\subsection{Complexity Reduction Using State Distribution}
+\begin{enumerate}
+\item So far biased state distributions have been directly used
+in order to reduce the decoder complexity [25], [33]. 
+
+\item In the
+following, $k_0 = 1$ is assumed for simplicity. First we briefly
+review the generalized Viterbi algorithm (GVA) [8].
+
+\item Let 
+\begin{equation}
+\mathbf{u}^k \triangleq u_1u_2 \cdot \cdot \cdot u_k
+\end{equation}
+be the transmitted information sequence, where $k$ is the current depth. In the case of the usual Viterbi algorithm,the trellis is drawn by regarding the latest symbols $(u_{k-v+1} \cdot \cdot \cdot u_k)$
+as a state (i.e., encoder state). On the other hand, in the
+GVA, the latest $\tilde{v}$ symbols $(\tilde{u}_{k-\tilde{v}+1} \cdot \cdot \cdot u_k)$ is considered as an algorithm’s state (i.e., decoder state), where $\tilde{v} ~ (> 0)$  can
+be chosen independent of $v$
+
+\item By chosing $\tilde{v} <v$, it is possible to reduce the number
+of decoder states. In this case, however, it is
+not guaranteed that the overall ML path can be chosen if a
+single survivor is preserved for each decoder state. Note that
+a decoder state consists of multiple encoder states. 
+
+\item For this reason,
+when a survivor for the decoder state is determined, the most
+likely path for each component encoder state has to be selected
+beforehand. This procedure is called pre-selection [8].
+
+\item In [33], the GVA was applied to the main decoder by
+taking account of a biased state distribution. The method is
+based on the conjecture that, if a likelihood concentration
+to some particular states is occurring in the main decoder,
+then a great deal of decoding complexity reduction can be
+realized by applying the GVA to the main decoder with $\tilde{v} < v$ and by slightly increasing the number of total
+survivors as compared with that of other decoder states. The method
+is formulated as follows:
+\begin{enumerate}
+\item The SST scheme is used to produce a likelihood concentration
+in the main decoder.
+\item The GVA is applied to the main decoder with $\tilde{v} < v$.
+\item In order to avoid a performance degradation due to
+choosing $\tilde{v} < v$, more than one survivors are
+preserved for those decoder states with high probabilities.
+\end{enumerate}
+\item The above method  was applied to a QLI code $C_2$ defined by the generator matrix $G(D) = (1 +D+D^3 +D^4 +D^6, 1 +D+D^2+D^3+D^4+D^6)$ This code has a free distance of 9 and it is revealed that a likelihood concentration occurs at the all-zero state and states with containing a single "1" bit. $\tilde{v}$ is set to 5 and two survivors are preserved for each of the decoder
+states with high probabilities and only one survivor for each
+of the other decoder states.  Hence, the number of decoder
+states is 32 and 38 survivors are preserved.
+
+\item Simulation results
+show that the method can reduce the decoding complexity to
+almost 1/2 of that of the conventional one within a very small
+performance degradation, where 8-level receiver quantization
+is assumed. It is also shown that a small increase of the number
+of survivors (i.e., additional 6 survivors) significantly improves
+the performance. This fact comes from a much biased state
+distribution in the code trellis for the main decoder. 
+
+\item Ping et al. [25] also used the SST scheme to reduce the
+decoder complexity. Note that C2 is a QLI code and has not
+the best free distance  with $v$= 6. On the other hand, the number of
+error terms in $u_k = e_kG^-1$ must be small in order to produce a
+high likelihood concentration in the main decoder. As a result
+, they chose the generator matrix
+$$G(D) = (1 +D+D^4 +D^5 +D^6, 1 +D^2+D^3+D^4+D^6)$$ with
+\begin{equation}
+G^{-1}= \left(\begin{array}{c}
+D \\ 1 + D
+\end{array}\right)
+\end{equation}
+
+\item Next,
+they applied a simplifying scheme to the main decoder. Since
+the state distribution in the code trellis for the main decoder is
+biased, they eliminated those states whose occurring probabilities
+are nearly zero. (Hence, the scheme is called PSS (probability
+selecting states).) 
+
+\item More precisely, from among $2^6 = 64$
+states, 22 states with lowest probabilities are eliminated for
+the above code. Then the number of states used for decoding
+is 42 and 42 survivors are preserved. Computer simulations
+show that the performance of a PSS-type decoder is as good as
+that of the conventional Viterbi decoder, whereas the hardware
+complexity of the former decoder is almost 1/2 of that of the
+latter one.
+\end{enumerate}
+\end{document}

@@ -1,0 +1,289 @@
+\documentclass[20 pts]{article}
+\usepackage{xeCJK}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bm}
+\setCJKmainfont{SimSun}
+\title{ターボ符号について。}
+\author{Kwame Ackah Bohulu}
+\date{01-12-2017}
+\begin{document}
+\maketitle
+
+
+\section{Introduction}
+ ターボ符号は二つの畳み込み符号をインタリーバにより、並列連結をして、作られている。インタリーバにより並列連結することで、低い重みを持っている符号が得られる。  ターボ符号はClaude Berrouさんが発明された符号で、1993年に紹介されました。通常の場合は、同じ畳み込み符号器を使用し、２番目の符号器の`前にインタリーバがあります。そのため、最低レートが1/3が、パンクチュアリングすると、1/2か2/3に上がることがでる。この資料の第二章で畳み込み符号をちょっと説明する。第三章でターボ符号の作り方を紹介する。第四章でBCJRアルゴリズムを説明する。最後に、第五章でターボ復号アルゴリズムとシムレーションのシステムモデルを説明する。
+
+
+\section{畳み込み符号}
+畳み込み符号は線形有限状態シフトレジスタで情報系列を入力して、作られている。一般的に、シフトレジスタがKのkビット段階とn個の線形代数関数発生器で構成される。Kはシフトレジスタの拘束長を示し、kは、一度に何個のビットをシフトするかを定め、nは何個の出力ビットが出るかを定める。代数関数発生器はKkの大きさのベクトルで構成され、符号器とmod 2の加算器の接続を指定する。畳み込み符号器のレートは$\frac{k}{n}$です。
+\paragraph{例1},図1\\
+K=3,k=1,n=3。\newline
+$g_1=[1 0 0], g_2=[1 0 1], g_3=[1 1 1]$\newline
+8進形式(octal form) =(4, 5, 7)\newline
+$c^{(1)}=u*g_1,c^{(2)}=u*g_2,c^{(3)}=u*g_3$\newline
+符号順序=$(c_1^{(1)},c_1^{(2)},c_1^{(3)},c_2^{(1)},c_2^{(2)},c_2^{(3)},...)$
+\paragraph{}
+D domain\newline
+$U(D)=\sum_{i=0}^{\infty} u_iD^i $\newline
+$g_1(D)=1,g_2(D)=1+D^2,g_3(D)=1+D+D^2$\newline
+$C^{(1)}(D)=U(D)g_1(D),C^{(2)}(D)=U(D)g_2(D),C^{(3)}(D)=U(D)g_3(D)$\newline
+$C(D)=C^{(1)}(D^3)+DC^{(2)}(D^3)+D^2C^{(3)}(D^3)$
+\paragraph{}
+畳み込み符号の構造はtrellisグラフで簡単に描ける。trellisのノード数は、畳み込み符号器の可能な状態数とひとしいである。一般的に、レート$\frac{k}{n}$で、ながさKの拘束長を持つ畳み込み符号のtrellisは$2^{k(K-1)}$個のノードとノードに入る$2^k$個の支部とノードに出る$2^k$個の支部。
+\subsubsection{再帰的系統的と非再帰的系統的畳み込み符号器}
+情報系列が符号系列に直接に入っている畳み込み符号は系統的畳み込み符号系列という。再帰的畳み込み符号は帰還シフトレジスタで作られている。再帰的符号は常に系統的が、非再帰的符号は非系統的であることが多い。再帰的系統的畳み込み符号の生成行列のD domain現れは多項式比が入っている。
+\paragraph{例2},図2\\
+レート=1/2, K=3, $g_1=[1 1 1]$, $g_2=[1 0 1]$\newline
+G=[1 $g_2$/$g_1$]
+1 は系統的出力を示し、分子はフィードフォワード出力を示し、分母は帰還入力を示す。あるレートと拘束長が与え、再帰的系統的畳み込み符号は、非再帰的系統的畳み込み符号の自由距離が得られる。ターボ符号を作るのに、再帰的系統的畳み込み符号は大変重要です。
+\section{ターボ符号器}
+一般のターボ符号器は、図3にしめされて、再帰的系統的符号器である。並列連結された二つの再帰的系統的畳み込み符号器（要素符号器と言う。）で構成され、2番目の要素符号器の前にインタリーバがある。通常の場合は両方の要素符号器は同じである。それぞれの要素符号器はパリティビット系列を生成する。インタリーバと要素符号器の組み合わせは、数が少ない低い重みをもつ符号語のふごうが生成できる。図3で、出力のレートは1/3ということがわかる。レートを上がるために、パリティビット系列をパンクチュアリングする。ターボ符号器の可な能状態が巨大ため、最尤復号が不可能である。そのかわりに、ターボ復号アルゴリズムを使用する。そのアルゴリズムはBCJRアルゴリズムに基づいている。
+\section{BCJR アルゴリズム}
+BCJR アルゴリズムはBahlさん, Cockeさん,JelinekさんとRavivさんが1974に発明されたアルゴリズムである。このアルゴリズムは最も可能性の高い入力系列を探すより、MAPアルゴリズムを使用し、それぞれの入力記号を復号する。BCJR アルゴリズムを説明するために、以下の条件を想定する。\newline
+1. 情報系列\textbf{u}の長さは、Nであり,\textbf{u}=$\{u_1,u_2,....,u_N\}$\\
+k=1の場合$u_i\in \{0,1\}$\newline
+2. 　符号系列\textbf{c}の長さは、Nであり,\textbf{c}=$\{c_1,c_2,....,c_N\}$\\
+$c_i$の長さは、nである。\newline
+3.符号系列はAWGNチャネルで送信し、復号器で受信された系列\textbf{y}は実数で、長さはnNであり、\textbf{y}=$\{y_1,y_2,....,y_N\}$\paragraph{}
+BCJRアルゴリズムは 事後対数尤度比(a posteriori LLR),$L(u_i|y)$を計算し、元の情報系列を推定する。\begin{equation}L(u_i|y)=\ln\frac{P(u_i=1|\boldsymbol{y})}{P(u_i=0|\boldsymbol{y})}\end{equation}
+BCJRアルゴリズムの計算をもっと便利にするために、trellisグラフを使う。時間がiのとき、現在状態$\sigma_i=s$であり,過去の状態は$\sigma_{i-1}=s'$である。復号器で受信された系列は$y_i$である。時間がiになる前に、i-1個の系列が送信され、その後はN-iの系列が受信する。そのうえ、時間がiのとき、完全系列\textbf{y}は、過去、現在と未来の三つの系列に分けられる。$$\boldsymbol{y}=\boldsymbol{y}_{<i} \boldsymbol{y}_{i} \boldsymbol{y}_{>i}$$trellisグラフでわかるこたは、$\sigma_{i-1}=s'$から$\sigma_i=s$の遷移は、$u_i$の値で決められる。遷移が互いに排他的ため、ある遷移が起こる確率はそれぞれの確率の和である。
+$$\therefore P(u_i=1|\boldsymbol{y})=\sum_{R_1}^{}P(s',s|\boldsymbol{y})$$
+$$P(u_i=0|\boldsymbol{y})=\sum_{R_0}^{}P(s',s|\boldsymbol{y})$$
+$R_0=u_i=0$での$\sigma_{i-1}=s'$から$\sigma_i=s$の遷移の組\\
+$R_1=u_i=1$での$\sigma_{i-1}=s'$から$\sigma_i=s$の遷移の組\\
+\paragraph{}
+\textbf{y},$P(u_i=1|\boldsymbol{y})$と$P(u_i=0|\boldsymbol{y})$を式1に入力すると、
+\begin{equation}
+\begin{split}
+L(u_i|y)&=\ln\frac{\sum_{R_1}^{}P(s',s|\boldsymbol{y})}{\sum_{R_0}^{}P(s',s|\boldsymbol{y})}\\
+&=\ln\frac{\sum_{R_1}^{}P(s',s,\boldsymbol{y})}{\sum_{R_0}^{}P(s',s,\boldsymbol{y})}\\
+&=\ln\frac{\sum_{R_1}^{}P(s',s,\boldsymbol{y}_{<i} \boldsymbol{y}_i \boldsymbol{y}_{>i})}{\sum_{R_0}^{}P(s',s,\boldsymbol{y}_{<i} \boldsymbol{y}_i \boldsymbol{y}_{>i})}
+\end{split}
+\end{equation}
+Bayes方程式で
+\begin{equation}
+\begin{split}
+P(s',s,\boldsymbol{y}_{<i} \boldsymbol{y}_i \boldsymbol{y}_{>i})&=P(\boldsymbol{y}_{>i}|s',s,\boldsymbol{y}_{<i}\boldsymbol{y}_{i})P(s',s,\boldsymbol{y}_{<i}\boldsymbol{y}_{i})\\
+&=P(\boldsymbol{y}_{>i}|s)P(\boldsymbol{y}_{i},s|s',\boldsymbol{y}_{<i})P(s',\boldsymbol{y}_{<i})\\
+&=P(\boldsymbol{y}_{>i}|s)P(\boldsymbol{y}_{i},s|s')P(s',\boldsymbol{y}_{<i})\\
+&=\alpha_{i-1}(s')\gamma_i(s',s)\beta_i(s)
+\end{split}
+\end{equation}
+$\alpha_{i-1}(s')=P(s',\boldsymbol{y}_{<i})$を定義し、時間がi-1のとき、状態が$s'$で今まで受信された系列は$(\boldsymbol{y}_{<i}$の共同確率を表す。\\
+$\gamma_i(s',s)=P(\boldsymbol{y}_{i},s|s')$を定義し、過去の状態が$s'$の条件で未来の状態が$s$であり、受信された系列が$\boldsymbol{y}_{i}$である確率を表す。\\
+$\beta_i(s)=P(\boldsymbol{y}_{>i}|s)$を定義し、現在の状態が$s$の条件で未来の系列は$\boldsymbol{y}_{>i}$になるの条件付確率を表す。
+式1に式3を代入すると、以下になる。
+\begin{equation}L(u_i|y)=\ln\frac{\sum_{R_1}^{}\alpha_{i-1}(s')\gamma_i(s',s)\beta_i(s)}{\sum_{R_0}^{}\alpha_{i-1}(s')\gamma_i(s',s)\beta_i(s)}\end{equation}
+\subsection{$\gamma_i(s',s)$の計算方法}
+\begin{equation}
+\begin{split}
+\gamma_i(s',s)&=P(\boldsymbol{y}_{i},s|s')\\
+&=P(\boldsymbol{y}_{i}|s',s)P(s|s')\\
+&=P(\boldsymbol{y}_{i}|c_i)P(u_i)
+\end{split}
+\end{equation}
+AWGNチャネルの場合、
+\begin{equation}
+\gamma_i(s',s)=\frac{P(u_i)}{(\pi N_o)^{n/2}}exp(-\frac{\|{y_i-c_i}\|^2}{N_o})
+\end{equation}
+\subsection{$\alpha_{i-1}(s')$の計算方法}
+$\alpha_{i-1}(s')=P(s',\boldsymbol{y}_{<i})$。書き換えると、
+\begin{equation}
+\begin{split}
+\alpha_{i}(s)&=P(s,\boldsymbol{y}_{<i+1})\\
+&=P(s,\boldsymbol{y}_{<i},\boldsymbol{y}_{i})
+\end{split}
+\end{equation}
+
+確率論で
+\begin{equation}
+P(A)=\sum_{B}^{}P(A,B)\\
+\end{equation}
+
+\begin{equation}
+\begin{split}
+\therefore \alpha_i(s)&=\sum_{s'}^{}P(s,\boldsymbol{y}_{i}|s',\boldsymbol{y}_{<i})P(s',\boldsymbol{y}_{<i})\\
+&=\sum_{s'}^{}P(s,\boldsymbol{y}_{i}|s')P(s',\boldsymbol{y}_{<i})\\
+&=\gamma_i(s',s)\alpha_{i-1}(s')
+\end{split}
+\end{equation}
+	trellisがすべてゼロ状態から始まる場合、$\alpha_i(s)$の初期条件は
+
+\[
+    \alpha_i(s)= 
+\begin{cases}
+   1,& s= 0\\        0,              &  s\neq 0
+\end{cases}
+\]
+
+\subsection{$\beta_i(s)$の計算方法}
+$\beta_i(s)=P(\boldsymbol{y}_{>i}|s)$
+書き換えると
+\begin{equation}
+\begin{split}
+\beta_{i-1}(s')&=P(\boldsymbol{y}_{>i-1}|s')\\
+&=\sum_{s}^{}P(\boldsymbol{y}_{>i}|s',s,\boldsymbol{y}_{i})P(s,\boldsymbol{y}_{i}|s')\\
+&=\sum_{s}^{}P(\boldsymbol{y}_{>i}|s)P(s,\boldsymbol{y}_{i}|s')\\
+&=\beta_i(s)\gamma_i(s',s)
+\end{split}
+\end{equation}
+
+trellisがすべてゼロ状態に終了する場合、$\beta_i(s)$の初期条件は
+
+\[
+    \beta_N(s)= 
+\begin{cases}
+   1,& s= 0\\        0,              &  s\neq 0
+\end{cases}
+\]
+\subsection{Log-MAPとMax-Log-MAP}
+前に紹介したBCJRアルゴリズムは、trellisが長い場合、数値的に不安定である。そのかわりに、対数領域のBCJRアルゴリズム、Log-MAPとMax-Log-MAPアルゴリズムを使用する。Log-MAPの場合、以下の定義が必要である。
+
+\begin{equation}
+\begin{split}
+&\widetilde{\alpha}_i(s)=\ln(\alpha(s))\\
+&\widetilde{\beta}_i(s)=\ln(\beta(s))\\
+&\widetilde{\gamma}_i(s',s)=\ln(\gamma(s',s))
+\end{split}
+\end{equation}
+前方再帰,後方再帰とLLRは、以下の式で計算する。
+
+\begin{equation}
+\begin{split}
+&\widetilde{\alpha}_i(s)=\ln\sum_{s'}^{}\exp(\widetilde{\alpha}_{i-1}(s')+\widetilde{\gamma}(s',s))\\
+&\widetilde{\beta}_{i-1}(s)=\ln\sum_{s}^{}\exp(\widetilde{\beta}_{i}(s')+\widetilde{\gamma}(s',s))\\
+&L(u_i)=\ln\Big[\sum_{R_1}^{}\exp（\widetilde{\alpha}_{i-1}(s')+\widetilde{\gamma}(s',s)+(\widetilde{\beta}_{i}(s'))\Big]-\ln\Big[\sum_{R_0}^{}\exp(\widetilde{\alpha}_{i-1}(s')+\widetilde{\gamma}(s',s)+(\widetilde{\beta}_{i}(s'))\Big]
+\end{split}
+\end{equation}
+計算効率をよくするために、Max-Log-MAPアルゴリズムは以下の記法が使われている。
+\begin{equation}
+\begin{split}
+&\max{*}\{x,y\}\triangleq \ln(e^x+e^y)\\
+&\max{*}\{x,y,z\}\triangleq \ln(e^x+e^y+e^z)
+\end{split}
+\end{equation}
+
+上記の記法を使用し、前方再帰,後方再帰とLLRは、以下の式で計算する。
+
+\begin{equation}
+\begin{split}
+&\widetilde{\alpha}_i(s)=\max_{s'}*\{\widetilde{\alpha}_{i-1}(s')+\widetilde{\gamma}(s',s)\}\\
+&\widetilde{\beta}_{i-1}(s)=\max_{s}*\{\widetilde{\beta}_{i}(s')+\widetilde{\gamma}(s',s)\}\\
+&L(u_i)=\max_{R_1}*\Big\{\widetilde{\alpha}_{i-1}(s')+\widetilde{\gamma}(s',s)+(\widetilde{\beta}_{i}(s')\Big\}-\max_{R_0}*\Big\{\widetilde{\alpha}_{i-1}(s')+\widetilde{\gamma}(s',s)+(\widetilde{\beta}_{i}(s')\Big\}
+\end{split}
+\end{equation}
+
+両方の場合は、以下の初期条件は以下のようになる。
+
+\[
+    \widetilde{\alpha}_0(s)= 
+\begin{cases}
+   0,& s= 0\\        -\infty,              &  s\neq 0
+\end{cases}
+\]
+
+\[
+   \widetilde{\beta}_N(s)= 
+\begin{cases}
+   0,& s= 0\\        -\infty,              &  s\neq 0
+\end{cases}
+\]
+
+\section{ターボ復号アルゴリズム}
+ターボ符号器の可能状態が巨大なため、最尤復号が不可能である。そのかわりに、Claude Berrouさんが提案された準最適なターボ復号アルゴリズムを使用する。そのアルゴリズムは、Log-MAPかMax-Log-MAPアルゴリズムの反復使用に基づいている。Max-Log-MAPアルゴリズムに集中させる。$n=2$, AWGN チャネルとBPSK変調を仮定すると、
+$$\boldsymbol{c}_i=(c_i^s,c_i^p),  \boldsymbol{y}_i=(y_i^s,y_i^p)$$
+
+式6は以下のようになる。
+
+$$
+\gamma_i(s',s)=\frac{1}{(\pi N_o)}\exp(-\frac{(y_i^s)^2+(y_i^p)^2+2(c_i^s)^2}{N_o})P(u_i)\exp(\frac{2y_i^sc_i^s+2y_i^pc_i^p}{N_o})
+$$
+$\frac{1}{(\pi N_o)}\exp(-\frac{(y_i^s)^2+(y_i^p)^2+2(c_i^s)^2}{N_o})$は$u_i$と関係ないからむししてもかまいません。すると、以下の式が出る。
+
+\begin{equation}
+\begin{split}
+\gamma_i(s',s)&=P(u_i)\exp(\frac{2y_i^sc_i^s+2y_i^pc_i^p}{N_o})\\
+&P(u_i)\exp(\frac{2y_i^sc_i^s}{N_o})\exp(\frac{2y_i^pc_i^p}{N_o})
+\end{split}
+\end{equation}
+
+$$\therefore\widetilde{\gamma}(s',s)= \ln P(u_i)+\exp(\frac{2y_i^sc_i^s}{N_o})+\exp(\frac{2y_i^pc_i^p}{N_o})$$
+上記の$\widetilde{\gamma}(s',s)$を式14の$L(u_i)$に入力すると、以下の式が出る。
+
+\begin{equation}
+\begin{split}
+L(u_i)=&\max_{R_1}*\Big\{\widetilde{\alpha}_{i-1}(s')+[\ln P(u_i)+\exp(\frac{2y_i^sc_i^s}{N_o})+\exp(\frac{2y_i^pc_i^p}{N_o})]+(\widetilde{\beta}_{i}(s')\Big\}-\\&\max_{R_0}*\Big\{\widetilde{\alpha}_{i-1}(s')+[\ln P(u_i)+\exp(\frac{2y_i^sc_i^s}{N_o})+\exp(\frac{2y_i^pc_i^p}{N_o})]+(\widetilde{\beta}_{i}(s')\Big\}
+\end{split}
+\end{equation}
+
+\[
+    c_i^s= 
+\begin{cases}
+   \sqrt{\varepsilon_c},& u_i= 1\\        -\sqrt{\varepsilon_c},              & u_i= 0
+\end{cases}
+\]
+を仮定すると、
+
+\begin{equation}
+\begin{split}
+L(u_i)=&\frac{4\sqrt{\varepsilon_c}y_i^s}{N_o}+\ln\frac{P(u_i)=1}{P(u_i)=0}+\max_{R_1}*\Big\{\widetilde{\alpha}_{i-1}(s')+\exp(\frac{2y_i^pc_i^p}{N_o})+(\widetilde{\beta}_{i}(s')\Big\}-\\&\max_{R_0}*\Big\{\widetilde{\alpha}_{i-1}(s')+\exp(\frac{2y_i^pc_i^p}{N_o})+(\widetilde{\beta}_{i}(s')\Big\}\\
+&=L_cy_i^s+L^{(a)}(u_i)+L^{(e)}(u_i)
+\end{split}
+\end{equation}
+
+
+$L_cy_i^s=\frac{4\sqrt{\varepsilon_c}y_i^s}{N_o}$はチャネルの$L(u_i)$値を示し、組織的なビットの影響に関するチャネルの出力を表れる。\\
+$L^{(a)}(u_i)=\ln\frac{P(u_i)=1}{P(u_i)=0}$は先天的な(a priori)$ L(u_i)$値である。\\
+$$L^{(e)}(u_i)=\max_{R_1}*\Big\{\widetilde{\alpha}_{i-1}(s')+\exp(\frac{2y_i^pc_i^p}{N_o})+(\widetilde{\beta}_{i}(s')\Big\}-\max_{R_0}*\Big\{\widetilde{\alpha}_{i-1}(s')+\exp(\frac{2y_i^pc_i^p}{N_o})+(\widetilde{\beta}_{i}(s')\Big\}$$は、外因性$L(u_i)$の値を示し、パリティビットに関する$L(u_i)$の値である。
+
+ターボ復号器は図4に描いてある。反復復号処理を説明するために、以下の仮定が必要。\paragraph{1}
+ ターボ符号器の要素符号器はRSCであり、レートは1/2である。\paragraph{2}
+
+ 情報系列$\boldsymbol{u}_i=(u_1,u_2,...,u_N)$は、一番目の要素符号器に入力し、パリティービット$\boldsymbol{c}^p=(c_1^p,c_2^p,...,c_N^p)$が出る。\paragraph{3}
+
+ 情報系列はインタリーバに入力し、${\boldsymbol{u}'}_i=({u'}_1,{u'}_2,...,{u'}_N)$が出てきて、2番目の要素符号器に入力し、${\boldsymbol{c}'}^p=({c'}_1^p,{c'}_2^p,...,{c'}_N^p)$が出る。
+
+\paragraph{4} $\boldsymbol{u}_i,\boldsymbol{c}^p,{\boldsymbol{c}'}^p$はBPSK変調し、AWGNチャネルで送信する。\\
+
+\paragraph{5} 受信された系列は、$\boldsymbol{y}_i^s,\boldsymbol{y}^p,{\boldsymbol{y}'}_i$であり、ターボ復号器の入力になる。\paragraph{}
+
+ターボ復号アルゴリズムは以下の順番で説明される。
+\paragraph{1}
+1番目の復号器の入力は$(\boldsymbol{y}^s,\boldsymbol{y}^p)$であり、1番目の要素符号器の出力と関係がある。
+\paragraph{2}
+式17を使用し、$L(u_i)$を計算する。最初の反復のとき、$u_i$は等確率を持つと仮定し、$L^{(a)}(u_i)$の値は0になる。
+\paragraph{3}
+1番目の復号器の出力で$L(u_i)$から$L_cy_i^s$を引き、$L_{12}^{(e)}(u_i)$を計算する。$L_{12}^{(e)}(u_i)$はインタリーバで並び替えて、2番目の復号器の$L^{(a)}(u_i)$として、入力する。
+\paragraph{4}
+2番目の復号器の入力は$({\boldsymbol{y}'}^s,{\boldsymbol{y}'}^p)$であり、$L_{21}^{(e)}(u_i)$を計算するのに使える。
+\paragraph{5}
+$L_{21}^{(e)}(u_i)$はインタリーバで並び替えて、次の反復の$L^{(a)}(u_i)$として、1番目の復号器に帰還する。
+\paragraph{}
+反復復号処理は、ある条件が当たるまで、あるいは、何回の反復まで続ける。最後の反復になったら、$L(u_i)$を使用し、$u_i$の値を選択をする。
+
+\subsection{システムモデル}
+シムレーションで使用するシステムモデルは、図5に描かれている。それぞれのシステムブロックに以下の条件を使用する。
+\paragraph{1. \textbf{ターボ符号器}}
+\paragraph{a}
+ターボ符号器の入力は二進(バイナリ)である。
+\paragraph{b}
+ターボ符号器の要素符号器は、拘束長$K=3$,レートは1/2のRSC符号器である。
+\paragraph{c}
+2次インタリーバ、S-ランダムインタリーバと置換多項式に基づいてインタリーバを使用する。インタリーバの長さは,$2^m$であり、mの値は$3 - {10}$である。
+\paragraph{d}
+ターボ符号器のレートは1/3である。(パンクチュアリングはしない)
+\paragraph{2. BPSK変調器}\paragraph{}
+入力ビットが$1$の場合、出力が$+1$になり、入力ビットが$0$の場合、出力が$-1$になります。
+\paragraph{3. AWGNチャネル}\paragraph{}
+ゼロ平均白色ガウス雑音を使用し、出力のSNRは$1-2$であり、ステップサイズ$0.1$である。
+\paragraph{4. BPSK復調器}\paragraph{}
+入力が$0$より大きいの場合、出力ビットが$1$になり、入力が$0$より小さいの場合、出力ビットが$0$になります。
+\paragraph{5. ターボ復号器}\paragraph{}
+2次インタリーバ、S-ランダムインタリーバと置換多項式に基づいてインタリーバを使用する。
+\section{参照}
+1. John G. Proakis, Masoud Salehi. Digital Communications Fifth Edition, McGraw-Hill\\.
+2. Silvio A. Abrantes,''From BCJR to turbo decoding: ''MAP algorithms made easier'', April 2004
+
+\end{document}

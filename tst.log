@@ -1,0 +1,166 @@
+This is XeTeX, Version 3.14159265-2.6-0.99992 (MiKTeX 2.9) (preloaded format=xelatex 2017.7.19)  19 JUL 2017 13:11
+entering extended mode
+**"C:/Users/Bohulu/Documents/LaTeX course/tst.tex"
+("C:/Users/Bohulu/Documents/LaTeX course/tst.tex"
+LaTeX2e <2015/10/01> patch level 2
+Babel <3.9n> and hyphenation patterns for 69 languages loaded.
+(jarticle.cls
+
+LaTeX Warning: You have requested document class `jarticle',
+               but the document class provides `bxjsarticle'.
+
+Document Class: bxjsarticle 2017/06/10 v1.5c BXJS document classes
+("C:\Users\Bohulu\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\calc.sty"
+Package: calc 2014/10/28 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count79
+\calc@Bcount=\count80
+\calc@Adimen=\dimen102
+\calc@Bdimen=\dimen103
+\calc@Askip=\skip41
+\calc@Bskip=\skip42
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count81
+\calc@Cskip=\skip43
+)
+("C:\Users\Bohulu\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\keyval.s
+ty"
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+("C:\Users\Bohulu\AppData\Local\Programs\MiKTeX 2.9\tex\latex\bxjscls\bxjscompa
+t.sty"
+Package: bxjscompat 2017/07/07 v1.5d BXJS document classes
+)
+("C:\Users\Bohulu\AppData\Local\Programs\MiKTeX 2.9\tex\generic\oberdiek\ifpdf.
+sty"
+Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in PDF mode is not detected.
+)
+\stockwidth=\dimen104
+\stockheight=\dimen105
+\jsc@mmm=\dimen106
+\jsZw=\dimen107
+\jsc@smallskipamount=\skip44
+\Cht=\dimen108
+\Cdp=\dimen109
+\Cwd=\dimen110
+\Cvs=\dimen111
+\Chs=\dimen112
+\fullwidth=\dimen113
+
+("C:\Users\Bohulu\AppData\Local\Programs\MiKTeX 2.9\tex\latex\geometry\geometry
+.sty"
+Package: geometry 2010/09/12 v5.6 Page Geometry
+
+("C:\Users\Bohulu\AppData\Local\Programs\MiKTeX 2.9\tex\generic\oberdiek\ifvtex
+.sty"
+Package: ifvtex 2010/03/01 v1.5 Detect VTeX and its facilities (HO)
+Package ifvtex Info: VTeX not detected.
+)
+("C:\Users\Bohulu\AppData\Local\Programs\MiKTeX 2.9\tex\generic\ifxetex\ifxetex
+.sty"
+Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
+)
+\Gm@cnth=\count82
+\Gm@cntv=\count83
+\c@Gm@tempcnt=\count84
+\Gm@bindingoffset=\dimen114
+\Gm@wd@mp=\dimen115
+\Gm@odd@mp=\dimen116
+\Gm@even@mp=\dimen117
+\Gm@layoutwidth=\dimen118
+\Gm@layoutheight=\dimen119
+\Gm@layouthoffset=\dimen120
+\Gm@layoutvoffset=\dimen121
+\Gm@dimlist=\toks15
+
+("C:\Users\Bohulu\AppData\Local\Programs\MiKTeX 2.9\tex\xelatex\xetexconfig\geo
+metry.cfg"))
+\c@part=\count85
+\c@section=\count86
+\c@subsection=\count87
+\c@subsubsection=\count88
+\c@paragraph=\count89
+\c@subparagraph=\count90
+\@abstractbox=\box26
+\c@figure=\count91
+\c@table=\count92
+\abovecaptionskip=\skip45
+\belowcaptionskip=\skip46
+\jsc@tocl@width=\dimen122
+\@lnumwidth=\dimen123
+\bibindent=\dimen124
+\heisei=\count93
+
+("C:\Users\Bohulu\AppData\Local\Programs\MiKTeX 2.9\tex\latex\bxjscls\bxjsja-mi
+nimal.def"
+File: bxjsja-minimal.def 2017/07/07 v1.5d BXJS document classes
+)) (tst.aux)
+\openout1 = `tst.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 2.
+LaTeX Font Info:    ... okay on input line 2.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 2.
+LaTeX Font Info:    ... okay on input line 2.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 2.
+LaTeX Font Info:    ... okay on input line 2.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 2.
+LaTeX Font Info:    ... okay on input line 2.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 2.
+LaTeX Font Info:    ... okay on input line 2.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 2.
+LaTeX Font Info:    ... okay on input line 2.
+
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* hratio: 1:1
+* vratio: 1:1
+* modes: includehead includefoot truedimen 
+* h-part:(L,W,R)=(71.70259pt, 454.10269pt, 71.70259pt)
+* v-part:(T,H,B)=(71.8282pt, 701.39043pt, 71.82822pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=453.10944pt
+* \textheight=634.0pt
+* \oddsidemargin=-0.07077pt
+* \evensidemargin=-0.07077pt
+* \topmargin=-5.2045pt
+* \headheight=20.0pt
+* \headsep=18.45792pt
+* \topskip=10.0pt
+* \footskip=28.45792pt
+* \marginparwidth=18.49426pt
+* \marginparsep=18.49426pt
+* \columnsep=18.49426pt
+* \skip\footins=16.0pt plus 5.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+Class bxjsarticle Info: '\jsSimpleJaSetup' is applied.
+Missing character: There is no あ in font cmr10!
+Missing character: There is no あ in font cmr10!
+Missing character: There is no あ in font cmr10!
+[1
+
+] (tst.aux) ) 
+Here is how much of TeX's memory you used:
+ 1297 strings out of 428721
+ 17853 string characters out of 3160262
+ 73278 words of memory out of 3000000
+ 4717 multiletter control sequences out of 15000+200000
+ 3640 words of font info for 14 fonts, out of 3000000 for 9000
+ 1101 hyphenation exceptions out of 8191
+ 26i,4n,20p,196b,111s stack positions out of 5000i,500n,10000p,200000b,50000s
+
+Output written on tst.pdf (1 page).

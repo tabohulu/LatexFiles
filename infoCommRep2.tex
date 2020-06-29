@@ -1,0 +1,48 @@
+\documentclass[24 pts]{article}
+\usepackage{xeCJK}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+\usepackage{relsize}
+
+\newcommand{\me}{\mathrm{e}}
+\setCJKmainfont[BoldFont= Yu Mincho Demibold]{MS Mincho}
+\title{情報伝送基礎 レポート}
+\date{07-26-2016}
+\author{Kwame Ackah Bohulu　1631133}
+\begin{document}
+\maketitle
+\section{Zero-Forcing equalizer for ISI}
+Even the Viterbi algorithm is optimal, it's complexity increaces exponentially with the length of the channel time dispersion. This makes it expensive to implement in many channels of practical interests. in such situations subobtimal channel equalizers are used to compensate for ISI. A linear transversal filter is commonly used. It has a cpmputational complexity that is a linear function of the channel dispersion length.
+The estimate of the kth symbol may be expressed by the equation below
+\begin{equation}
+\hat{I_k}= \sum_{j=-K}^K c_jv_{k-j}
+\end{equation}
+where $\{ c_j\}$ are the $2K+1$ complex-valued tap weight coefficients of the filter. One of the criterias used to optimize the equalizer is known as peak distortion criterion.
+\paragraph{Peak Distortion Criteria}
+peak distortion is defined as the worst-case intersymbol interference and the minimization of this performance index is the peak distortion criteria. Assuming the cascading of a discrete time linear filter and an equalizer with infinite number of taps having impulse response $\{ f_n\}$ and $\{ c_n\}$ repectively, we may represent it as 
+\begin{equation}
+q_n= \sum_{-\infty}^\infty c_jf_{n-j}
+\end{equation}
+the output at the kth sampling instant is
+\begin{equation}
+\hat{I_k}= q_0I_k+\sum_{j\neq K}I_nq_{k-n}+ \sum_{j=-\infty}^\infty c_j\eta_{k-j}
+\end{equation}
+where the second term represents the ISI. When $q_n =0$ for all n except $n=0$ , it is possible to eliminate the ISI. To accomplish this goal we use a filter represented by the equation below.
+\begin{equation}
+C(z)=\frac{1}{F(z)}
+\end{equation}
+This is known as a zero-forcing filter.The performance of the infinite-tap equalizer that completely eliminates the ISI can be expressed in terms of SNR given below
+\begin{equation}
+\gamma_\infty=\left [\frac{T^2}{2\pi}\int_{\frac{-\pi}{T}}^{\frac{\pi}{T}} \frac{d\omega}{\sum_{n=-\infty}^{\infty}|H(\omega + \frac{2\pi n}{T})|^2}\right]
+\end{equation}
+It can be observed that the performance of the equalizer os poor when the integrand becomes infinite and SNR goes to zero. This occurs because the equalizer ends up enhancing additive noise when trying to eliminate ISI. on the other hand an ideal channel coupled with an appropriate signal design will result in zero ISI.
+
+
+
+
+
+
+\end{document}

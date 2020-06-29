@@ -1,0 +1,120 @@
+\documentclass[11pt, oneside, dvipdfmx]{book}
+\newcommand{\folder}{/usr/local/share/texmf}
+\input{\folder/hfiles/ebook}
+%\setCJKmainfont{SimSun}
+\title{Bit Error Probability for Turbo Codes}
+\author{Kwame Ackah Bohulu}
+\date{\today}
+\begin{document}
+
+\maketitle
+\chapter{Detectors and Error Probability}
+\section{Maximum Likelihood Detection (MLD)}
+Assume that there exists an input space $\bbR^M$ with $M=2^k $ elements. From this input space,a $k$-bit binary information sequence  $\bx_m =(x_{m,0},x_{m,1},...x_{m,k-1})$ is mapped to  an element $\bc_m =(c_{m,0,}c_{m,1},...,c_{m,n-1} )$ in the output space $\bbR^N$ with $N=2^n$ elements. The $M$ elements in $\bbR^M$ form a code and $\cC \subset \bbR^n$ The BPSK modulated codeword $\by_m=(y_{m,0},y_{m,1},...,y_{m,n-1})$ is transmitted over the AWGN channel and is received at the receiver as $\br =(r_{0},r_{1},r_{n-1})$
+
+The task of the receiver is to obtain an estimate of $\bx_,~\hat{\bx_m}$ from $\br$. The probability of a correct decision given $\br$ $P[\text{correct decision} | \br] = P[\hat{\bx_m}~\text{sent} | \br]$ and the probability of a correct decision 
+$P[\text{correct decision} ] = \int P[\hat{\bx_m}~\text{sent} | \br]p(\br) d\br$
+
+For optimal accuracy the receiver must decide in favor of the $\bx_m$ that maximizes $P[\bx_m|\br]$ upon observing $\br$
+
+\begin{equation}
+\begin{split}
+\hat{\bx}_m& = \argmax_{1 \leq m \leq m} P[\bx_m|\br]\\
+& \argmax_{1 \leq m \leq M} P[\bc_m|\br]
+\end{split}
+\end{equation}
+
+This decision rule is known as \textit{maximum a posteriori (MAP) probability rule} and it may be simplified to
+
+\begin{equation}
+\hat{\bx}_m=\argmax_{1 \leq m \leq M}\frac{ P_{x_m}p(\br|\bc_m)}{p(\br)} =\argmax_{1 \leq m \leq N}P_{x_m}p(\br|\bc_m)
+\end{equation}
+Since $p(\br_m)$ is independent of $\bx_m$. In the case where $P_{x_m}=1/M$
+
+
+\begin{equation}
+\hat{\bx}_m=\argmax_{1 \leq m \leq M}p(\br|\bc_m)
+\label{3}
+\end{equation}
+
+(\ref{3}) is known as the \textit{Maximum Likelihood (ML) rule}. It is worth noting that what the receiver is essentially doing is dividing an output space $\bbR^N$ into $M$ decision spaces $D_1,D_2,...,D_M$ and if $\br \in D_m,~\hat{\bx_m} = \bx_m$ 
+
+For the MAP detector $D_m=\{r \in \bbR^N : P[\bx_m|\br] > P[\bx_m'|\br],~\forall~ 1 \leq m \leq M,~m' \neq M \}$
+
+\section{Error Probability}
+From the above discussion, we realize that an error occurs if $r \notin D_m$ when $\bc_m$ is sent. The symbol error probability of a receiver is given by
+\begin{equation}
+P_e = \sum_{m=1}^{M} P_{\bx_m} P[\br \in D_m | \bc_m ~\text{sent}] = \sum_{m=1}^{M} P_{\bx_m} P_{e|\bc_m}
+\end{equation}
+Where $$P_{e|m} = \sum_{1 \leq m' \leq M,~m'\neq m}^{} \int_{D_{m'}} p(\br|\bc_{m})d\br$$ is the error probability when the message $\bx_m$ is sent and 
+
+\begin{equation}
+P_e = \sum_{m=1}^{M} P_{\bx_m} \sum_{1 \leq m' \leq M,~m'\neq m}^{} \int_{D_{m'}} p(\br|\bc_{m})d\br
+\label{5}
+\end{equation}
+(\ref{5}) gives the \textit{symbol error probability}
+
+We define $D_{mm'} =\{ p(\br|\bc_m') > p(\br|\bc_m) \}$  and we see that $D_{m'} \leq D_{mm'}$
+
+Again, we define the \textit{pairwise error probability} $P_{m \rightarrow m'}$ as 
+
+\begin{equation}
+P_{m \rightarrow m'}= \int_{D_{mm'}} p(\br|\bc_{m})d\br
+\label{6}
+\end{equation}
+
+fixing (\ref{6}) into (\ref{5}) we get 
+
+\begin{equation}
+\begin{split}
+P_e \leq & \sum_{m=1}^{M} P_{\bx_m} \sum_{1 \leq m' \leq M,~m'\neq m}^{} \int_{D_{mm'}} p(\br|\bc_{m})d\br\\
+& \leq \sum_{m=1}^{M} P_{\bx_m} \sum_{1 \leq m' \leq M,~m'\neq m}^{}P_{m \rightarrow m'}\\
+& \leq \frac{1}{M}\sum_{m=1}^{M}~  \sum_{1 \leq m' \leq M,~m'\neq m}^{}P_{m \rightarrow m'}\\
+\end{split}
+\label{7}
+\end{equation}
+where $P_{x_m}=1/M$ for the case where the messages are equiprobable
+
+
+\section{Symbol Error Probability for Linear Block Codes}
+Without loss of generality, we assume that the all zero codeword $\mathbf{0}$
+From the above discussion, we realize that an error occurs if the receiver decides upon $\bc_m \neq \mathbf{0} $ as the codeword that was transmitted and this event is defined by the \textit{pairwise error probability} $P_{\mathbf{0} \rightarrow c_m}$. The symbol error probability of the linear block code is then 
+\begin{equation}
+P_e = \sum_{c_m \in \cC,~c_{m} \neq \mathbf{0}}^{} P_{\mathbf{0} \rightarrow c_m}
+\end{equation}
+Since codewords with the same weight have the same $P_{\mathbf{0} \rightarrow c_m}$ we have 
+\begin{equation}
+P_e = \sum_{i=d_{\text{min}}}^{n} A_iP_{2}(i)
+\end{equation}
+Where $A_i$ is the number of codewords if a given weight $i$ and $P_2(i)$ is the PEP of codewords with weight $i$ 
+
+\subsection{Upper bound on Pairwise Error Probability (PEP) for AWGN channel}
+We attempt to find the PEP for the case of the AWGN channel  
+\begin{equation}
+P_{m \rightarrow m'}
+\end{equation}
+
+\section{Bit Error Probability for Linear Block codes}
+Let $N$ be the block length of a code with $2^N$ codewords. 
+From the previous section, we saw that for AWGN channels 
+\begin{equation}
+ P_{\mathbf{0} \rightarrow c_m} = Q(\sqrt{\frac{d^2_E(\bc_m)}{2N_o}})
+ \label{pepAWGN}
+\end{equation}
+For BPSK modulation $d^2_E(c_m) = 4E_bR_c\text{w}(c_m)$ and we have 
+\begin{equation}
+ P_{\mathbf{0} \rightarrow c_m} = Q\Bigg(\sqrt{\frac{2E_bR_c\text{w}(\bc_m)}{N_o}}\Bigg)
+ \label{pepBPSK}
+\end{equation}
+the corresponding bit error probability when $\bc_m$ is transmitted is given by 
+\begin{equation}
+P_b(\mathbf{0}\rightarrow c_m) =\frac{w(\bx_m)}{N} Q\Bigg(\sqrt{\frac{2E_bR_c\text{w}(\bc_m)}{N_o}}\Bigg)
+\end{equation}
+
+Finally using the union bound, the average bit error probability is bounded by
+
+\begin{equation}
+P_b = \frac{1}{N} \sum_{m=1}^{2^{N}-1} w(\bx_m)Q\Bigg(\sqrt{\frac{2E_bR_c\text{w}(\bc_m)}{N_o}}\Bigg)
+\end{equation}
+
+\end{document}

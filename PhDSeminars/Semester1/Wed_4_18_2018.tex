@@ -1,0 +1,243 @@
+\documentclass[fontsize=12pt]{article}
+%\usepackage{xeCJK}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage[dvipdfmx]{graphicx}
+%\setCJKmainfont{SimSun}
+\title{Linear Block Codes } 
+\author{Kwame Ackah Bohulu}
+\date{\today}
+\begin{document}
+\maketitle
+
+\newpage
+\section{Linear Block Codes}
+Focus is on the study of channel coding schemes, especially block codes which can be constructed using the idea of groups, rings and fields. 
+
+\subsection{Basic Definitions}
+In block codes we choose an \textbf{information sequence} $m$ of length $k$ which is a member of a set of possible information sequences of size $M=2^k$. This information sequence is then mapped to a binary sequence (\textbf{codeword})of length $n$ and transmitted over the channel using a suitable modulation scheme. Block codes are memoryless since the codeword depends only on the current information sequence $m$ . 
+
+The \textbf{code rate} $R_c$ of the block code is given by 
+\begin{equation}
+R_c=\frac{k}{n}
+\end{equation}
+and represents the number of information bits sent in the transmission of the codeword over the channel.
+
+If the symbol duration is given by $T_s$ then the transmission time for $k$ bits is given by $T=LT_s$ and the transmission rate is given by
+ \begin{equation}
+ R=\frac{k}{LT_s}
+ \label{eq2}
+ \end{equation}
+
+We set $L=\frac{n}{\log_2 M}$
+Where $L$ is an integer representing the number of M-ary symbols transmitted per codeword and $M$ is the constellation size of the modulation scheme used. (\ref{eq2}) becomes
+
+ \begin{equation}
+ R=R_c\frac{\log_2M}{T_s}
+ \label{eq3}
+ \end{equation}
+ 
+ and the minimum required transmission bandwidth is given by 
+ \begin{equation}
+ W=\frac{N}{T_s} = \frac{RN}{2R_c\log_2M}
+  \label{eq4}
+ \end{equation}
+ 
+ From (\ref{eq3}) and (\ref{eq4}) we can see that compared to systems without channel coding that use the same modulation scheme there is a decrease in channel rate and and increase in bandwidth respectively.
+ 
+ \subsubsection{Structure of Finite Fields}
+ 
+ We begin by defining an Abelian group is a set with a binary operation that has the basic properties of addition. It is denoted by $\{G,+,0\}$ and the set $G$ and $+$ constitute and Abelian group if the operation $+$ is commutative, associative and has an identity element and the set $G$ has an inverse element.
+ \newpage
+ A finite field or Galois field is a finite set $F$ with 2 binary operations $+$ and $\cdot$(representing mutliplication) and is denoted by $\{F, +,\cdot\}$. $F$ is a finite field if it satisfies the properties that 
+ \begin{itemize}
+ \item $\{F,+,0\}$ is an Abelian group
+ \item $\{F - \{0\}, \cdot, 1 \}$ is an Abellian group
+ \item Multiplication is distributive with respect to addition, i.e. $a\cdot(b+c) = (b+c)\cdot a = a\cdot b + a\cdot c$
+ \end{itemize}
+ The set $F=\{0,1\}$ with modulo-2 addition and multiplication is an example of a Galois field and is known as the binary field and is denoted by $GF(2)$
+ 
+ \paragraph{Characteristic of a Field and a Ground Field}
+ A fundamental theory of algebra states that that a Gaolois field with $q$ elements ($GF(q)$) exist if and only if $q=p^m$, where $p$ is a prime and $m$ is a positive integer. The Galois field $GF(q)$ is known as the \textbf{extension field} of the \textbf{ground field} $GF(p)$ and $p$ is called the \textbf{characteristic} of $GF(p^m)$
+ 
+ \paragraph{Polynomial over Finite Fields}
+ 
+ A polynomial of degree $m$ over $GF(p)$ is a polynomial 
+ \begin{equation}
+ g(X) = g_0 + g_1X + g_2X^2 + \cdot\cdot\cdot + g_mX^m
+ \end{equation}
+ It should be noted that $g_i, 0\leq i \leq m,$ are all elements of $GF(p)$ , $g_m\neq 0$ and all addition and multiplication of coefficients are done modulo-$p$. If $g_m=1$, the polynomial is \textbf{monic} and if the polynomial cannot be written as a product of $2$ polynomial of lower degree over the same Galois Field the polynomial is irreducible. A prime polynomial is both irreducible and and monic. A polynomial of degree $m$ has $m$ roots but a which in general are in some extension field of $GF(p)$
+ 
+ \paragraph{Structure of Extension Fields}
+ It should be noted that $GF(p^m)$ contains $p^m$ polynomials and of degree less than $m$, with two special polynomials $g(X)=0$ and $g(X)=1$. Assuming $g(X)$ is a primitive polynomial and  and considering the set of polynomials of degree less that $m$ over $GF(p)$, we can show that the set of these polynomials with addition and multiplication operations form a Galois field with $p^m$ elements.
+ \newpage
+ \paragraph{Example}construction of $GF(2^2)$ from $GF(2)$ with $g(X)=X^2 + X + 1$.\\ 
+ 
+ \begin{table}[h]
+
+\centering
+\begin{tabular}{ |c||c|c|c|c| } 
+ \hline
+ 
+ + &0 & 1 & $X$ & $X+1$\\
+ \hline 
+  \hline 
+ 0 &0 & 1 & X & $X+1$\\ 
+  \hline 
+ 1 &1 & 0 & $X+1$ & $X$ \\ 
+  \hline 
+ X &$X$& $X+1$ & 0 & $1$ \\ 
+  \hline 
+ $X+1$ &$X+1$ & $X$ & 1 & $0$ \\ 
+ \hline
+ 
+\end{tabular}
+\caption{Addition for $GF(4)$}
+
+\centering
+\begin{tabular}{ |c||c|c|c|c| } 
+ \hline
+ 
+ $\cdot$ &0 & 1 & $X$ & $X+1$\\
+ \hline 
+  \hline 
+ 0 &0 & 0 & 0 & 0\\ 
+  \hline 
+ 1 &0 & 1 & $X$ & $X+1$ \\ 
+  \hline 
+ X &0& $X$ & X+1 & $1$ \\ 
+  \hline 
+ $X+1$ & 0 & $X+1$ & 1 & $X$ \\ 
+ \hline
+\end{tabular}
+\caption{Multiplication for $GF(4)$}
+
+\end{table}
+ The elements of $GF(4)$ may be written as powers of $X$, i.e.  $X=X^1$, $X+1=X^2$, $1=X^3$. They can also be written in binary notation ,  i.e.  $X=10$, $X+1=11$, $1=01$.
+ 
+ For any nonzero element $\beta \in GF(q)$ the smallest value of $i$ such that $\beta^i=1$ is called the order of $\beta$.
+ A nonzero element of $GF(q)$ is called a primitive element if its order is $q-1$.
+ If $GF(p^m)$ generated by $g(X)$ is such that in this field $X$ is a primitive element, then $g(X)$ is a primitive polynomial. A second definition of a primitive polynomial is that if $g(X)$ does not divide $X^i+1$ for any $i<p^m-1$
+ 
+ Let $\beta$ be a non zero element of $GF(2^m)$. Then the minimal polynomial of $\beta$, denoted by $\phi_{\beta}$ is a monic polynomial of lowest degree with coefficients in $GF(2)$ such that $\phi_{\beta}(\beta)=0$
+ 
+ 
+ To find the minimal polynomial of a field element we note that since $\beta \in GF(2^m)$ and $\beta \neq 0$, $\beta^{{2^m}-1}=1$. However, it is possible that for some integer $l <  m$ we have $\beta^{{2^l}-1}=1$. 
+ 
+ It can be shown that for any $\beta \in GF(2^m)$ the minimal polynomial $\phi_{\beta}$ is given by 
+ 
+ \begin{equation}
+ \phi_{\beta} = \prod_{i=0}^{l-1} \Big(X+\beta^{{2^i}}\Big)
+ \label{monpol}
+ \end{equation}
+ 
+ Elements of the form $\beta^{{2^i}}, 1 < i \leq l-1$, are called conjugates of $\beta$.
+ All elements of the finite field that are conjugates of each  other are said to belong to the same conjugacy class. 
+  \newpage
+  We use the following steps to find the minimal polynomial of $\beta \in GF(q)$
+
+ \begin{itemize}
+ \item find $l$ such that $\beta^{{2^l}}=\beta$
+ 
+ \item find the conjugacy class of $\beta$
+ 
+ \item find  $\phi_{\beta}(X)$ using \ref{monpol}
+ \end{itemize}
+ 
+ This is demonstrated by going through Example 7.1-5
+ 
+ We conclude our discussion by stating that all nonzero elements of $GF(p^m)$ are roots of $X^{{p^m}-1}-1=0$ This means that  $X^{{2^m}-1}-1$ can be factorized over $GF(2)$ as the product of all prime polynomials over GF(2) whose degree divides $m$
+ 
+ \subsection{General Properties of Linear Block Codes}
+ A $q-$ary block code $C$ consists of a set of M vectors of length n denoted by $\mathbf{c}_m=(c_{m1},c_{m2},...,c_{mn}), 1 \leq m \leq M$ called codewords which are selected from an alphabet of q symbols. Binary codes are selected from an alphabet with $1$ and $1$ as the only elements.
+ 
+ There are $2^n$ possible codewords in a binary block code of length $n$ from which we may select $M=2^k$ codewords ($n>k$) to form a code. The resulting block code is reffered to as an $(n,k)$ codeword with rate $R_c=k/n$. Another important parameter of a codeword is it's weight, which is the number of nonzero elements present in the codeword and the set of all weights in a code is known as the weight distribution of the code. Constant-weight codes have codewords of the same weight.
+ 
+A linear block codes $C$, which is a subset of block codes which have been widely studied to to their relatively easy implementation. Binary linear block codes have the   property such that the addition of any of the $2^k$ codewords produces another codeword.
+
+\subsubsection{Generator and Parity Check Matrices}
+ The generator matrix $\mathbf{G}$ is a $(k \times n)$ which shows the mapping from the set of $M=2^k$ information sequences of length k to the corresponding $2^k$ codewords of length n and 
+ \begin{equation}
+ \mathbf{c}_m =\mathbf{u}_m\mathbf{G}, \\\\\\\\\\\\ 1 \leq m \leq 2^k
+ \end{equation}
+ 
+ where $\mathbf{u}_m$ is the binary vector of length $k$ denoting theinformation sequence. $c_m$ may also be witten as 
+  \begin{equation}
+ \mathbf{c}_m =\sum_{i=1}^{k}{u}_{mi}\mathbf{g}_i, \\\\\\\\\\\\ 1 \leq i \leq k
+ \end{equation}
+ where $\mathbf{g}_i$ denotes the $i$th row of $\mathbf{G}$
+ 
+ if the $\mathbf{G}$ is in the form $\mathbf{G}=[\mathbf{I}_k | \mathbf{P}]$, the resulting linear block code is called systematic. $\mathbf{I}_k$ is a $k \times k$ identity matrix and  $\mathbf{P}$ is a $k \times (n-k)$ matrix. In a systematic code, the first $k$ element are the same as the information sequence and the remaining $n - k$ elements called the parity check bits provide redundancy for protection against errors.
+ The dual code of $C$ is an $(n, n-k)$ dimensional code and has an $(n-k \times n)$  generator matrix whose rows are otrhogonal to $\mathbf{G}$ and is known as the parity check matrix $\mathbf{H}$ of the original code. It is worth noting that 
+ $$ \mathbf{c}\mathbf{H}^t=\mathbf{0}$$
+ 
+ In the special case of systematic binary codes, if $\mathbf{G}$ is in systematic form , we can write 
+ 
+ \begin{equation}
+ \mathbf{H}=[\mathbf{P}^t | \mathbf{I_{n-k}}]
+ \end{equation}
+ 
+ for further explanation we consider Example 7.2-1 . 
+ 
+ \subsubsection{Weight and Distance for Linear Block Codes}
+ The weight of a codeword $w(\mathbf{c})$ is the number of nonzero components of that codeword. The Hamming distance between two codewords $\mathbf{c}_1,\mathbf{c}_2$ denoted by $d(\mathbf{c}_1,\mathbf{c}_2)$ is the number of components at which $\mathbf{c}_1$ and $\mathbf{c}_2$ differ. It can easily be seen that for linear block codes, $d(\mathbf{c}_1,\mathbf{c}_2) = w(\mathbf{c}_1 + \mathbf{c}_2)$
+ 
+ The minimum distance of a code is the minimum of all possible of all possible distances between distince codewords of the code, ie
+ \begin{equation}
+ d_{min} = \min_{\mathbf{c}_1,\mathbf{c}_2\in C,\mathbf{c}_1\neq \mathbf{c}_2}  d(\mathbf{c}_1,\mathbf{c}_2)
+ \end{equation}
+ The minimum weight of a code is the minimum of all the weights of all nonzero codewords, and for the case of linear block codes this is equal to the minimum distance.
+ 
+ \begin{equation}
+ w_{min} = \min_{\mathbf{c} \in C, c\neq 0} w(c)
+ \end{equation}
+ It should be noted that in $\mathbf{H}$, $d_{min}$ represents the minimum number of columns that can be linearly dependent.
+ 
+ \section{Cyclic Codes}
+ Cyclic codes are a subset of linear block codes which satisfy the cyclic shift property : if $\mathbf{c} =(c_{n-1},c_{n-2},...,c_1,c_0)$ then any cyclic shift of the elements in 
+ $\mathbf{c}$ is also a codeword.
+ 
+ For convenience $\mathbf{c}$ is usually represented by a polynomial $c(X)$ of degree 
+ at most $n-1$
+ 
+ \begin{equation}
+ c(X) =c_{n-1}X^{n-1} + c_{n-2}X^{n-1}+...+c_1X + c_0
+ \end{equation}
+ 
+We can generate a cyclic code by using a generator polynomial $g(X)$ of degree $n-k$. This generator polynomial is a factor of $X^n + 1$ and has the general form 
+
+ \begin{equation}
+ g(X) =X^{n-k} + g_{n-k-1}X^{n-k-1}+...+g_1X + 1
+ \end{equation}
+ 
+ The message polynomial $u(X)$ is defined by
+  \begin{equation}
+ u(X) =u_{k-1}X^{k-1} + u_{k-2}X^{k-2}+...+u_1X + u_0
+ \end{equation}
+ 
+ For further explanation do Example 7.9-1
+ 
+ In general, the polynomial $X^n + 1$ may be factored as 
+ \begin{equation}
+X^n + 1 = g(X)h(X)
+ \end{equation}
+ where $h(X)$ denotes the parity check polynomial that has degree $k$ and this can be used to generate the dual code. To do this, we define the reciprocal polynomial of $h(X)$ as 
+ 
+ \begin{equation}
+X^kh(X-1) = 1 + h_{k-1}X + h{k-2}X^2 +\cdot\cdot\cdot + h_1X^{k-1} + X^k
+ \end{equation}
+ $X^kh(X-1)$ is the generator polynomial of an $(n,n-k)$ cyclic code.
+  do Example 7.9-3
+  
+  We show how the generator matrix  can be generated from the generator polynomial $g(X)$ To do this we use a set of $k$ linearly independent codewords which corresponds to the set of linearly independent polynomials $X^{k-1}g(X), x^{k-2}g(X), Xg(X), g(X)$
+  
+  Explain with example 7.9-4
+  
+  \subsection{Systematic Cyclic Codes}
+  We may generate a systematic cyclic code by either using the generator polynomial or directly from the message polynomial. Using the generator polynomial we observe that the $l$th row of $\mathbf{G}$ corresponds to a polynomial of the form $X^{n-l} + R_l(X), l=1,2,...,k$ where $R_l(X)$ is a polynomial of degree less than $n-k$. This can be obtained by dividing $X^{n-1} $ by $g(X)$ and the desired polynomial to generate the systematic form of $\mathbf{G}$ is $X^{n-l} + R_l(X)$.  \\
+  Do Example 7.9-5\\
+  To obtain the systematic code directly from the message polynomial $u(X)$ we first multiply $u(X)$ by $X^{n-k}$. We then divide the product by $g(X)$ to obtain the remainder $r(X)$. Finally, we add $r(X)$ to $X^{n-k}u(X)$
+ 
+\end{document}

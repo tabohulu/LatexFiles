@@ -1,0 +1,55 @@
+\documentclass[24 pts]{article}
+\usepackage{xeCJK}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{relsize}
+\newcommand{\me}{\mathrm{e}}
+\setCJKmainfont[BoldFont= Yu Mincho Demibold]{MS Mincho}
+\title{情報伝送基礎レポート6}
+\date{}
+\author{クワメ・アカー・ボフル　1631133}
+\begin{document}
+\maketitle
+\newpage
+\textbf{定理1:}
+ある信号$x(t)$が 
+\[
+x(nT)=
+\begin{cases}
+1&,n=0\\
+0,&n\neq0
+ \end{cases}
+\]
+を満たされる重要十分条件は、その信号のFourier変換
+ $X(f)$が \begin{equation}\mathlarger{\mathlarger{\sum}}_{m=-\infty}^\infty X(f+m/T)=T\end{equation}を満たされることである。
+\begin{proof}
+一般的に、$x(t)$は$X(f)$の逆Fourier変換である。
+$$x(t)=\int_{-\infty}^{\infty} X(f)\me^{j2\pi ft} df$$
+$t=nT$のとき、
+\begin{equation}x(nT)=\int_{-\infty}^{\infty} X(f)\me^{j2\pi fnT} df\end{equation}
+上記の式を1/Tに対して有限範囲に書き換えるといかのようになる。
+\begin{equation}
+\begin{split}
+x(nT)=&\sum_{-\infty}^{\infty} \int_{(2m-1)/2T}^{(2m+1)/2T}  X(f)\me^{j2\pi fnT} df\\
+= &\int_{-1/2T}^{1/2T} \left [\, \sum_{-\infty}^{\infty} X(f+m/T)\right]\, \me^{j2\pi fnT} df, B(f)= \sum_{-\infty}^{\infty} X(f+m/T)\\
+ =&\int_{-1/2T}^{1/2T} B(f)\me^{j2\pi fnT} df
+\end{split}
+\end{equation}
+$B(f)$は$1/T$に対して周期関数なので、フーリエ級数係数$\{ b_n\}$に従って展開と
+\begin{equation} B(f) =\sum_{-\infty}^{\infty} b_n\me^{j2\pi nfT}
+, b_n =T\int_{-1/2T}^{1/2T} B(f)  \me^{-j2\pi nfT}df \end{equation}
+式(4)で定義した$b_n$と式(3)を比べると
+$$ b_n=Tx(-nT)$$
+ゆえに、しき(1)が満たされる必要十分条件は
+\[
+x(nT)=
+\begin{cases}
+T&,n=0\\
+0,&n\neq0
+ \end{cases}
+\]
+式(4)で定義した$B(f)$に入れると
+$$ B(f)= \sum_{-\infty}^{\infty} X(f+m/T)=T$$
+\end{proof}
+\end{document}

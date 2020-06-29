@@ -1,0 +1,580 @@
+\documentclass[fontsize=12pt]{article}
+%\usepackage{xeCJK}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage[dvipdfmx]{graphicx}
+%\setCJKmainfont{SimSun}
+\title{Reed-Solomon Codes } 
+\author{Kwame Ackah Bohulu}
+\date{\today}
+\begin{document}
+\maketitle
+
+\newpage
+\section{Introduction}
+Reed-Solomon(R-S) codes are non-binary cyclic codes which were first introduced by Reed and Solomon in 1960. 
+
+The binary sequences are grouped into sequences of length equal to $m$ . 
+To design a $t$ symbol-error correcting $(n,k)$ R-S code the following conditions need to be met.
+
+\begin{equation}
+n= 2^m -1 , k=2^m -1 -2t
+\label{one}
+\end{equation}
+where $n-k=2t$
+They are used in communication systems and especially in data storage systems and are very efffective in correcting random symbol errors and random burst errors. 
+
+
+\section{Finite(Galois) Fields}
+for any prime number $p$ there exists a finite field that contains $p$ elements. This field
+is denoted by $GF(p)$. It is possible to extend $GF(p)$ to a field with $p^m$ fields denoted by $GF(p^m)$, where m is a positive integer. The symbols used in the construction of R-S codes are taken from $GF(p^m)$ which is also called the extension field of $GF(p)$. In our study of R-S codes we focus on the extension field of $GF(2)$ denoted by $GF(2^m)$. 
+
+Besides $0$ and $1$, we can represent all other non-zero elements by powers of $\alpha$, where $\alpha$ is a symbol introduced for convinience sake. Therefore to create a field $F$ with infinite elements, all we need to do is to begin with the elements $\{ 0,1,\alpha \}$ and continue to multiply the last element by $\alpha$. However to create a truly finite field, we need to impose a condition on $F$ so that it contains only $2^m$ elements and is closed under multiplication. This condition is given by the irreducible polynomial 
+\begin{equation}
+\alpha^{(2^m-1)} = 1 =\alpha^0
+\label{two}
+\end{equation}
+Using (\ref{two}) , it is possible to reduce any field element element with power greater $2^m-1$ to one with a power less than $2^m -1$ as shown in (\ref{two})
+
+\begin{equation}
+\alpha^{(2^m+n)} = \alpha^{(2^m-1)}\alpha^{n+1} =\alpha^{n+1}
+\label{three}
+\end{equation}
+From the above discussion, we can conclude that elements of $GF(2^m)$ are given by
+
+\begin{equation}
+	GF(2^m) = \{ 0,\alpha ^0,\alpha^1,...,\alpha ^{2^m-2} \}
+	\label{four}
+\end{equation}
+
+To define the finite fields of $GF(2^m)$ and also the R-S codes, primitive polynomials are used. For a polynomial $f(X)$ to be a primitive polynomial it must be irrreducible(cannot be factored to yield lower order polynomials) and the smallest positive integer $n$ for which $f(X)$ divides $X^{n+1}$ is $n=2^m-1$
+
+For the case of $GF(2^3)$, the various representations of the elements of in that field as well as the addition and multiplication tables are shown below. The primitive polynomial used is $f(X)=1+X+X^3$. For addition, we simply add the binary representation and write down its equivalent power notation. For multiplication, we just add the the powers modulo $2^m-1$
+
+\begin{table}[h]
+\caption{Power, Polynomial and Binary representation for elements in $GF(8)$ }
+\centering
+\begin{tabular}{ |c||c||c| } 
+ \hline
+ 
+ Power &Polynomial & Binary \\
+ \hline 
+  \hline 
+  $\alpha^0 = \alpha^7 =1$ &$\alpha^0$ & $0 0 1$ \\
+ \hline 
+   $\alpha^1$ &$\alpha^1$ & $0 1 0$\\ 
+  \hline 
+   $\alpha^2$ &$\alpha^2$ & $1 0 0$ \\ 
+  \hline 
+   $\alpha^3$ &$\alpha^1 + 1$ & $0 1 1$\\ 
+  \hline 
+  $\alpha^4$ &$\alpha^2 + \alpha^1$ & $1 1 0$ \\ 
+ \hline 
+   $\alpha^5$ &$\alpha^2 + \alpha^1 +1 $ & $1 1 1$\\ 
+  \hline 
+   $\alpha^6$ &$\alpha^2 + 1$ & $1 0 1$ \\ 
+  \hline 
+  
+\end{tabular}
+
+
+\end{table}
+
+
+
+
+
+\begin{table}[h]
+\caption{Addition table for $GF(8)$ with $f(X)=1+X+X^3$}
+\centering
+\begin{tabular}{ |c||c|c|c|c|c|c|c| } 
+ \hline
+ 
+ $\cdot$ &$\alpha^0$ & $\alpha^1$ & $\alpha^2$ & $\alpha^3$ & $\alpha^4$ & $\alpha^5$ & $\alpha^6$\\
+ \hline 
+  \hline 
+  $\alpha^0$ &$0$ & $\alpha^3$ & $\alpha^6$ & $\alpha^1$ & $\alpha^5$ & $\alpha^4$ & $\alpha^2$\\ 
+  \hline 
+  $\alpha^1$ &$\alpha^3$ & $0$ & $\alpha^4$ & $\alpha^0$ & $\alpha^2$ & $\alpha^6$ & $\alpha^5$ \\ 
+  \hline 
+  $\alpha^2$ &$\alpha^6$ & $\alpha^4$ & $0$ & $\alpha^5$ & $\alpha^1$ & $\alpha^3$ & $\alpha^0$\\ 
+  \hline 
+ $\alpha^3$ &$\alpha^1$ & $\alpha^0$ & $\alpha^5$ & $0$ & $\alpha^6$ & $\alpha^2$ & $\alpha^4$ \\ 
+ \hline 
+  $\alpha^4$ &$\alpha^5$ & $\alpha^2$ & $\alpha^1$ & $\alpha^6$ & $0$ & $\alpha^0$ & $\alpha^3$ \\ 
+  \hline 
+  $\alpha^5$ &$\alpha^4$ & $\alpha^6$ & $\alpha^3$ & $\alpha^2$ & $\alpha^0$ & $0$ & $\alpha^1$ \\ 
+  \hline 
+  $\alpha^6$ &$\alpha^2$ & $\alpha^5$ & $\alpha^0$ & $\alpha^4$ & $\alpha^3$ & $\alpha^1$ & $0$ \\ 
+ \hline
+\end{tabular}
+
+
+\end{table}
+
+\begin{table}[h]
+\caption{Multiplication table for $GF(8)$ with $f(X)=1+X+X^3$}
+\centering
+\begin{tabular}{ |c||c|c|c|c|c|c|c| } 
+ \hline
+ 
+ $+$ &$\alpha^0$ & $\alpha^1$ & $\alpha^2$ & $\alpha^3$ & $\alpha^4$ & $\alpha^5$ & $\alpha^6$\\
+ \hline 
+  \hline 
+  $\alpha^0$ &$\alpha^0$ & $\alpha^1$ & $\alpha^2$ & $\alpha^3$ & $\alpha^4$ & $\alpha^5$ & $\alpha^6$\\ 
+  \hline 
+  $\alpha^1$ &$\alpha^1$ & $\alpha^2$ & $\alpha^3$ & $\alpha^4$ & $\alpha^5$ & $\alpha^6$ & $\alpha^0$ \\ 
+  \hline 
+  $\alpha^2$ &$\alpha^2$ & $\alpha^3$ & $\alpha^4$ & $\alpha^5$ & $\alpha^6$ & $\alpha^0$ & $\alpha^1$\\ 
+  \hline 
+ $\alpha^3$ &$\alpha^3$ & $\alpha^4$ & $\alpha^5$ & $\alpha^6$ & $\alpha^0$ & $\alpha^1$ & $\alpha^2$ \\ 
+ \hline 
+  $\alpha^4$ &$\alpha^4$ & $\alpha^5$ & $\alpha^6$ & $\alpha^0$ & $\alpha^1$ & $\alpha^2$ & $\alpha^3$ \\ 
+  \hline 
+  $\alpha^5$ &$\alpha^5$ & $\alpha^6$ & $\alpha^0$ & $\alpha^1$ & $\alpha^2$ & $\alpha^3$ & $\alpha^4$ \\ 
+  \hline 
+  $\alpha^6$ &$\alpha^6$ & $\alpha^0$ & $\alpha^1$ & $\alpha^2$ & $\alpha^3$ & $\alpha^4$ & $\alpha^5$ \\ 
+ \hline
+\end{tabular}
+
+
+\end{table}
+
+
+\section{Encoding}
+\subsection{Generator Polynomial}
+To construct a R-S code we use a generator polynomial $g(X)$ of the form.
+\begin{equation}
+\begin{split}
+\mathbf{g}(X) &=(X-\alpha)(X-\alpha^2)\cdot\cdot\cdot(X-\alpha^2t)\\
+	 &=X^{2t} + g_{2t-1}X^{2t-1}+\cdot\cdot\cdot +g_2X^2 + g_1X+g_0
+	\end{split}
+	\label{five}
+\end{equation}
+The generator matrix is determined by selecting $\alpha$ from $GF(2^m)$ as a primitive element and find the minimal polynomials of $\alpha^i$ for $1 \leq i \leq 2t$ over $GF(2^m)$ and these polynomials are in the form $(X+\alpha^i)$
+
+As an example, consider the $(7,3)$ double error-correcting R-S code, ie $2t=4$
+\begin{equation} 
+\begin{split}
+\mathbf{g}(X) & = (X-\alpha)(X-\alpha^2)(X-\alpha^3)(X-\alpha^4) \\
+ & = (X^2- (\alpha +\alpha^2)X + \alpha^3) (X^2 - (\alpha^3 +\alpha^4) X +\alpha^7) \\
+  & = (X^2- \alpha^4X + \alpha^3) (X^2 - \alpha^6 X +\alpha^0) \\
+   & = X^4- (\alpha^4 +\alpha^6)X^3 + (\alpha^3 +\alpha^{10} +\alpha^0)X^2 - (\alpha^4 +\alpha^9) X +\alpha^3\\
+   &=X^4 + (\alpha^3)X^3 + (\alpha^0)X^2 + (\alpha^1) X +\alpha^3
+\end{split}
+\end{equation}
+\subsection{Systematic Encoding}
+To encode a message polynomial $\mathbf{m}(X)$, we first multiply it by $X^{n-k}$. we then divide $X^{n-k}\mathbf{m}(X)$ by $\mathbf{g}(X)$ to get the parity polynomial $\mathbf{p}(X)$. The codeword $\mathbf{U}(X)$ is given by
+
+\begin{equation}
+\mathbf{U}(X)= \mathbf{p}(X) + X^{n-k}\mathbf{m}(X)
+\end{equation}
+
+As an example, we encode the message $111110010$ with the $(7,3)$ R-S code. It can be seen that this input is a 3- symbol message with $111=\alpha^5, 110 = \alpha^3$ and $010=\alpha^1$. Using the convetion where the co-efficient of the highest power corresponds to the leftmost symbol, the message polynomial can be written as $\mathbf{m}(X) = \alpha^5X^2 + \alpha^3X + \alpha^1$
+
+First we multiply $\mathbf{m}(X)$ by $ = X^{4 }$ to get $X^{n-k}\mathbf{m}(X) = \alpha^5X^6 + \alpha^3X^5 + \alpha^1X^4$.
+Next we divide $X^{n-k}\mathbf{m}(X)$ by $\mathbf{g}(X)$ to get $\mathbf{p}(X) =\alpha^6X^3 + \alpha^4X^2 + \alpha^2X +\alpha^0$. The addition and multiplication operations are done according to GF(8) arithmetic and are a bit tedious.
+
+Finally
+\begin{equation}
+\begin{split}
+\mathbf{U}(X)&= \mathbf{p}(X) + X^{n-k}\mathbf{m}(X)\\
+&=\alpha^5X^6 + \alpha^3X^5 + \alpha^1X^4+\alpha^6X^3 + \alpha^4X^2 + \alpha^2X +\alpha^0
+\end{split}
+\end{equation}
+\subsection{Encoding Using and $(n-k)$ -Stage Shift Register}
+The diagram below is used to encode R-S codes. It should be noted that all operations are done in modulo $2^m-1$.
+\begin{figure}
+  \includegraphics[width=\linewidth]{RS_encoder.jpg}
+  \caption{Encoder for (7,3) R-S code }
+  \label{fig1}
+\end{figure}
+The encoding steps are as follows. 
+\begin{itemize}
+\item During the first $k$ clock cycles, switch 1 is closed to allow shifting the message symbols into the $(n-k)$ stage shift register. It should be noted that switch 2 is also in the down position during that time to allow simultaneous transfer of the message symbols directly to the output.
+
+\item After the $k$th symbol has been transferred to the output register, switch one is opened and switch 2 is moved to the ``up'' position.
+
+\item Since the symbols that remain in the shift register correspond to the parity check bits, the $(n-k)$ clock cycles are used to move them to the output register.
+
+\end{itemize}
+Using the input used for the example in the previous sub-section, the table below shows the encoding process.
+
+\begin{tabular}{ |p{3cm}||p{3cm}|p{3cm}|p{3cm}|  }
+ \hline
+ \multicolumn{4}{|c|}{Shift Register Operations} \\
+ \hline
+ Input Queue & Clock Cycle &Register's Contents&Feedback\\
+ \hline
+ $\alpha^1 \,\,\,\,\,\,	 \alpha^3 \,\,\,\,\,\, 	 \alpha^5$   & 0   &$0 \,\,\,\,\,\,\,\,\,\,\,\,   0 \,\,\,\,\,\,\,\,\,\,   0 \,\,\,\,\,\,\,\,\,\,\,\,   0 \,\,\,\,\,\, $& $\alpha^5$  \\
+ $ \,\,\,\,\,\,\,\,\, \alpha^1\,\,\,\,\,\, \alpha^3$   &1& $\alpha^1 \,\,\,\,\,\,   \alpha^6 \,\,\,\,\,\,   \alpha^5 \,\,\,\,\,\,   \alpha^1 \,\,\,\,\,\, $ & $\alpha^0$\\
+$\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\, \alpha^1$   & 2  &$\alpha^3 \,\,\,\,\,\,\,\,\,   0 \,\,\,\,\,\,\,\,  \alpha^2 \,\,\,\,\,\,   \alpha^2 \,\,\,\,\,\, $ & $\alpha^4$\\
+ $\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,-$   & 3   &$\alpha^0 \,\,\,\,\,\,   \alpha^2 \,\,\,\,\,\,   \alpha^4 \,\,\,\,\,\,   \alpha^6 \,\,\,\,\,\, $ & $-$\\
+ \hline
+\end{tabular}
+It should be noted that the roots of $\mathbf{g}(X)$ should also be the roots of the codeword $\mathbf{U}(X)$ and a codeword is only valid if it has a value of zero when evaluated at the roots of the  $\mathbf{g}(X)$
+
+\section{Decoding}
+Let us assume that after transmission through a channel we receive a corrupted codeword polynomial $\mathbf{r}(X)$. We can write  $\mathbf{r}(X)$ as
+\begin{equation}
+ \mathbf{r}(X)= \mathbf{U}(X)+ \mathbf{e}(X)
+\end{equation}
+Where  $\mathbf{e}(X)$ is the error-pattern polynomial. In the decoding of R-S codes there is a need to determine the error locations as well as the error values. The decoding process can be broken down into syndrome computation, error loaction computation, error value computation and codeword estimation. This process will be explained using an example. We assume the same $(7,3)$ R-S code with generator matrix $\mathbf{g}(X)=X^4 + (\alpha^3)X^3 + (\alpha^0)X^2 + (\alpha^1) X +\alpha^3$. We also assume a double symbol error represented in pollynomial form as
+$$\mathbf{e}(X) = 0X^6 + 0X^5 + \alpha^5X^4+\alpha^2X^3 + 0X^2 + 0X +0$$
+
+which results in 
+
+\begin{equation}
+\begin{split}
+ \mathbf{r}(X)&= \mathbf{U}(X)+ \mathbf{e}(X)\\
+ &=\alpha^5X^6 + \alpha^3X^5 + \alpha^6X^4+\alpha^0X^3 + \alpha^4X^2 + \alpha^2X +\alpha^0
+ \end{split}
+\end{equation}
+
+\subsection{Syndrome Computation}
+The syndrome is used to determine wether a received signal is a valid codeword. A non-zero result indicates the prescence of an error in the  received signal. The syndrome is made up of $(n-k)$ symbols and for our example there are 4 symbols in every syndrome vector $\mathbf{S}$. Using the idea that a valid codeword yields a value of zero when evaluated at the roots of the generator matrix, we go ahead and perform the syndrome calculations
+
+\begin{equation}
+\begin{split}
+ {S}_1& =\mathbf{r}(X)= \alpha^11 + \alpha^8+ \alpha^10+\alpha^3 + \alpha^6 + \alpha^3 +\alpha^0\\
+ &=\alpha^4 + \alpha^1+ \alpha^3+\alpha^3 + \alpha^6 + \alpha^3 +\alpha^0\\
+ &= \alpha^3
+ \end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+{S}_2& =\mathbf{r}(X)= \alpha^17 + \alpha^13+ \alpha^14+\alpha^6 + \alpha^8 + \alpha^4 +\alpha^0\\
+ &=\alpha^3 + \alpha^6+ \alpha^0+\alpha^6+ \alpha^1 + \alpha^4 +\alpha^0\\
+ &= \alpha^5
+ \end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+{S}_3& =\mathbf{r}(X)= \alpha^23 + \alpha^18+ \alpha^18+\alpha^9 + \alpha^10 + \alpha^5 +\alpha^0\\
+ &=\alpha^2 + \alpha^4+ \alpha^4+\alpha^2 + \alpha^3 + \alpha^5 +\alpha^0\\
+ &= \alpha^6
+ \end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+{S}_4& =\mathbf{r}(X)= \alpha^29 + \alpha^23+ \alpha^22+\alpha^12 + \alpha^12 + \alpha^6 +\alpha^0\\
+ &=\alpha^1 + \alpha^2+ \alpha^1+\alpha^5 + \alpha^5 + \alpha^6 +\alpha^0\\
+ &= 0
+ \end{split}
+\end{equation}
+
+Since $\mathbf{S}\neq 0$ there is an error. It is worth noting that the syndrome can also be determined by using symbol error polynomial.
+\begin{equation}
+\begin{split}
+{S}_i& =\mathbf{U}(\alpha^i)+ \mathbf{e}(\alpha^i)\\
+ &= 0+\mathbf{e}(\alpha^i)
+ \end{split}
+\end{equation}
+
+\subsection{Error Location}
+As mentioned in the previous subsection, it is possible to compute the syndrome using the symbol error polynomial. In general, we assume that there are  $v$ errors in the codeword at $X^{j_1}, X^{j_2},....,X^{j_v}$, where $1,2,...v$  represents the 1st, 2nd,...,vth error and the index $j$ represents the error locaton. It is possible to write the symbol error polynomial as 
+
+\begin{equation}
+\mathbf{e}(X) =e_{j_1} X^{j_1} + e_{j_2} X^{j_2}+\cdot\cdot\cdot+e_{j_v} X^{j_v}
+\end{equation}
+
+We need to determine each error value $e_{j_\mathit{l}}$ and its location number$X^{j_\mathit{l}},\,\,\,\, \mathit{l}=1,2,...v$ in order to correct the corrupted codeword. To do this , we first define an error locator number as $\beta_l=\alpha^{j_l}$ and then substitute $\alpha^i$ into the received polynomial for $i=1,2,...2t$ to obtain the $2t$ syndrome symbols.
+
+\begin{equation}
+\begin{split}
+&{S}_1 =\mathbf{r}(\alpha^{})=e_{j_1} \beta_{1}^{} + e_{j_2} \beta_{2}^{}+\cdot\cdot\cdot+e_{j_v} \beta_{v}^{}\\
+ &{S}_2 =\mathbf{r}(\alpha^2)=e_{j_1} \beta_{1}^{2} + e_{j_2} \beta_{2}^{2}+\cdot\cdot\cdot+e_{j_v} \beta_{v}^{2}\\
+ &\cdot\\
+  &\cdot\\
+   &\cdot\\
+ &{S}_{2t} =\mathbf{r}(\alpha^{})=e_{j_1} \beta_{1}^{2t} + e_{j_2} \beta_{2}^{2t}+\cdot\cdot\cdot+e_{j_v} \beta_{v}^{2t}\\
+ \end{split}
+ \label{seventeen}
+\end{equation}
+
+Any equation that can be used to solve the above system of eequations is known as a R-S decoding algorithm. If after calculating the syndrome$\mathbf{S}$, it is a non-zero vector we know that an error has occured. We then have to determine the location of the errors. To do this we can define an error-locator polynomial as 
+
+\begin{equation}
+\begin{split}
+\mathbf{\sigma}(X)&=(1+\beta_1X)(1+\beta_2X)\cdot\cdot\cdot(1+\beta_vX)\\
+&=1+ \sigma_1X+\sigma_1X^2+\cdot\cdot\cdot+\sigma_vX^v
+\end{split}
+\end{equation}
+$\mathbf{\sigma(X)}$ has roots of the form $1/\beta_1,1/\beta_2,...,1/\beta_v$ and the reciprocal of the roots give us the error location numbers $\mathbf{e}(X)$. We then use autoregressive modelling techniques to form a matrix from the syndromes where the first $t$ syndromes are used to predict the next syndrome as shown below
+
+\begin{equation}
+\begin{bmatrix}
+    S_{1}       &  S_{2} &  S_{3} & \dots &  S_{t-1}&  S_{t} \\
+    S_{2}       &  S_{3} &  S_{4} & \dots &  S_{t}&  S_{t+1} \\
+    &&&\vdots{} \\
+    S_{t-1}       &  S_{t} &  S_{t+1} & \dots &  S_{2t-3}&  S_{2t-2} \\
+    S_{t}       &  S_{t+1} &  S_{t+2} & \dots &  S_{2t-2}&  S_{2t-1} \\
+\end{bmatrix}
+\begin{bmatrix}
+    \sigma_{t}\\
+    \sigma_{t-1}\\
+    \vdots{}\\
+    \sigma_{2}\\
+    \sigma_{1}\\
+    
+\end{bmatrix}
+=
+\begin{bmatrix}
+     -S_{t-1}\\
+    -S_{t+2}\\
+    \vdots{}\\
+    -S_{2t-1}\\
+    -S_{2t}\\
+\end{bmatrix}
+\label{nineteen}
+\end{equation}
+We apply the autoregressive model of (\ref{nineteen}) to our example and this yields
+\begin{equation}
+\begin{split}
+\mathbf{\sigma}(X)&=(1+\beta_1X)(1+\beta_2X)\cdot\cdot\cdot(1+\beta_vX)\\
+&=1+ \sigma_1X+\sigma_1X^2+\cdot\cdot\cdot+\sigma_vX^v
+\end{split}
+\label{twenty}
+\end{equation}
+$\mathbf{\sigma(X)}$ has roots of the form $1/\beta_1,1/\beta_2,...,1/\beta_v$ and the reciprocal of the roots give us the error location numbers $\mathbf{e}(X)$. We then use autoregressive modelling techniques to form a matrix from the syndromes where the first $t$ syndromes are used to predict the next syndrome as shown below
+
+\begin{equation*}
+\begin{bmatrix}
+    S_{1}       &  S_{2} \\
+    S_{2}       &  S_{3} \\
+\end{bmatrix}
+\begin{bmatrix}
+    \sigma_{2}\\
+    \sigma_{1}\\
+   \end{bmatrix}
+=
+\begin{bmatrix}
+     S_{3}\\
+    S_{4}\\
+\end{bmatrix}
+\end{equation*}
+
+\begin{equation}
+\begin{bmatrix}
+    \alpha^3       & \alpha^5 \\
+    \alpha^5      &  \alpha^6 \\
+\end{bmatrix}
+\begin{bmatrix}
+    \sigma_{2}\\
+    \sigma_{1}\\
+   \end{bmatrix}
+=
+\begin{bmatrix}
+     \alpha^6\\
+    0\\
+\end{bmatrix}
+\label{nineteen}
+\end{equation}
+ To solve for the coefficients $\sigma_1$ and $\sigma_2$ we find the inverse of the know matrix on the left side ($A$) of (\ref{sixteen}) and multiply that by the known matrix on the right ($B$).
+ 
+ $$Inv [A] = \frac{cofactor[A]}{det[A]}$$
+\begin{equation} 
+\begin{split}
+det\begin{bmatrix}
+    \alpha^3       & \alpha^5 \\
+    \alpha^5      &  \alpha^6 \\
+\end{bmatrix}=&\alpha^3\alpha^6 - \alpha^5\alpha^5 =\alpha^9 +\alpha^{10}\\
+&=\alpha^2 +\alpha^3 =\alpha^5
+\end{split}
+\end{equation}
+
+\begin{equation}
+cofactor
+\begin{bmatrix}
+    \alpha^3       & \alpha^5 \\
+    \alpha^5      &  \alpha^6 \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+    \alpha^6       & \alpha^5 \\
+    \alpha^5      &  \alpha^3 \\
+\end{bmatrix}
+\end{equation}
+
+
+\begin{equation}
+Inv
+\begin{bmatrix}
+    \alpha^3       & \alpha^5 \\
+    \alpha^5      &  \alpha^6 \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+    \alpha^6       & \alpha^5 \\
+    \alpha^5      &  \alpha^3 \\
+\end{bmatrix}
+\alpha^{-5}=
+\begin{bmatrix}
+    \alpha^1       & \alpha^0 \\
+    \alpha^0      &  \alpha^5 \\
+\end{bmatrix}
+\end{equation}
+
+and 
+\begin{equation}
+\begin{bmatrix}
+    \sigma_1       \\
+    \sigma_2       \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+ \alpha^1       & \alpha^0 \\
+    \alpha^0      &  \alpha^5 \\
+\end{bmatrix}
+\begin{bmatrix}
+ \alpha^6       \\
+    0     \\
+    \end{bmatrix}
+=
+\begin{bmatrix}
+    \alpha^0       \\
+    \alpha^6     \\
+\end{bmatrix}
+\end{equation}
+Fixing the $\sigma_1$ and $\sigma_2$ into (\ref{twenty}), we get the error-locator polynomial has the form 
+
+\begin{equation}
+\mathbf{\sigma}(X)=1+ \alpha^6X+\alpha^0X^2
+\end{equation}
+Next , we proceed to find the roots of $\mathbf{\sigma}(X)$. This can easily be done by inserting all the elements of $GF(8)$ into $\mathbf{\sigma}(X)$ and the inputs that produce a zero output are the roots. For our example $\alpha^3$ and $\alpha^4$ are the roots of $\mathbf{\sigma}(X)$. 
+
+\begin{equation}
+\begin{split}
+&\mathbf{\sigma}(\alpha^3)=\alpha^0+ \alpha^9+\alpha^6 = 0\\
+&\mathbf{\sigma}(\alpha^4)=\alpha^0+ \alpha^{10}+\alpha^8 = 0
+\end{split}
+\end{equation}
+
+finally, the error locators are the inverse of the roots and is given by $\beta_1=\alpha^4$ and $\beta_2=\alpha^3$ respectively. 
+
+\subsection{Error Values} 
+Now that we have determined the position in which the errors occur, we can proceed to determine the error values. We do this by inserting the values of $\beta_1$ and $\beta_2$ into (\ref{seventeen}). We need just $t=2$ syndrome equations to calculate the error values and we can choose any of them. Fo this example, we proceed to use $S_1$ and $S_2$
+
+\begin{equation}
+\begin{split}
+&{S}_1 =\mathbf{r}(\alpha^{})=e_{1} \beta_{1}^{} + e_{2} \beta_{2}^{}\\
+ &{S}_2 =\mathbf{r}(\alpha^2)=e_{1} \beta_{1}^{2} + e_{2} \beta_{2}^{2}
+ \end{split}
+ \label{twentyeight}
+\end{equation} Where we have simplified the notation from $e_{j_1}$ to $e_{1}$ and $e_{j_2}$ to $e_{2}$.
+We proceed to write this equation in matrix form and use matrix algebra to find the values of $e_{1}$ and $e_{2}$ as shown below
+
+
+\begin{equation*}
+\begin{bmatrix}
+    \beta_{1}       &  \beta_{2} \\
+    \beta_{1}^2   &  \beta_{2}^2 \\
+\end{bmatrix}
+\begin{bmatrix}
+    e_{1}\\
+    e_{2}\\
+   \end{bmatrix}
+=
+\begin{bmatrix}
+     S_{1}\\
+    S_{2}\\
+\end{bmatrix}
+\end{equation*}
+
+\begin{equation}
+\begin{bmatrix}
+    \alpha^3       & \alpha^4 \\
+    \alpha^6      &  \alpha^8 \\
+\end{bmatrix}
+\begin{bmatrix}
+    \sigma_{2}\\
+    \sigma_{1}\\
+   \end{bmatrix}
+=
+\begin{bmatrix}
+     \alpha^3\\
+     \alpha^5\\
+\end{bmatrix}
+\label{twentynine}
+\end{equation}
+
+also
+\begin{equation}
+Inv
+\begin{bmatrix}
+    \alpha^3       & \alpha^4 \\
+    \alpha^6      &  \alpha^1 \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+    \alpha^1       & \alpha^4 \\
+    \alpha^6      &  \alpha^3 \\
+\end{bmatrix}
+\alpha^{-6}=
+\begin{bmatrix}
+    \alpha^2       & \alpha^5 \\
+    \alpha^0      &  \alpha^4 \\
+\end{bmatrix}
+\end{equation}
+
+Finally, we solve (\ref{twentynine}).
+
+\begin{equation}
+\begin{bmatrix}
+    e_1       \\
+    e_2       \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+ \alpha^2       & \alpha^5 \\
+    \alpha^0      &  \alpha^4 \\
+\end{bmatrix}
+\begin{bmatrix}
+ \alpha^3       \\
+  \alpha^5     \\
+    \end{bmatrix}
+=
+\begin{bmatrix}
+    \alpha^2       \\
+    \alpha^5     \\
+\end{bmatrix}
+\end{equation}
+
+\subsection{Error Correction}
+Using the previous results, we write the estimated error polynomial as
+
+\begin{equation}
+\hat{\mathbf{e}}(X)=\alpha^2X^3 + \alpha^5X^5
+\end{equation}
+
+The estimated received polynomial $\hat{\mathbf{U}}(X)$ is calculated by adding the received polynomial $\mathbf{r}(X)$ to the estimated error polynomial $\hat{\mathbf{e}}(X)$ 
+
+\begin{equation}
+\begin{split}
+&\hat{\mathbf{U}}(X) = {\mathbf{r}}(X)+\hat{\mathbf{e}}(X)\\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+&{\mathbf{r}}(X) = (111)X^6 + (110)X^5 +(101)X^4 +(100)X^3 +(011)X^2 +(001)X^{} +(100)\\
+&\hat{\mathbf{e}}(X) = (000)X^6 + (000)X^5 +(111)X^4 +(001)X^3 +(000)X^2 +(000)X^{} +(000)\\
+&\hat{\mathbf{U}}(X) = (111)X^6 + (110)X^5 +(010)X^4 +(101)X^3 +(011)X^2 +(001)X^{} +(100)\\
+&=(\alpha^5)X^6 + (\alpha^3)X^5 +(\alpha^1)X^4 +(\alpha^6)X^3 +(\alpha^4)X^2 +(\alpha^2)X^{} +(\alpha^0)
+\end{split}
+\end{equation}
+
+The message symbol is given by the leftmost $k=3$ symbols , ie $111=\alpha^5, 110 = \alpha^3$ and $010=\alpha^1$ which is the same as the message symbol used through out the example.
+\section{References}
+
+
+
+
+
+ 
+\end{document}

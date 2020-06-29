@@ -1,0 +1,41 @@
+\documentclass[24 pts]{article}
+\usepackage{xeCJK}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+\usepackage{relsize}
+
+\newcommand{\me}{\mathrm{e}}
+\setCJKmainfont[BoldFont= Yu Mincho Demibold]{MS Mincho}
+\title{情報伝送基礎 レポート}
+\date{07-19-2016}
+\author{Kwame Ackah Bohulu　1631133}
+\begin{document}
+\maketitle
+\section{Viterbi algorithm for ISI}
+In the prescence of ISI, the Viterbi algorithm can be used to determine the most likely bit sequence at the receiver end. For the case where the information symbols are M-ary, the channel is described as an $M^L$-state trellis and the Viterbi algorithm is used to determine the most likely path through the trellis. The procedure involved in using the Viterbi algorithm is described below.
+\paragraph{}
+1. As each sample signal is received, the computation of $M^{L+1}$ probabilities is carried out using the equation below.
+\begin{equation}
+\ln p(v_{L+k}|I_{L+k,...},I_{k})+PM_{k-1}(I_{L+k-1})
+\end{equation}
+This corresponds to the $M^{L+1}$ sequence which form the continuation of the $M^{L}$ surviving sequences from the previous stage of the decoding process.\\
+2. The $M^{L+1}$ sequences are then subdivided into $M^{L}$ groups. Each group contains M sequences that terminate in the same set of symbol $I_{L+k},...,I_{k+1}$ and differ in the symbol $I_k$\\
+3. From each group, we select the sequence which has the largest probability using the equation below
+\begin{equation}
+PM_k(I_{L+k})=\max_{I_{k}}[\ln p(v_{L+k}|I_{L+k,...},I_{k})+PM_{k-1}(I_{L+k-1})]
+\end{equation}
+The remaining $M-1$ sequences are discarded. This leaves $M^L$ sequences having the metrics $PM_k(I_{L+k})$\\
+4. The same process is repeated as subsequent samples are received.
+\paragraph{}
+There is a variable delay incurred using the above procedure. Practically, this delay is fixed by truncating the sequence that survives to the $q$ most recent received sequence, where $q \gg L$.
+
+
+
+
+
+
+
+\end{document}

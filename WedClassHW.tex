@@ -1,0 +1,94 @@
+\documentclass[24 pts]{article}
+\usepackage{xeCJK}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+\usepackage{relsize}
+
+\newcommand{\me}{\mathrm{e}}
+\setCJKmainfont[BoldFont= Yu Mincho Demibold]{MS Mincho}
+\title{情報・ネットワーク工学専攻基礎 }
+\date{June 17 2016}
+\author{Kwame Ackah Bohulu　1631133　Q.2, Q.3,Q.7}
+\begin{document}
+\maketitle
+\[\textbf{Q2}\]\\
+\paragraph{i.} The MAP decision rule is given by
+$$\max_{l\in(1,...,k)} P(x_l|y)$$
+The ML decision rule is given by
+$$\max_{l\in(1,...,k)} P(y|x_l)$$
+\paragraph{ii.} The MAP decision rule uses the a posteriori probability of the information bit $x_l,l\in(1,...,k) $ to determine which information bit the received signal $y$ corresponds to. In most cases the probability of $x_l$ is easily calculated making it a suitable decision variable. To determine which $x_l$ the received signal y corresponds to, we calculate the conditional probability $P(x_l|y)$ for all $l\in(1,...,k)$ and choose the $x_l$ with the maximum probability.
+\paragraph{iii.} The MAP decision rule is given by
+$$\max_{l\in(1,...,k)} P(x_l|y)$$
+By Bayes rule
+$$ P(x_l|y) = \frac{P(x_l)P(y|x_l)}{P(y)}$$
+since P(y) is constant, the above formula reduces to
+$$ P(x_l|y) = P(x_l)P(y|x_l)$$
+in the case of equiprobable information bits,  $P(x_l)=1/K$ and $ P(x_l|y) \propto P(y|x_l)$.\\
+This is implies that in the case of equiprobable information bits MAP=ML.
+\newpage
+\[\textbf{Q3}\]\\
+\paragraph{i.}
+\begin{equation*}
+\begin{split}
+H(x)&=-\sum_{x\in X} P_X(x)logP_X(x)\\
+&=\sum_{x\in X} P_X(x)i(x)
+\end{split}
+\end{equation*}
+From the information viewpoint, entropy is a measure of information that is acquired by the  knowledge of X
+
+\paragraph{ii.}For a function to be considered convex, the value at the midpoint of every interval in its domain should not exceed the arithmetic mean of its values at the ends of the interval. The domain for $H(x)$ is $P_X(x)$. The values at the ends of the interval are 0 and 1 respectively. The mean of these values is 0.5. Since this is equal to the midpoint value of the interval, it implies that $H(x)$ is a convex function.
+
+\paragraph{iii.} The maximum value for binary entropy is 1. The formula for binary entropy is given as $$h(p)=-plogp-(1-p)log(1-p)$$
+when $p=1/2$
+\begin{equation*}
+\begin{split}
+h(1/2)&=-1/2log(1/2)-(1-(1/2))log(1-(1/2))\\
+&=1/2 + 1/2\\
+&=1
+\end{split}
+\end{equation*}
+
+This shows that when p=1/2, h(p) is maximum.
+
+\newpage
+\[\textbf{Q7}\]\\
+\paragraph{i.}Using the generator matrix \textbf{G}
+$$ \mathbf{x=aG}$$
+\begin{center}
+\begin{tabular}{ |c|c| } 
+\hline
+information bit \textbf{a} & codeword \textbf{x} \\ 
+ \hline
+ 000 & 0000000 \\ 
+ 001 & 0011110 \\ 
+ 010 & 0101011 \\ 
+ 011 & 0110101 \\ 
+ 100 & 1001101\\ 
+ 101 & 1010011 \\ 
+ 110 & 1100110 \\ 
+ 111 & 1111000\\ 
+ \hline
+\end{tabular}
+\end{center}
+\paragraph{ii.}Using the MAP decision rule
+$$x_{\widehat{m}}=arg \max_{x_m\in \mathbf{x}} P(x_m|y)$$
+received signal,y = 1011110, cross-over probability,  $\varepsilon =0.1$
+\begin{equation*}
+\begin{split}
+ &P(x_0|y)= P(0000000|y)=\varepsilon^5(1-\varepsilon)^2=8.1\times 10^{-6}\\
+ &P(x_1|y)= P(0011110|y)=\varepsilon(1-\varepsilon)^6=53144.1\times 10^{-6}\\
+ &P(x_2|y)= P(0101011|y)=\varepsilon^5(1-\varepsilon)^2=8.1\times 10^{-6}\\
+ &P(x_3|y)= P(0110101|y)=\varepsilon^5(1-\varepsilon)^2=8.1\times 10^{-6}\\
+ &P(x_4|y)= P(1001101|y)=\varepsilon^3(1-\varepsilon)^4=656.1\times 10^{-6}\\
+ &P(x_5|y)= P(1010011|y)=\varepsilon^3(1-\varepsilon)^4=656.1\times 10^{-6}\\
+ &P(x_6|y)= P(1100110|y)=\varepsilon^3(1-\varepsilon)^4=656.1\times 10^{-6}\\
+ &P(x_7|y)= P(1111000|y)=\varepsilon^3(1-\varepsilon)^4=656.1\times 10^{-6}
+\end{split}
+\end{equation*}
+therefore by MAP decision rule, $x_{\widehat{m}}=x_1$ which corresponds to the information bit 001
+\end{document}
+
+

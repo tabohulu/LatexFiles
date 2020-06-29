@@ -1,0 +1,328 @@
+\documentclass[11pt, oneside, dvipdfmx]{book}
+\newcommand{\folder}{/usr/local/share/texmf}
+\input{\folder/hfiles/ebook}
+\usepackage{graphics}
+%\setCJKmainfont{SimSun}
+\title{``
+Time-Varying Periodic Convolutional Codes With Low-Density Parity-Check Matrix'' by 
+Alberto Jimenez Felstrom and
+Kamil Sh. Zigangiro}
+\author{Kwame Ackah Bohulu}
+\date{\today}
+\begin{document}
+
+\maketitle
+
+\paragraph{Abstract-}
+We present a class of convolutional codes defined by a low-density parity-check (LDPC) matrix and an iterative algorithm of the decoding of
+these codes. The performance of this decoding is close to the performance
+of turbo decoding. Our simulation shows that for the rate $R = 1/2$
+binary codes, the performance is substantionally better than for ordinary
+convolutional codes with the same decoding complexity per information
+bit. As an example, we constructed convolutional codes with memory
+$M = 1025, 2049 ~\text{and} ~4097$ showing that we are about $1$ dB from
+the capacity limit at a bit-error rate (BER) of $10^{-5}$ and a decoding
+complexity of the same magnitude as a Viterbi decoder for codes having
+memory $M = 1$
+
+
+\section{Introduction}
+In the 1960's Gallager first introduced LDPC block codes and also studied an iterative decoding algorithm which showed promise in acheiving low error probabilities at high data rates with very reasonable costs.
+
+Iterative decoding has since gained a lot of attention[2] -[4] especially with the recent simulation results [5],[6] which revealed that LDPC codes have performance close to the Shannon limit, which is also similar to turbo codes.
+
+This paper focuses on the convolutional version of LDPC codes. It is revealed that they perform better than block codes of the same length and have a much regular structure which makes encoder and decoder implementation easier. Decoding can also be sped up by using a pipeline structure involving several processors.
+
+Due to statistical dependence, a mathematical performance analysis of iterative decoding is generally difficult. A successful atempt of LDPC iterative decoding was made by V. Zyablov and M. Pinsker [7]. They were able to proove that the number of corrected errors increases linearly with block length. In practise however BER is of more interest and as far as the authours know, most of the BER analysis that exists is based on simulation results.
+
+
+\section{LDPC Block Codes and Iterative  Decoding}
+An $(N,J,K)$ LDPC matrix $\bH$ of a block code over GF(2) is a matrix with $N$ columns, each column having weight $J$ and each row having weight $K$. In general 
+$\bH$ can be represented as shown in \ref{1}
+
+
+
+\begin{equation}
+\bH
+=
+\begin{bmatrix}
+    \bM \bP_{1} \\
+    \bM \bP_{2}  \\
+    \vdots  \\
+    \bM \bP_{J} 
+\end{bmatrix}
+\label{1}
+\end{equation}
+
+
+where 
+\begin{description}
+\item [$\bM$] is an $\frac{N}{K} \times N$ matrix made up of $K$ concatenated $\frac{N}{K}$ unity matrices $\bI$
+\item [$\bP$] is any $N \times N$ permutation matrix, so $\bH$ has $\frac{NJ}{K}$
+\end{description}
+
+The rate $R$ of the code is $R \geq 1- \frac{J}{K}$ since not all the rows are linearly independent. It is worth mentioning that in principle, it is possible to construct LDPC codes with different column weight $J$ and or row weights $K$
+
+Using a slightly different construction, Gallager[1] proved the existence of LDPC codes whose minimum distance $d_{min}$ increases linearly with block length $N$ when $J>2$. Furthermore, he proved that
+for $J > 2$, the ratio of the minimum distance to the code length of a
+typical code limits to a nonzero constant $\alpha$, which is dependent on
+the selection $J$ and $K$
+
+We continue by considering the case where an LDPC codeword over GF(2) is $\bv=[v_1 v_2....v_N]$ is transmitted over an AWGN channel with one sided power spectral density $N_0$. Code symbols are mapped into the signal points
+
+\begin{equation}
+w_n=(1-2v_n)
+\label{2}
+\end{equation}
+
+The sequence $\bw=[w_1 w_2....w_N$ is in turn modulated using Nyquist pulses of unit energy. Using a matched filter at the receiver, the sampled filter outpput $r_n$ has the conditional probability density function .
+
+
+\begin{equation}
+p\left(r_{n} | w_{n}\right)=\frac{1}{\sqrt{\pi N_{0}}} e^{-\frac{\left(r_n-w_{n}\right)^{2}}{N_{0}}}
+\label{3}
+\end{equation}
+
+
+Making the assumption that the code symbols $v_n$ are random and equiprobable, the log-likelihood metrics for the received values can be written as
+
+\begin{equation}
+\ell(n) \stackrel{\mathrm{def}}{=} \log \frac{\operatorname{Pr}\left(v_{n}=0 | r_{n}\right)}{\operatorname{Pr}\left(v_{n}=1 | r_{n}\right)}=4 r_{n} \frac{R E_{b}}{N_{0}}
+\label{4}
+\end{equation}
+
+Since decoding is done using an iterative algorithm, the log-likelihood metric below is of interest
+
+\begin{equation}
+\begin{aligned} \ell^{(1)}(n) & \stackrel{\mathrm{def}}{=} \log \frac{\operatorname{Pr}\left(v_{n}=0 | r_{n},\left\{\mathcal{C}_{j}(n)\right\}_{j=1}^{J}\right)}{\operatorname{Pr}\left(v_{n}=1 | r_{n},\left\{\mathcal{C}_{j}(n)\right\}_{j=1}^{J}\right)} \\ &=\ell(n)+\sum_{j=1}^{J} \log \frac{1+\prod_{n^{\prime} \in \mathcal{C}_{j}(n)} \Lambda\left(n^{\prime}\right)}{1-\prod_{n^{\prime} \in \mathcal{C}_{j}(n)} \Lambda\left(n^{\prime}\right)} \end{aligned}
+\label{5}
+\end{equation}
+
+where 
+\begin{equation*}
+\Lambda(n) \stackrel{\operatorname{def}}{=} \frac{e^{\ell(n)}-1}{e^{\ell(n)}+1}=\tanh (\ell(n) / 2)
+\end{equation*} and
+
+$$
+\mathcal{C}_{j}(n) \stackrel{\mathrm{def}}{=}\left\{i : \overline{h}_{j i}=1\right\}, j=1,2, \cdots, J
+$$
+
+also $\overline{h}_{j i} $ refers to the element at row $j$, column $i$ of $\bH$ where 
+$h_{j n}=1$ and $$
+\operatorname{Pr}\left(v_{n}=\pm 1 | r_{n},\left\{\mathcal{C}_{j}(n)\right\}_{j=1}^{J}\right)
+$$ is the probability that $v_n \pm 1$ based on $r_n$ and the received symbols  corresponding to the transmitted code symbol $v_k,k \in 
+\bigcup_{j=1}^{j} \mathcal{C}_{j}(n)$
+
+\ref{5} is made up of the intrinsic information defined by \ref{4} and the extrinsic information which is knowledge obtained partly from the knowledge of the code structure. 
+
+The calculation of \ref{5} is simplified using the inverse of the hyperbolic tangent
+$$
+\tanh ^{-1} x=\frac{1}{2} \log \frac{1+x}{1-x}, \qquad|x|<1
+$$
+and approximating the product  $
+\Pi_{k \in C_{j}} \Lambda(k)
+$  to the term with the lowest reliability ie $$
+\prod_{\ell \in \mathcal{C}_{j}(n)} \Lambda\left(n^{\prime}\right) \approx \operatorname{sgn}\left(\prod_{n^{\prime} \in \mathcal{C}_{j}(n)} \Lambda\left(n^{\prime}\right)\right) \min _{n^{\prime} \in \mathcal{C}_{j}(n)}\left|\Lambda\left(n^{\prime}\right)\right|
+$$
+
+Inserting the above approximations into \ref{5} we get the equation below
+
+\begin{equation}
+\ell^{(1)}(n) \approx \ell(n)+\sum_{j=1}^{J} \operatorname{sgn}\left(\prod_{n^{\prime} \in \mathcal{C}_{j}(n)} \ell\left(n^{\prime}\right)\right) \min _{n^{\prime} \in \mathcal{C}_{j}(n)}\left|\ell\left(n^{\prime}\right)\right|
+\label{6}
+\end{equation}
+
+
+\subsection{Decoding Procedure}
+It is possible to use \ref{6}  to find a log-likelihood metric to the symbol
+$v_n$ depending on $r_n$ and the symbols received corresponding to those
+which are included in $C_j (n),j = 1,..., J$. However to improve the procedure, $J$ different statistics $\ell^{(1)}_j(n),~j=1,...,J$ are calculated instead of one. This is similar to the procedure used by Gallager in [1]
+
+\begin{enumerate}
+\item $\ell^{(1)}(n)$ is calculated using the equation below
+\begin{equation}
+\ell_{j}^{(1)}(n)=\ell(n)+\sum_{j^{\prime}=1 \atop j \neq j}^{J} \operatorname{sgn}\left(\prod_{n^{\prime} \in \mathcal{C}_{j^{\prime}}(n)} \ell_{j^{\prime}}\left(n^{\prime}\right)\right) \min _{n^{\prime} \in \mathcal{C}_{j^{\prime}(n)}}\left|\ell_{j^{\prime}}\left(n^{\prime}\right)\right|
+\label{7}
+\end{equation}
+
+\item These metrics are further used to calculate a new metric upon the next iteration using the equation below
+
+\begin{equation}
+\ell_{j}^{(i)}(n)=\ell(n)+\sum_{j^{\prime}=1 \atop j \neq j}^{J} \operatorname{sgn}\left(\prod_{n^{\prime} \in \mathcal{C}_{j^{\prime}}(n)} \ell_{j^{\prime}}^{(i-1)}\left(n^{\prime}\right)\right) \min _{n^{\prime} \in C_{j^{\prime}}(n)}\left|\ell_{j^{\prime}}^{(i-1)}\left(n^{\prime}\right)\right|
+\label{8}
+\end{equation}
+
+\item Using \ref{8} $I-1$ iterations are carried out and after that 
+
+\begin{equation}
+\begin{aligned} \ell^{(I)}(n)=& \ell(n)+\sum_{j=1}^{J} \operatorname{sgn}\left(\prod_{n^{\prime} \in \mathcal{C}_{j}(n)} \ell_{j}^{(I-1)}\left(n^{\prime}\right)\right)\\ & \times \min _{n^{\prime} \in \mathcal{C}_{j}(n)}\left|\ell_{j}^{(I-1)}\left(n^{\prime}\right)\right| \end{aligned}
+\label{9}
+\end{equation}
+
+\item Finally $ \ell^{(I)}(n),~n=1,...,N$ is used to make a hard decision where $\hat{v_n}=1, ~\text{if}~\ell^{(I)}(n)<0$ and $\hat{v_n}=0, ~\text{if}~\ell^{(I)}(n)>0$
+\end{enumerate}
+
+A summary to clarify the decoding step is shown below.
+
+\begin{enumerate}
+\item{Initialization}\newline Let $i=0$, with all $(j,n)$ pairs, $1 \leq j \leq NJ/K$ and $n=0,...,N-1$ satisfying $h_{jn}=1$ define 
+\begin{equation}
+\ell_{j}^{(i)}(n)=\ell(n)
+\label{10}
+\end{equation}
+
+\item{Vertical Step} \newline With all $(j,n)$ pairs, $1 \leq j \leq NJ/K$ and $n=0,...,N-1$ satisfying $h_{jn}=1$, compute
+\begin{equation}
+Z_{j}^{(i)}(n)=\operatorname{sgn}\left(\prod_{n^{\prime} \in \mathcal{C}_{j}(n)} \ell_{j}^{(i)}\left(n^{\prime}\right)\right) \min _{n^{\prime} \in \mathcal{C}_{j}(n)}\left|\ell_{j}^{(i)}\left(n^{\prime}\right)\right|
+\label{11}
+\end{equation}
+
+\item{Horizontal Step} \newline With all $(j,n)$ pairs, $1 \leq j \leq NJ/K$ and $n=0,...,N-1$ satisfying $h_{jn}=1$, compute
+\begin{equation}
+\ell_{j}^{(i+1)}(n)=\ell(n)+\sum_{j^{\prime}=1 \atop j \neq j}^{N J / K} Z_{j^{\prime}}^{(i)}(n)
+\label{12}
+\end{equation}
+if $i<I$, then let $i=i+1$and proceed to step 2
+
+\item{Decision Step} \newline Make hard decision
+\begin{equation}
+\hat{v}_{n}=\frac{1}{2}\left(1-2 \operatorname{sgn}\left\{\ell(n)+\sum_{j=1}^{N J / K} Z_{j}^{(I)}(n)\right\}\right)
+\label{13}
+\end{equation}
+\end{enumerate}
+
+ \section{Study of Asymptotic Behaviour of LDPC Codes}
+Show the relationship between the BER and the selection of $(N,J,K)$ as $N$ approaches infinity. To do this easily, the AWGN model is changed to a quantized AWGN model (量子化).
+
+First, define quantized log-likelihood metric as
+
+\begin{equation}
+\begin{array}{l}{\hat{\ell}(n)=} \\ {\left\{\begin{aligned} t, \quad &\left(t-\frac{1}{2}\right) \Delta \leq \ell(n)<\left(t+\frac{1}{2}\right) \Delta, \quad t=-q+1,...,q-1 \\-q, \quad& \ell(n)<\left(\frac{1}{2}-q\right) \Delta \\+q, \quad & \ell(n) \geq\left(\frac{1}{2}+q\right) \Delta \end{aligned}\right.}\end{array}
+\end{equation}
+
+where thenumber of quantization steps is $2q+1$ and the size of the steps is $\delta$. 
+It is worth noting that for a given $q$ the quantization step is chosen to maximize the cutoff rate of the channel.
+
+The probability function of ${l}{\hat{\ell}(n)}$ is given by
+
+\begin{equation}
+\begin{array}{l}{\operatorname{Pr}\left(\hat{\ell}(n)=t | v_{n}\right)} \\ {\qquad=\left\{\begin{array}{l}{\int_{(t-1 / 2) \Delta}^{(t+1 / 2) \Delta} \frac{1}{\sqrt{\pi N_{0}}} e^{-\frac{\left(y-w_{n}\right)^{2}}{N_{0}}} d y, \quad t=-q+1, \cdots, q-1} \\ {\int_{-\infty}^{(1 / 2-q) \Delta} \frac{1}{\sqrt{\pi N_{0}}} e^{-\frac{\left(y-w_{n}\right)^{2}}{N_{0}}} d y, \quad t=-q} \\ {\int_{(q-1 / 2) \Delta}^{\infty} \frac{1}{\sqrt{\pi N_{0}}} e^{-\frac{\left(y-w_{n}\right)^{2}}{N_{0}}} d y,} \quad  {t=q}\end{array}\right.}\end{array}
+\end{equation}
+
+Since ${l}{\hat{\ell}(n)}$ is quantized, the statistics 
+
+\begin{equation}
+\hat{Z}_{j}^{(i)}(n)=\operatorname{sgn}\left(\prod_{n^{\prime} \in \mathcal{C}_{j}(n)} \hat{\ell}_{j}^{(i)}\left(n^{\prime}\right)\right) \min _{n^{\prime} \in \mathcal{C}_{j}(n)}\left|\hat{\ell}_{j}^{(i)}\left(n^{\prime}\right)\right|
+\end{equation}
+
+and
+\begin{equation}
+\hat{\ell}_{j}^{(i+1)}(n)=\hat{\ell}(n)+\sum_{j^{\prime}=1, j^{\prime} \neq j}^{NJ / K} \hat{Z}_{j^{\prime}}^{(i)}(n), \qquad i=1, \cdots, I-1
+\end{equation}
+will have only integer values. Assuming that the code is chosen to ensure independence between the random variables $\hat{\ell}_{j}^{(i+1)}(n)$ and $\hat{Z}_{j}^{(i)}(n)=	\forall ~ j=1, \cdots, J, \quad 1 \leq i \leq I$ . Then the probability function of $\hat{\ell}_{j}^{(i+1)}(n)$ is given by a convolution between the probability functions of $\hat{Z}_{j}^{(i)}(n)$ and ${l}{\hat{\ell}(n)}$ carried out $J$ times. This can in turn be expressed throught the probability function of $\hat{\ell}_{j}^{(i)}(n)$
+
+Using this model, the probability function of the statistics 
+
+\begin{equation}
+\begin{aligned} \hat{\ell}^{(I)}(n)=& \hat{\ell}(n)+\sum_{j=1}^{\infty} \operatorname{sgn}\left(\prod_{n^{\prime} \in \mathcal{C}_{j}(n)} \hat{\ell}_{j}^{(I-1)}\left(n^{\prime}\right)\right) \\ & \times \min _{n^{\prime} \in \mathcal{C}_{j}(n)}\left|\hat{\ell}_{j}^{(I-1)}\left(n^{\prime}\right)\right| \end{aligned}
+\end{equation}
+
+have been calculated and are used to obtain the BER with regards to wrongfully decoding $v_n$.
+
+\begin{equation}
+\begin{aligned} \mathrm{BER}=& \operatorname{Pr}\left(\hat{\ell}^{(I)}(n)<0 | v_{n}=0\right) \\ &+\frac{1}{2} \operatorname{Pr}\left(\hat{\ell}^{(I)}(n)=0 | v(n)=0\right) \end{aligned}
+\end{equation}
+
+The results for rate $R=2$ and $q=4$ is shown for different iterations. In conclusion, $J$ must be as small as possible but larger that $2$
+
+
+\section{Time Varying Periodical Binary Convolutional Codes}
+
+The transparent form of the parity-check matrix of a time-varying, periodical, rate $R=b/c$ binary convolutional code with memory $M$. is shown below. It should be noted that it is a semi-infinite matrix.
+
+\begin{equation}
+\boldsymbol{H}^{T}=\left[\begin{array}{cccccc}{\boldsymbol{H}_{0}^{(0)}} & {\boldsymbol{H}_{1}^{(1)}} & {\cdots} & {\boldsymbol{H}_{t-1}^{(M-1)}} & {\boldsymbol{H}_{t}^{(M)}} \\ {} & {\boldsymbol{H}_{1}^{(0)}} & {\cdots} & {\boldsymbol{H}_{t-1}^{(M-2)}} & {\boldsymbol{H}_{t}^{(M-1)}} & {\boldsymbol{H}_{t+1}^{(M)}} \\ {} & {\ddots} & {\vdots} & {\vdots} & {\vdots} & {\ddots}\end{array}\right]
+\end{equation}
+
+where 
+$\boldsymbol{H}_{t}^{(m)}, m=0,1, \cdots, M, t=0,1, \cdots$ are $c \times (c-b)$ binary submatrices. $\boldsymbol{H}_{t}^{(0)}$ should be full rank and $\boldsymbol{H}_{t}^{(m)}=\boldsymbol{H}_{t+T}^{(m)}, T$ is the period of the code.
+For $R=1/2$, the memory of the parity-check matrix is the same as that of the code, though this is not always the case for other codes with different rates. 
+
+Similarly,
+an $(M, J, K)$ low-density parity-check matrix $\boldsymbol{H}^{T}$ (in symbolwise form) of a time-varying periodical rate $R = b/c$ convolutional
+code, has $J$ ones in each row, $K$
+ones in each column starting from the $M(c-b)$th column, and zeros
+elsewhere. Only rate $R=1/2$ codes 
+having a different number of ones in the rows of $\boldsymbol{H}^{T}$ corresponding
+to the information symbols and to the parity-check symbols are considerd. Specifically  three ones for those corresponding information symbols
+and two for the parity-check symbols. Each column, starting from
+the $M(c -b)$th column has five ones. We call the corresponding matrix $\boldsymbol{H}^{T}$ an (M, 3(2), 5)
+parity-check matrix. We also limit ourselves to the case when the
+period $T=M-1$.
+
+A genereal method for constructing this parity check matrix is outlined below.
+
+\begin{enumerate}
+\item Begin by constructing a $(T,T/2,T/2)$ matrix
+
+\item Split the matrix along the diagonal and interchange the positions of the left and right diagonal
+
+\item Add zeros beneath each row of the matrix
+
+\item Finally, if the row index is odd, add a $1 ,0$ to the beginning and end of the row respectively. If not add a $1,1$ instead.
+
+\end{enumerate}
+
+Next is the encoding procedure for this convolutional code. Let \begin{equation*}
+\boldsymbol{u}_{[0, n]}=\left[u_{0}, u_{1}, \cdots, u_{n}\right]
+\end{equation*} and \begin{equation*}
+\boldsymbol{v}_{[0, n]}=\left[v_{0,1}, v_{0,2}, v_{1,1}, v_{1,2}, \cdots, v_{n, 1}, v_{n, 2}\right]
+\end{equation*}
+be segments of an information sequence and the corresponding encoded respectively. 
+$\boldsymbol{v}_{[0, n]}$ satisfies the equation
+
+\begin{equation}
+\boldsymbol{v}_{[0, n]} \boldsymbol{H}_{[0, n]}^{T}=\mathbf{0}, \quad n=0,1, \cdots
+\end{equation}
+ and $\boldsymbol{H}_{[0, n]}^{T}$ is a segment of the low-density parity-check matrix of the time varying periodical convolutional code shown below 
+ 
+ \begin{figure*}[h]
+\centering
+		\includegraphics[width=0.55\textwidth]
+		{\folder/eqn.eps}
+		\label{fig1}
+		\end{figure*}
+	
+	Since $h_1^{(0)}(n) = h_2^{(0)}(n) =1$. We find a sytematic encoder using the equation below
+	
+	\begin{equation}
+\begin{aligned} v_{n, 1} &=u_{n} \\ v_{n, 2} &=\sum_{i=0}^{M} h_{1}^{(i)}(n) u_{n-i}+\sum_{i=1}^{M} h_{2}^{(i)}(n) v_{n-i, 2} \end{aligned}
+\end{equation}
+
+Generally, the encoder can be implemented using $c$ length $M+1$ shift registers in parallel and time varying connections from the register stages to the modulo 2 adders.
+
+
+\section{Iterative Decoding of Low-Density Convolutional Codes}
+
+It is assumed that a rate $1/2 ~ (M, 3(2), 5)$ ) low-density
+time-varying periodical convolutional code is used for transmission
+over the AWGN channel. The code symbols are modulated and mappedd to the signal points $w_n$ as 
+
+\begin{equation}
+\begin{array}{rlrl}{w_{2 n}} & {=1-2 v_{n, 1},} & {} & {n=0,1, \cdots} \\ {w_{2 n+1}} & {=1-2 v_{n, 2},} & {} & {n=0,1, \cdots}\end{array}
+\end{equation}
+
+The procedure is similar to that of the previous section. The major difference is the pipeline implementation of the decoder, which is made up of $I$ seperate processors and $J+1$ first-in-first-out FIFO shift registers. (FIFO). The first
+register contains the log-likelihood metrics $\ell^{(1)}(n)$ received from the
+channel, while the other $J$ registers contain intermediate statistics
+computed by the different processors. Initially, the encoder contains
+dummy zeroes. Therefore, the FIFO’s are initially filled with $1$,
+which is the log-likelihood ratio for the absolute reliable received
+statistics, which correspond to the code symbol zero. 
+
+Each time a new channel statistic is received, it is shifted in all the
+FIFO’s. Each statistic $\ell^{(1)}(n)$, flows through the FIFO, as in a pipeline,
+and is processed sequentially by the $I$ processors. The $I$ processors are $2(M+1)$ registers apart from each other so they are processing different and consecutive segements of the FIFO stages.
+
+ The decoding procedure is outlined below.
+ \end{document}

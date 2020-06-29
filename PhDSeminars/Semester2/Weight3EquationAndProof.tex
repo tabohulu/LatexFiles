@@ -1,0 +1,232 @@
+\documentclass[fontsize=12pt]{article}
+%\usepackage{xeCJK}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+\usepackage{relsize}
+\usepackage{bm}
+\usepackage[dvipdfmx]{graphicx}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}[section]
+%\setCJKmainfont{SimSun}
+\title{Formula to Calculate Weight for Low-Weight Weight 3 Inputs and Proof} 
+\author{Kwame Ackah Bohulu}
+\date{\today}
+\begin{document}
+\maketitle
+
+\newpage
+
+
+\section{Equation and Proof}
+We begin by defining the following terms.
+\begin{equation}
+\begin{aligned}
+&\alpha_0= (0 1 1),~\alpha_1= (1 0 1 ),~\alpha_2= (1 1 0),\\
+&\alpha_0^{'}= (1 1 1),~\alpha_1^{'}= (0 1 1),~\alpha_2^{'}= (0 0 1),\\
+& u= c_1 \mod 3,~v= c_2 \mod 3,\\
+&d_i =\left \lfloor{\frac{c_i -c_{i-1} -2}{3}}\right \rfloor,~i=\{1,2\}
+\end{aligned}
+\end{equation}
+\begin{theorem}
+
+Given a low-weight weight 3 input $B(x)=x^{c_0}+x^{c_1}+x^{c_2}$, the parity sequence weight for the convolutional codeword can be calculated as 
+
+\begin{equation}
+\begin{aligned}
+&w_H(\alpha^{'}_0)+w_H(\alpha_0+\alpha^{'}_u)+w_H(\alpha_0+\alpha^{}_u
++\alpha^{'}_v)\\
+&+d_1\left(w_H(\alpha^{}_0)\right)+d_2\left(w_H(\alpha^{}_0 + \alpha^{}_u)\right)
+\end{aligned}
+\end{equation}
+
+\end{theorem}
+where $w_H(\cdot)$ is the Hamming weight of the sequence. All binary sequence additions are done in GF(2)
+\begin{proof}
+Given $B(x)$ it is possible to write it in a tabular form as shown below.We assume that $B(x)$ is written in its simplest form, which makes $c_0=0$ and it is always located at row zero and column zero. We can see that $u,v$ is just used to determine which column $c_1,c_2$ occur in. Using the knowledge the impulse response, it is possible to find the parity weight of the codeword. 
+
+\begin{center}
+\begin{tabular}{| c | c | c |}
+\hline
+$c_0$  & & \\
+\hline
+ & & \\
+\hline
+ & & \\
+\hline
+ &$c_1$ & \\
+\hline
+ & & \\
+\hline
+ & & \\
+\hline
+& & $c_2$\\
+\hline
+\end{tabular}
+\quad
+\begin{tabular}{| c | c | c |}
+\hline
+$c_0$  & & \\
+\hline
+ & & \\
+\hline
+ & & \\
+\hline
+ & & $c_1$ \\
+\hline
+ & & \\
+\hline
+ & & \\
+\hline
+& $c_2$ & \\
+\hline
+\end{tabular}
+\end{center}
+The table below shows a tabular representation of the impulse response with respect to the position of $c_0,c_1~\text{and} ~c_2$ for the table on the left.
+
+\begin{center}
+\begin{tabular}{| c | c | c |}
+\hline
+$1$ & 1 &1 \\
+\hline
+0 &1 &1 \\
+\hline
+ 0 &1 &1 \\
+\hline
+ 0 &1 &1 \\
+\hline
+ 0 &1 &1 \\
+\hline
+ 0 &1 &1 \\
+\hline
+0 &1 &1 \\
+\hline
+\end{tabular}
+\quad
+\begin{tabular}{| c | c | c |}
+\hline
+$0$ & 0 &0 \\
+\hline
+$0$ & 0 &0 \\
+\hline
+ $0$ & 0 &0 \\
+\hline
+ 0 &1 &1 \\
+\hline
+ 1 &0 &1 \\
+\hline
+ 1 &0 &1 \\
+\hline
+1 &0 &1 \\
+\hline
+\end{tabular}
+\quad
+\begin{tabular}{| c | c | c |}
+\hline
+$0$ & 0 &0 \\
+\hline
+$0$ & 0 &0 \\
+\hline
+ $0$ & 0 &0 \\
+\hline
+ $0$ & 0 &0 \\
+\hline
+  $0$ & 0 &0 \\
+\hline
+ $0$ & 0 &0 \\
+\hline
+0 &0 &1 \\
+\hline
+\end{tabular}
+\end{center}
+
+To calculate the parity weight, we just need to find the Hamming weight of each row , sum the Hamming weight of each row and then find the cummulative sum. Using the previously defined term, we may rewrite the below in the form below.
+
+\begin{center}
+\begin{tabular}{| c |}
+\hline
+$\alpha_0^{'}$ \\
+\hline
+$\alpha_0$ \\
+\hline
+$\alpha_0$ \\
+\hline
+$\alpha_0$ \\
+\hline
+ $\alpha_0$ \\
+\hline
+ $\alpha_0$ \\
+\hline
+$\alpha_0$ \\
+\hline
+\end{tabular}
+\quad
+\begin{tabular}{| c |}
+\hline
+$\mathbf{0}$  \\
+\hline
+$\mathbf{0}$ \\
+\hline
+ $\mathbf{0}$ \\
+\hline
+ $\alpha_1^{'}$ \\
+\hline
+$\alpha_1$ \\
+\hline
+$\alpha_1$  \\
+\hline
+$\alpha_1$  \\
+\hline
+\end{tabular}
+\quad
+\begin{tabular}{| c |}
+\hline
+$\mathbf{0}$  \\
+\hline
+$\mathbf{0}$ \\
+\hline
+ $\mathbf{0}$ \\
+\hline
+$\mathbf{0}$ \\
+\hline
+$\mathbf{0}$ \\
+\hline
+$\mathbf{0}$ \\
+\hline
+$\alpha_2^{'}$  \\
+\hline
+\end{tabular}
+\end{center}
+
+where $\mathbf{0}=(0 0 0)$. We note that depending on the value of $u,v$, the above table will be slightly different.
+
+Finding the Hamming weight of for each corrsponding row and adding them up results in the equation below 
+\begin{equation}
+\begin{aligned}
+&w_H(\alpha^{'}_0)  +w_H(\alpha_0+\alpha^{'}_1)+w_H(\alpha_0+\alpha^{}_1
++\alpha^{'}_2)\\
+&+d_1\left(w_H(\alpha^{}_0)\right)+d_2\left(w_H(\alpha^{}_0 + \alpha^{}_1)\right)
+\end{aligned}
+\end{equation}
+
+where $d_i,~i=\{1,2\}$ is the number of non-overlapping rows between $c_0,c_1$ and $c_1,c_2$ respectively and is given by
+
+$$d_i =\left \lfloor{\frac{c_i -c_{i-1} -2}{3}}\right \rfloor,~i=\{1,2\}$$
+
+Taking into account the possibility of $c_1,c_2$ appearing in different columns we rewrite the above equation as 
+
+\begin{equation}
+\begin{aligned}
+&w_H(\alpha^{'}_0)+w_H(\alpha_0+\alpha^{'}_u)+w_H(\alpha_0+\alpha^{}_u
++\alpha^{'}_v)\\
+&+d_1\left(w_H(\alpha^{}_0)\right)+d_2\left(w_H(\alpha^{}_0 + \alpha^{}_u)\right)
+\end{aligned}
+\end{equation}
+
+
+\end{proof}
+
+\end{document}

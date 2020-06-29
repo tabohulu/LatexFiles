@@ -1,0 +1,87 @@
+\documentclass[20 pts]{article}
+\usepackage{xeCJK}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bm}
+\setCJKmainfont{SimSun}
+\title{Review of Deterministic Interleavers} 
+\author{Kwame Ackah Bohulu}
+\date{25-05-2017}
+\begin{document}
+\maketitle
+
+
+\section{Introduction}
+Turbo codes (TC) are high-performance forward error correcting codes whiich were discovered by Claude Berrou in 1993. They were amongst the first practical codes to closely approach the channel capacity for the Additive White Gaussian Noise (AWGN) channel.TC are created by the parallel concatenation of two Recursive Systematic Convolutional (RSC) codes (also known as component codes) via an interleaver. TheseThe Bit Error Rate (BER) performance of turbo codes is bound by it's effective free distance ($d_{ef}$) which is the minimum distance associated with input weight 2 error events [2]. The satisfactory performance of turbo codes particularly at low signal-to-noise ratios(SNR) has been attributed to the relatively low multiplicity of $d_{ef}$ codewords resulting from interleaving. However at SNR values this causes an error floor[Proakis]. For a fixed interleaver size, increasing the value of $d_{ef}$ whiles maintaining the multiplicity of such codewords increases the slope of the BER curve which in turn modifies the error floor.
+Input weight 2 error events that are small multiples of the cycle length ($\tau$) of the component code that occur in both component encoders tend to produce low-weight codewords, the worst case being the mapping of error events of length $\tau$ in the first component encoder(CE1) to error events of length $\tau$ in the second component encoder(CE2).  
+
+To increase the effective free distance of the codewords and improve BER performance we aim to design a deterministic interleaver to prevent the occurance of the worst case scenario and to ensure the mapping of weight 2 error events of lengths that are small multiples of $\tau$ in CE1 to weight 2 error events with large lengths in CE2. 
+
+
+\section{System Model}
+An information sequence $\mathbf{x}$ of length $N$ is fed into the input of CE1 of the turbo encoder. This information sequence contains input weight 2 error event of length $t$ where $\tau \leq t \leq 3\tau $. The bit position of the information sequence is rearranged via the interleaver and fed into the input of CE2 of the Turbo encoder. CE1 and CE2 are identical RSC encoders with parameters $(n,K, \frac{g_1(D)}{g_2(D)})$  Since no puncturing is done, the output from the turbo encoder $\mathbf{y}$ has $length(n+1)N$ and serves as input to the BPSK modulator. The bit 0 inputs are modulated to a signal level of -1 and the bit 1 inputs are modulated to a signal value of +1. The modulated output $\mathbf{\widetilde{y}}$ is transmitted over an AWGN channel and the output of the AWGN channel $\mathbf{\widehat{y}}$ is fed into the turbo decoder to produce an output $\mathbf{\widehat{x}}$ of length N.
+The table below contains the notation used during the research.
+
+\begin{center}
+ \begin{tabular}{||c c||} 
+ \hline
+ Symbol & Meaning \\ [0.5ex] 
+ \hline\hline
+ 1 & 6  \\ 
+ \hline
+ 2 & 7  \\
+ \hline
+ 3 & 545 \\
+ \hline
+ 4 & 545 \\
+ \hline
+ 5 & 88\\ [1ex] 
+ \hline
+\end{tabular}
+\end{center}
+
+\section{Problem Statement}
+An input weight error event is defined as an error event with two information bits in error[2]. Each input weight error event in a turbo code corresponds to one input weight error event in each of the two component codes. Consider a typical input weight 2 error event shown in the diagram below. In CE1, it has length $t$ and begins at position $x$ and ends at position $x+t$ where $$x \in \mathbb{Z}$$ and $$t \in \tau \cdot \mathbb{Z} \triangleq \mathbb{D}$$ where $\tau$ is the cycle length of the component encoder. We represent the start and end of the error event with the integer pair $(x,x+t)$These points are then rearranged via the interleaver to positions $\Pi(x)$ and $\Pi(x+t)$ in CE2 and the distance between these positions is represented by $s = \Pi(x+t) - \Pi(x) $. it should be noted that  $t$ and $s$ $ \in \mathbb{D}$.
+
+To increase the effective free distance of the turbo code, we wish to avoid the case where $$s \leq a\tau \triangleq \mathbb{E}(s) \\\\\ \forall x \in \mathbb{Z} , t \in \mathbb{D}$$.
+$a=\{1,2,3\}$. The worst case scenario is when $t = s =\tau$. In other words we wish to make $s$ as large as possible to increase $d_{ef}$ of turbo codes.
+
+\section{Simulation Procedure}
+We need to test the BER performance of the turbo code using the designed interleaver. The BER performance of a convolutional code with maximum-likelihood (ML) decoding on an additive white Gaussian noise (AWGN) channel can be upper-bounded using a union bound technique by [2]
+
+\begin{equation}
+P_b \leq \sum_{i=1}^{2^N} \frac{w_i}{N}Q\Bigg( \sqrt{d_i\frac{2RE_b}{N_o}}\Bigg)
+\end{equation}
+
+where $w_i$ and $d_i$ are the information weight and total Hamming weight, respectively of the ith codeword. Since the Turbo code is composed of convolutional codes, the above formula can also be used to find the upper bound on the BER performance of the Turbo code. For weight 2 error events, the total output weight in relation to Turbo codes can be calculated using the equation [1]
+\begin{equation}
+d_{(t,s)}=6+\Bigg( \frac{ \left|t\right|}{\tau} + \frac{ \left|s\right|}{\tau} \Bigg)w_o
+\end{equation}
+$w_o$ is the weight of output sequence of either component codes when the input sequence is of the form $1+D^\tau$. 
+
+We can collect codewords of the same total Hamming weight calculated using (2) for all possible values of $t$ and $s$and define the average information weight per codeword as [1]
+$$ w_d=\frac{W_d}{N_d}$$
+Where $W_d$ is the total information weight of all codewords of weight  d and $N_d$ is the multiplicity of codewords of weight d. We can then rewrite (1) as 
+
+\begin{equation}
+P_b \simeq \sum_{i=1}^{l} \frac{2N_d}{N}Q\Bigg( \sqrt{d_{(t_i,s_i)}\frac{2RE_b}{N_o}}\Bigg)
+\end{equation}
+where l is the total number of weight 2 error events of length $s>a\tau$ in CE2. 
+
+
+\subsection{Linear Interleaver design}
+
+
+
+
+\newpage
+\section{References}
+\paragraph{[1]}  Oscar Y. Takeshita, Member, IEEE, and Daniel J. Costello ,''New Deterministic Interleaver Designs for Turbo Codes'',IEEE Trans. Inform. Theory, vol.  46,pp. 1988-2006,Nov. 2000\\
+\paragraph{[2]}  L. C. Perez, J. Seghers, D. J. Costello, Jr., ''A distance spectrum interpretation of turbo codes'', IEEE Trans. Inform. Theory, vol. 42, pp. 1698-1709, Nov. 1996.\\
+\paragraph{[3]} Jing Sun, Oscar Y. Takeshita ”Interleavers for Turbo Codes Using Permutation Polynomials over Integer Rings”, IEEE Trans. Inform. Theory, vol. 51,
+pp. 101 - 119 Jan. 2005
+
+
+
+\end{document}

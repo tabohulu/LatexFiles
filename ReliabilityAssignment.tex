@@ -1,0 +1,219 @@
+\documentclass{beamer}  % presen 12pt
+\mode<presentation>
+%\usepackage{hyperref}
+\usetheme{Madrid}
+\usepackage{beamerthemesplit}
+\usepackage[export]{adjustbox}
+\usepackage{color}
+\usepackage{tikz}
+%\input{../../stylefiles/BeamerJ}
+%\usepackage{xeCJK}
+%\setCJKmainfont{MS Gothic}
+%\input{../../stylefiles/BeamerJ}
+
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+
+
+
+\title[Assignment 1]{Assignment 1}
+\author[Bohulu]{ \underline{Bohulu Kwame Ackah} \\ b1841008}
+\institute[UEC]{Graduate School of Informatics and Engineering\\ The University of Electro-Communications}
+\date[Week 3]{\today}
+
+\begin{document}
+\frame{\titlepage}
+
+\addtobeamertemplate{navigation symbols}{}{%
+    \usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \hspace{1em}%
+    \insertframenumber/\inserttotalframenumber
+}
+
+
+
+
+%Slide 1
+
+\begin{frame}
+\frametitle{Other Models}
+\begin{itemize}
+\item Shifted Hazard Model : Obtained by replacing $t$ in the hazard model with $(t-t_0$ to fit observed data, with $t_0$ being adjustable
+
+\item Piecewise model estimation: By using the piecewise-linear model, an approximation  of the hazard function might be obtained
+
+\begin{itemize}
+\item Accuracy is improved by increasing the number of time segments.
+\end{itemize}
+
+\item Power series Estimation : Another estimate can be obtained using the power series models
+\begin{itemize}
+\item Let $\lambda(t)=K_{0}+K_{1} t+K_{2} t^{2}+\ldots+K_{n} t^{m}$. The reliability function is then
+
+$R(t)=\exp \left[-\left(K_{0} t+K_{1} \frac{t^{2}}{2}+K_{2} \frac{t^{3}}{3}+\ldots+K_{m} \frac{t^{2+1}}{n+1}\right)\right]$
+\end{itemize}
+\item Most cases don't need complex models
+\begin{itemize}
+\item Real Challenge: Keeping the models of individual compenents as simple as possible to prevent analysis of the complete sytem from becoming too complicated\end{itemize}
+
+\end{itemize}
+\end{frame}
+
+%slide 2
+\begin{frame}
+\frametitle{Modelling the Wearout Region}
+
+\begin{itemize}
+\item With reference to the bathtub hazard function, the wearout region corresponds to is the rapidly rising part towards the end of the useful life 
+\begin{itemize}
+\item Alternately modelled using the normal distribution around the mean wearout life $W$ of a component with suitably chosen paramenters
+\end{itemize}
+
+\item Using the normal distribution, the associated density function will be
+$f(t)=\frac{1}{\sigma \sqrt{2 \pi}} \exp \left[-\frac{(t-W)^{2}}{2 \sigma^{2}}\right]$
+where $t$ and $\sigma$ is the age of the component and standard deviation respectively
+
+\item We consider a duration $t$ in the lifetime of the component which begins at time $T$. 
+
+\item Assume failures occur due to random events during interval $(T,T+t)$. The components reliability is then 
+$$ R_{t}(t)=e^{-\lambda t}$$ where $\lambda$ corresponds to the useful lifetime of the component.
+
+
+\end{itemize}
+
+
+\end{frame}
+
+
+%slide 3
+\begin{frame}
+\frametitle{Modelling the Wearout Region-2}
+
+\begin{itemize}
+\item Assuming Failure is actually due to wearout during time interval $(T,T+t)$ then then the associated probability given survival up till $T$ is
+$$Q_{w}(t)=\frac{\int_{T}^{r+1} f(\xi) d \xi}{\int_{r}^{\infty} f(\xi) d \xi}$$ 
+
+\item The probability of no wearout failure then becomes
+$$R_{w}(t)=1-Q_{w}(t)=\frac{\int_{r+1}^{\infty} f(\xi) d \xi}{\int_{r}^{\infty} f(\xi) d \xi}$$
+
+\item Considering both chance failures and wearout failures, the probability that they do not occur during the same interval is given by
+$$R(t)=R_{c}(t) R_{w}(t)=e^{-\lambda t} \frac{R_{\text {we }}(T+t)}{R_{\text {we }}(T)}$$ which simplifies to $e^{-\lambda t}R_{\text {we }}(t)$ at $T=0$
+\end{itemize}
+
+
+\end{frame}
+
+
+%slide 4
+\begin{frame} 
+\frametitle{Modelling the Wearout Region-3}
+
+\begin{itemize}
+\item To achieve high values of reliability we need to ensure that
+
+\begin{itemize}
+\item The system is subjected to high burn and debugging procedures
+
+\item Strict preventive maintenance and replacement schedules are to be adhered to to prevent components from entering wearout region.
+
+\end{itemize}
+
+
+\end{itemize}
+
+
+\end{frame}
+
+
+%slide 5
+\begin{frame}
+\frametitle{Reliability and Maintenance}
+
+\begin{itemize}
+\item Scheduled maintenance is done at constant intervals of time with the aim of prolonging the life of components etc.
+
+\item Forced Maintenance is done only when there is an in-service failure and thus may be thought of as repair
+
+\item Components that have a increasing hazard are the only ones that should be considered for scheduled maintenance
+
+\item After incorporating maintenance, the density function may be written as 
+
+$$f^{*}_T(t)=\sum_{k=0}^{\infty} f_{1}\left(t-k T_{M}\right) R^{k}\left(T_{M}\right)$$
+where 
+$\begin{aligned} f_{T}(t)=& \text { failure density function },R(t) =\text{component reliability function} \\ T_{M}=& \text { fixed time interval between maintenances } \\ & f_{1}(t)=\left\{\begin{array}{ll}f_{T}(t) & \text { for } 0<t \leq T_{M} \\ 0 & \text { otherwise }\end{array}\right.\end{aligned}$
+\end{itemize}
+
+
+\end{frame}
+
+%slide 6
+\begin{frame}
+\frametitle{Ideal Repair}
+
+\begin{itemize}
+\item 2 conditions are assumed for ideal repair
+\begin{itemize}
+\item duration of repair after failure is much smaller when compared to time between failures and canbe assumed to be zero
+
+\item Component restored to `as new' condition post repair
+\end{itemize}
+\item Time to $kth$ failure may be calculated as $$f_{k}(t)=\int_{0}^{1} f_{k-1}(\tau) f_{1}(t-\tau) d \tau ; \quad k \geq 2$$
+
+\item let $L(t)$ be the density function of some failure occuring with ideal repair. Then
+$$L(t)=f_{1}(t)+\sum_{k=2}^{\infty} \int_{0}^{t} f_{k-1}(\tau) f_{1}(t-\tau) d \tau$$
+
+\end{itemize}
+
+
+\end{frame}
+
+%slide 7
+\begin{frame}
+\frametitle{Ideal Repair-2}
+
+\begin{itemize}
+\item if time between failures are exponentially distributed, then $f_k(t)$ becomes special case of Erlangian distribution
+
+\item $f_k(t)$ becomes $$f_{k}(t)=\lambda^{k} \frac{t^{k-1}}{(k-1) !} e^{-\lambda t}$$
+
+\item Finally for this special case $L(t)$ becomes $$\begin{aligned}
+L(t)=\sum_{k=1}^{*} f_{k}(t) &=\left(\lambda e^{-\lambda t}\right) \sum_{k=1}^{\infty} \frac{(\lambda t)^{k-1}}{(k-1) !} \\
+&=\lambda e^{-\lambda t} e^{\lambda t}=\lambda
+\end{aligned}$$
+
+\end{itemize}
+
+
+\end{frame}
+
+%slide 8
+\begin{frame}
+\frametitle{Ideal Repair and Preventative Maintenance}
+
+\begin{itemize}
+\item Combining Ideal repair and preventive maintenance if possible, will reduce the frequency of repairs
+
+\item Assuming ideal maintenance at periodicc intervals of $T_M$ the frequence of repair $f_R$ will be
+
+$$f_{R}=\frac{1}{T_{M}} \int_{0}^{T_{M}} L(t) d t$$
+
+\item Maintenance is only useful if the MTTF which is the reciprocal of $f_{R}$ increases.
+
+\end{itemize}
+
+
+\end{frame}
+
+
+
+
+
+
+
+\end{document}

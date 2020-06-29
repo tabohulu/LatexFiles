@@ -1,0 +1,33 @@
+\documentclass[20 pts]{article}
+\usepackage{xeCJK}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bm}
+\setCJKmainfont{SimSun}
+
+\begin{document}
+
+
+
+[IP,cs,ns,op]=RSCencoder2(K,k,n,gen_func);
+rng('default');
+ msg=randi([0,1],1,interleaver_size-(K-1));
+
+/------------encoder 1----------------/
+[codeword1, code1,code_parity1,padding1]=ConvoCodeGenerator2(msg,cs,ns,op,IP,gen_func);
+systematic=codeword1(:,1)';
+  
+/------------encoder 2----------------/
+
+interleaved_msg=systematic(yy);
+
+[codeword2, code2,code_parity2,padding2] =ConvoCodeGenerator2(interleaved_msg,cs,ns,op,IP,gen_func);
+
+ if length(code_parity2)>interleaver_size
+     code_parity2(interleaver_size+1:end)=[];
+elseif length(code_parity2)<interleaver_size  code_parity2(end+1:interleaver_size)=zeros(1,interleaver_size-length(code_parity2));
+ end
+code=[systematic;code_parity1;code_parity2];
+fin_code=code(:)';
+\end{document}

@@ -1,0 +1,121 @@
+\documentclass[11pt, oneside, dvipdfmx]{book}
+\newcommand{\folder}{/usr/local/share/texmf}
+\input{\folder/hfiles/ebook}
+\usepackage{array, caption, tabularx,  ragged2e,  booktabs}
+%\setCJKmainfont{SimSun}
+\title{Listing all $a(x),~b(x)~,h(x) for 21/37 RSC$}
+\author{Kwame Ackah Bohulu}
+\date{\today}
+\begin{document}
+
+\begin{enumerate}
+\item{RSC code} $21/37=[1 0 0 01/1 1 1 1 1]$
+
+\item{Trellis depth,N} =32
+\end{enumerate}
+
+
+   \begin{table*}[h]
+ 
+ \caption{codewords with parity bit sequence weight $w_H(\textbf{h})=2$}
+\centering
+\begin{tabularx}{\linewidth}{|l|c|*{4}{>{\RaggedRight\arraybackslash}X|}}
+
+ \hline
+ $w_H(\textbf{b})$ & $a(x)$ & $b(x)$ & $h(x)$ \\ [0.5ex] 
+ \hline\hline
+ 5 & 1 & $1+x+x^2+x^3+x^4$ & $1+x^4$\\ 
+ \hline
+ 8 & $1+x^4$ & $1+x+x^2+x^3+x^5+x^6+x^7+x^8$ & $1+x^8$ \\
+ \hline
+ 11 & $1+x^4+x^8$& $1+x+x^2+x^3+x^5+x^6+x^7+x^9+x^{10}+x^{11}+x^{12}$ & $1+x^{12}$ \\
+ \hline
+14 & $1+x^4+x^8+x^{12}$& $1+x+x^2+x^3+x^5+x^6+x^7+x^9+x^{10}+x^{11}+x^{13}+x^{14}+x^{15}+x^{16}$& $1+x^{16}$ \\
+\hline
+ 17 & $1+x^4+x^8+x^{12} +x^{16}$ & $1+x+x^2+x^3+x^5+x^6+x^7+x^9+x^{10}+x^{11}+x^{13}+x^{14}+x^{15}+x^{17}+x^{18}+x^{19}+x^{20}$ & $1+x^{20}$ \\
+ \hline
+ 20 & $1+x^4+x^8+x^{12} +x^{16}+x^{20}$ & $1+x+x^2+x^3+x^5+x^6+x^7+x^9+x^{10}+x^{11}+x^{13}+x^{14}+x^{15}+x^{17}+x^{18}+x^{19}+x^{21}+x^{22}+x^{23}+x^{24}$ & $1+x^{24}$\\ 
+ \hline
+ 23 & $1+x^4+x^8+x^{12} +x^{16}+x^{20}+x^{24}$ & $1+x+x^2+x^3+x^5+x^6+x^7+x^9+x^{10}+x^{11}+x^{13}+x^{14}+x^{15}+x^{17}+x^{18}+x^{19}+x^{21}+x^{22}+x^{23}+x^{25}+x^{26}+x^{27}+x^{28}$ & $1+x^{28}$ \\ [1ex] 
+ \hline
+ \end{tabularx}
+ \label{tab1}
+\end{table*}
+
+
+
+
+ \begin{table*}[h]
+ 
+ \caption{codewords with parity bit sequence weight $w_H(\textbf{h})=4$}
+\centering
+\begin{tabularx}{\linewidth}{c c c c}
+
+ \hline
+ $w_H(\textbf{b})$ & $a(x)$ & $b(x)$ & $h(x)$ \\ [0.5ex] 
+ \hline\hline
+ 2 & 1+x & $1+x+x^5$ & $1+x+x^4+x^5$\\ 
+ \hline\hline
+  & $1+x^2$ & $1+x+x^5+x^6$ & $1+x^2+x^4+x^6$ \\
+ 
+ 4 & $1+x+x^4+x^5$& $1+x^4+x^5+x^9$ & $1+x+x^8+x^{9}$ \\
+ \hline\hline
+ & $1+x^4+x^5$ & $1+x+x^2+x^3+x^{9}$& $1+x^5+x^8+x^{9}$ \\
+
+ & $1+x^3+x^4$ & $1+x+x^2+x^4+x^8$ & $1+x^3+x^7+x^{8}$ \\
+ 
+5 & $1+x^2+x^4$ & $1+x+x^4+x^7+x^8$ & $1+x^2+x^6+x^{8}$\\ 
+ 
+ & $1+x+x^5$ & $1+x^6+x^7+x^8+x^9$ & $1+x+x^4+x^{9}$ \\ 
+ 
+ & $1+x+x^4$ & $1+x^4+x^6+x^7+x^8$ & $1+x+x^5+x^{8}$ \\ 
+\hline\hline
+ & $1+x^3$ & $1+x+x^2+x^3+x^5+x^6+x^7$ & $1+x^{3}+x^{4}+x^{7}$ \\ 
+
+6 & $1+x^2+x^4+x^6$ & $1+x+x^4+x^6+x^9+x^{10}$ & $1+x^{2}+x^{8}+x^{10}$ \\ 
+
+ & $1+x+x^4+x^5+x^8+x^9$ & $1+x^4+x^5+x^8+x^9+x^{13}$ & $1+x+x^{12}+x^{13}$ \\ [1ex] 
+
+ \hline
+ \end{tabularx}
+ \label{tab1}
+\end{table*}
+
+
+ \begin{table*}[h]
+ 
+ \caption{codewords arranged according to $w_H(\textbf{c})$}
+\centering
+\begin{tabularx}{\linewidth}{c c c c}
+
+ \hline
+ $w_H(\textbf{c})$ & $a(x)$ & $b(x)$ & $h(x)$ \\ [0.5ex] 
+ \hline\hline
+ 6 & 1+x & $1+x^5$ & $1+x+x^4+x^5$\\ 
+ \hline\hline
+ 7 & 1 & $1+x+x^2+x^3+x^4$ & $1+x^4$\\ 
+ \hline\hline
+  & $1+x^2$ & $1+x+x^5+x^6$ & $1+x^2+x^4+x^6$ \\
+
+ 8 & $1+x+x^4+x^5$& $1+x^4+x^5+x^9$ & $1+x+x^8+x^{9}$ \\
+ 
+  & $1+x+x^5+x^6$& $1+x^{10}$ & $1+x+x^4+x^6+x^{9}+x^{10}$ \\
+ \hline\hline
+ & $1+x^4+x^5$ & $1+x+x^2+x^3+x^{9}$& $1+x^5+x^8+x^{9}$ \\
+
+ & $1+x^3+x^4$ & $1+x+x^2+x^4+x^8$ & $1+x^3+x^7+x^{8}$ \\
+ 
+9 & $1+x^2+x^4$ & $1+x+x^4+x^7+x^8$ & $1+x^2+x^6+x^{8}$\\ 
+ 
+ & $1+x+x^5$ & $1+x^6+x^7+x^8+x^9$ & $1+x+x^4+x^{9}$ \\ 
+ 
+ & $1+x+x^4$ & $1+x^4+x^6+x^7+x^8$ & $1+x+x^5+x^{8}$ \\ 
+\hline
+ 
+ 
+ \end{tabularx}
+ \label{tab1}
+\end{table*}
+
+
+\end{document}

@@ -1,0 +1,321 @@
+\documentclass[11pt, oneside, dvipdfmx]{book}
+\newcommand{\folder}{/usr/local/share/texmf}
+\input{\folder/hfiles/ebook}
+\usepackage {graphicx}
+\usepackage {graphics}
+%\setCJKmainfont{SimSun}
+\title{``
+Coset Interleaver Idea Progress March 30th'' }
+\author{Kwame Ackah Bohulu}
+\date{\today}
+\begin{document}
+
+\maketitle
+
+
+
+
+\section{Introduction}
+Using the $5/7$ RSC interleaver as a reference, we present the idea of coset interleaving for breaking up weight-$2$ and weight-$3$ return-to-zero (RTZ) input sequences which produce codewords with weights less than $w_H$. The notations and the assumptions that will be made throught out this paper are listed below.
+
+
+ \subsection{Notations}
+ \begin{enumerate}
+ \item $N$ :- Interleaver Length, Interleaver size,~$N=n\tau$.
+  \item $\mathcal{C}^i$ :- Coset ,$i,~i=\{0,1,...,\tau-1 \}$
+ \item $L=N/\tau$ :- Coset length, Coset size.
+ \item $\tau$ :- Cycle length of RSC encoder ($\tau= 3$ for $5/7$RSC encoder)
+ \item Seperation:- Assume that there is a set $\mathcal{A}=\{a,b,c,...\},~b>a,c>b,$ etc. For any 2 elements in set, the seperation is defined as the difference between the elements. For example, the seperation between $b$ and $a$ is $b-a$
+ \item Step:- Assume that there is a set $\mathcal{A}=\{a,b,c,...\},~b>a,c>b,$ etc . For any 2 elements in set, the step is defined as the difference between the index of two elements. For example, from $a$ to $b$ a step of $1$ is required and from $a$ to $c$ a step of $2$ is required.
+ \item $D_1$ :-Interleaving step
+ \item $s$ :- post-interleaving seperation
+ \item $t$ :- pre-interleaving seperation
+ \item layer distance ($l$) :- Assume we have a set $\mathcal{A}=(0,1,...,N-1)$. We proceed to form a $N/\tau \times \tau$ matrix $\mathbf{A}$ from it. We assign indices to each row and refer to each row of $\mathbf{A}$ as a layer and the the layer distance $l$ as the difference betweeen two rows indices of $\mathbf{A}$
+ 
+
+ \end{enumerate}
+ 
+ \section{Weight-$2$ RTZ inputs}
+ In this section, we present the idea for coset interleaving focusing solely on weight-$2$ RTZ inputs. According to [SunTakeshita] weight-$2$ RTZ inputs have two ``1'' bits which are seperated by $n\tau -1,~n=1,2,...$ ``0'' bits. Consequently, the smaller the value of $n$, the lower the weight of the codeword which will be produced. Based on this, we decided to break down the interleaver into 3 groups depending on the value of $L \mod \tau $, which for the case of the $5/7$ RSC is either $0,1,~\text{or}~2$. For each interleaver group, we explore all possible permutation matrices and select the ones that meet a certain design criteria. 
+ 
+ \subsection{Interleavers with coset length $L$ where $L \mod \tau =0$}
+ 
+ From the discussion made in the previous section, we can deduce that the weight-$2$ RTZ which produces the lowest codeword weight will be of the form $x^t(1+x^3),~t=0,1,2,...$. The best outcome would be to transform $x^t(1+x^3)$ into a non-RTZ input. However, as the value of $N$ increases, this becomes possible for only a specified distance within the interleaver. The next best thing we can do is to make sure that anytime we have a RTZ input of the form $x^t(1+x^3)$, it is transformed into another RTZ input which produces a codeword with a heavier weight than $x^t(1+x^3)$.  For interleavers where $L \mod \tau =0$, $N =n\tau^2 = 9n,~n=1,2,...$. We focus on the case where $n=1$ and look for unique $N \times N$ permutation matrices such that $x^t(1+x^3)$ is transformed to a non-RTZ input. A permutation matrix is unique if a shift of the elements in the matrix does not produce another another permutation matrix.
+ 
+ 
+ 
+ 
+ 
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c || c  c  c  c  c  c  c  c  c |} 
+ \hline
+ $\mathbf{A}$ & 0 & 3 & 6 & 1 & 4 & 7 & 2 & 5 & 8\\ 
+  \hline
+  $\mathbf{B}$ & 0 & 3 & 6 & 1 & 4 & 2 & 5 & 8 & 7\\ 
+  \hline
+  $\mathbf{C}$ & 0 & 3 & 6 & 1 & 2 & 4 & 5 & 7 & 8\\ 
+  \hline
+  $\mathbf{D}$ & 0 & 3 & 6 & 1 & 2 & 5 & 8 & 4 & 7\\ 
+ \hline
+  $\mathbf{E}$ & 0 & 3 & 6 & 2 & 1 & 4 & 7 & 5 & 8\\ 
+ \hline
+ $\mathbf{F}$ & 0 & 3 & 6 & 2 & 1 & 5 & 4 & 8 & 7\\ 
+ \hline
+  $\mathbf{G}$ & 0 & 3 & 6 & 2 & 5 & 1 & 4 & 7 & 8\\ 
+ \hline
+  $\mathbf{H}$ & 0 & 3 & 6 & 2 & 5 & 8 & 1 & 4 & 7\\ 
+ \hline
+  $\mathbf{I}$ & 0 & 3 & 1 & 4 & 7 & 6 & 2 & 5 & 8\\ 
+ \hline
+  $\mathbf{J}$ & 0 & 3 & 1 & 4 & 2 & 6 & 5 & 7 & 8\\ 
+ \hline
+  $\mathbf{K}$ & 0 & 3 & 1 & 2 & 4 & 6 & 7 & 5 & 8\\ 
+ \hline
+ $\mathbf{L}$ & 0 & 3 & 1 & 2 & 5 & 6 & 4 & 7 & 8\\ 
+ \hline
+  $\mathbf{M}$ & 0 & 3 & 2 & 1 & 4 & 6 & 5 & 8 & 7\\ 
+ \hline
+  $\mathbf{N}$ & 0 & 3 & 2 & 1 & 5 & 6 & 8 & 4 & 7\\ 
+ \hline
+ $\mathbf{O}$ & 0 & 3 & 2 & 5 & 1 & 6 & 4 & 8 & 7\\ 
+ \hline
+ $\mathbf{P}$ & 0 & 3 & 2 & 5 & 8 & 6 & 1 & 4 & 7\\ 
+ \hline
+ $\mathbf{Q}$ & 0 & 1 & 3 & 4 & 6 & 7 & 2 & 5 & 8\\ 
+ \hline
+  $\mathbf{R}$ & 0 & 1 & 3 & 4 & 6 & 2 & 5 & 8 & 7\\ 
+ \hline
+ $\mathbf{S}$ & 0 & 1 & 3 & 4 & 2 & 7 & 5 & 6 & 8\\ 
+ \hline
+ $\mathbf{T}$ & 0 & 1 & 3 & 2 & 6 & 4 & 7 & 5 & 8\\ 
+ \hline
+ $\mathbf{U}$ & 0 & 1 & 3 & 2 & 6 & 5 & 4 & 8 & 7\\ 
+ \hline
+ $\mathbf{V}$ & 0 & 1 & 3 & 2 & 5 & 4 & 7 & 6 & 8\\ 
+ \hline
+ $\mathbf{W}$ & 0 & 1 & 4 & 7 & 2 & 3 & 5 & 6 & 8\\ 
+ \hline
+ $\mathbf{X}$ & 0 & 2 & 3 & 5 & 6 & 8 & 1 & 4 & 7\\ 
+ \hline
+\end{tabular}
+\caption{All unique permutation matrices for the case when $L \mod \tau =0$}
+\label{tb1}
+\end{table}
+ 
+ Table \ref{tb1} shows all unique permutation matrices that meet the above criteria. Each row is a seperate permutation matrix and the column index corresponds to the rows in each matrix and the column values correspond to the column where a $1$ appears.
+ 
+ For example, the first row in Table \ref{tb1} corresponds to the permutation matrix below.
+ 
+ \begin{equation}
+ \begin{bmatrix}
+1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\
+0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\
+0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+\end{bmatrix}
+\end{equation}
+
+At the 0th row and the 0th column, 1st row and the 3rd column,3rd row and the 6th column,.. and so on, a $1$ is present.
+
+For interleaver lengths $N$ where $n>1$, what we can to is to repeat the decided upon interleaving pattern for all the $n$ blocks of the interleaver. Regardless of which interleaving pattern we choose from Table \ref{tb1}, we are certain that RTZ inputs only occur when any $2$ elements have a step of exactly $9$ between them. 
+
+
+ \subsection{Interleavers with coset length $L$ where $L \mod \tau =1$ or $L \mod \tau =2$}
+ Interlerleavers that meet this criteria, can be further grouped into 2 categories. The first category which is easiest to deal with is the case where $N$ is divisible by $3$ and $6$. The second category is where $N $ is divisible by 3 only.
+ 
+ For the case where $N$ is divisible by $3$ and $6$, we choose the largest divisor($6$) and set $N=6n,~n=1,2,...$ . Setting $N=1$ we then follow the procedure in the previous section, and find all permutation matrices which ensure that the weight-2 RTZ input $x^t(1+x^3)$ is transformed into a non-RTZ input. The permutation matrices which meet this criteria are shown in Table  \ref{tb2}. 
+ %===================================
+ \begin{table}[h!]
+\centering
+\begin{tabular}{|c || c  c  c  c  c  c|} 
+ \hline
+ $\mathbf{A}$ & 0 & 3 & 1 & 4 & 2 & 5\\ 
+  \hline
+  $\mathbf{B}$ & 0 & 3 & 1 & 2 & 4 & 5\\ 
+  \hline
+ $\mathbf{C}$ & 0 & 3 & 2 & 1 & 5 & 4\\ 
+  \hline
+  $\mathbf{D}$ & 0 & 3 & 2 & 5 & 1 & 4\\ 
+ \hline
+  $\mathbf{E}$ & 0 & 1 & 3 & 4 & 2 & 5\\ 
+ \hline
+ $\mathbf{F}$ & 0 & 1 & 3 & 2 & 5 & 4\\ 
+ \hline
+  $\mathbf{G}$ & 0 & 1 & 4 & 2 & 3 & 5\\ 
+ \hline
+ $\mathbf{H}$ & 0 & 2 & 3 & 5 & 1 & 4\\ 
+ \hline
+\end{tabular}
+\caption{All unique permutation matrices for the case when $L \mod \tau =1$ or $L \mod \tau =2$ and $N=6n$}
+\label{tb2}
+\end{table}
+ For interleaver lengths $N$ where $n>1$, what we can to is to repeat the decided upon interleaving pattern for all the $n$ blocks of the interleaver. Again, regardless of which interleaving pattern we choose from Table \ref{tb2}, we are certain that RTZ inputs only occur when any $2$ are exactly $6$ steps away from each other. 
+ 
+ 
+ For the case where $N$ is divisible by $3$ only, we have $N=3n,~n=1,2,...$ . Again, we set $n=1$ and follow the procedure in the previous section, and find all permutation matrices which ensure that the weight-2 RTZ input $x^t(1+x^3)$ is transformed into a non-RTZ input. The permutation matrices which meet this criteria are shown in Table  \ref{tb3}. 
+ 
+ \begin{table}[h!]
+\centering
+\begin{tabular}{|c || c  c  c|} 
+ \hline
+ $\mathbf{A}$ & 0 & 1 & 2\\ 
+  \hline
+  $\mathbf{B}$ & 0 & 2 & 1\\ 
+  \hline
+\end{tabular}
+\caption{All unique permutation matrices for the case when $L \mod \tau =1$ or $L \mod \tau =2$ and $N=3n$}
+\label{tb3}
+\end{table}
+
+Again ,for interleaver lengths $N$ where $n>1$, we repeat the decided upon interleaving pattern for all the $n$ blocks of the interleaver. This time,  that RTZ inputs only occur when any $2$ are exactly $3$ steps away from each other, which means $x^t(1+x^3)$ is always mapped unto itself and this is a situation we want to avoid as much as possible. In light of this, we present an alternate procedure for coset interleaving for when $L \mod \tau =1$ or $L \mod \tau =2$ 
+ 
+ 
+ \subsection{Alternate Method for Interleavers with coset length $L$ where $L \mod \tau =1$ or $L \mod \tau =2$}
+ 
+ For interleavers which meet this criteria, we take the elements in each cosest and form a $3 \times \lceil \frac{L}{3} \rceil $ matrix as shown in Figure \ref{fig1}
+ 
+ \begin{figure}[h!]
+\centering
+		\includegraphics[width=\textwidth]{cosetRep.jpg}
+		\caption{Turbo Encoder}
+		\label{fig1}
+		\end{figure}
+		
+Figure \ref{fig1} (a) represents the case where $L \mod \tau =2$ and Figure \ref{fig1} (b) represents the case where $L \mod \tau =1$. The task is to generate a permutation matrix which guarantees that the should a weight-$2$ RTZ $x^t(1+x^3)$ occur it will not be mapped to the same RTZ sequence at all points during interleaving.
+
+The $L \times N$ permutation matrices which meet the criteria are shown in Table \ref{tb4} for different values of $L$ and $N$. 
+
+ \begin{table}[h!]
+\centering
+\begin{tabular}{|c || c  c  c  c  c  c c|} 
+ \hline
+ $L=4,N=12$ & 0 & 3 & 6 & 10 & & &\\ 
+  \hline
+ $L=5,N=15$ & 0 & 3 & 6 & 10 & 12 & &\\ 
+  \hline
+\end{tabular}
+\caption{All unique permutation matrices for different values of $N$ and $L$ when $L \mod \tau =1$ or $L \mod \tau =2$}
+\label{tb4}
+\end{table}
+
+%Permutation matrices are usually square in nature. Representing a permutation matrix in Table \ref{tb4} by $\mathbf{A}$ we form the required $N \times N$ permutation matrix, by concatenatenating 3 permutation matrices and circularly shift each consecutive matrix by $\tau-1$ to right as shown in Equation \ref{eq1}.
+
+The permutation matrices obtained using this method ensures that weight-$2$ RTZ $x^t(1+x^3)$ is never mapped to itself at any point in the interleaving process.
+
+ \section{Weight-$3$ RTZ inputs}
+ In most interleaver design cases, focusing on weight-2 RTZ inputs would be enough. For the $5/7$ RSC interleaver however, this is not the case since the minimum weight codeword is caused by the weight -$3$ RTZ input of the form $x^t(1+x+x^2),~t=1,2,...$.  In general, any time a weight $3$ input has $x \mod 3=1$ zeros and/or $x \mod 3=1$ between its first 2 ``1'' bits and and last 2 ``1'' bits it is a weight $3$ RTZ input sequence. This definition is specific to the $5/7$ RSC encoder. 
+ 
+ Similar to the approach taken for designing interleavers weight-$2$ RTZ sequences, we group the interleavers into 3 groups, depending on the value of $L \mod \tau$ and find all possible permutation matrices which prevent $x^t(1+x+x^2)$ from being mapped to itself.
+ 
+ \subsection{Interleavers with coset length $L$ where $L \mod \tau =0$}
+ Table \ref{tb5} list all permutation matrices when which transforms $x^t(1+x+x^2)$ into a non RTZ input.
+ 
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c || c  c  c  c  c  c  c  c  c |} 
+ \hline
+ $\mathbf{A}$ & 0 & 3 & 6 & 1 & 4 & 7 & 2 & 5 & 8\\ 
+  \hline
+ $\mathbf{B}$ & 0 & 3 & 6 & 1 & 4 & 2 & 7 & 5 & 8\\ 
+ \hline
+$\mathbf{C}$ & 0 & 3 & 6 & 1 & 4 & 2 & 8 & 7 & 8\\ 
+ \hline
+$\mathbf{D}$ & 0 & 3 & 6 & 1 & 4 & 2 & 5 & 8 & 7\\ 
+ \hline
+ $\mathbf{E}$ & 0 & 3 & 6 & 2 & 5 & 1 & 4 & 7 & 8\\ 
+ \hline
+ $\mathbf{F}$ & 0 & 3 & 6 & 2 & 5 & 1 & 4 & 8 & 7\\ 
+ \hline
+ $\mathbf{G}$ & 0 & 3 & 6 & 2 & 5 & 1 & 8 & 4 & 7\\ 
+ \hline
+  $\mathbf{H}$ & 0 & 3 & 1 & 6 & 4 & 7 & 2 & 5 & 8\\ 
+ \hline
+  $\mathbf{I}$ & 0 & 3 & 1 & 4 & 7 & 2 & 5 & 6 & 8\\ 
+ \hline
+ $\mathbf{J}$ & 0 & 3 & 2 & 6 & 5 & 8 & 1 & 4 & 7\\ 
+ \hline
+  $\mathbf{K}$ & 0 & 3 & 2 & 5 & 8 & 1 & 4 & 6 & 7\\ 
+ \hline
+  $\mathbf{L}$ & 0 & 1 & 3 & 4 & 7 & 2 & 5 & 6 & 8\\ 
+ \hline
+\end{tabular}
+\caption{All unique permutation matrices for the case when $L \mod \tau =0$}
+\label{tb5}
+\end{table}
+ 
+ However, there are other weight 3 RTZ inputs which exist within this span, depending on the permutation matrix that is chosen. For example, $\mathbf{A}$ has  $1 +x^4+x^8,~ 1+x^5+x^7, ~x+x^3+x^8,~ x+x^5+x^6,~x^2+x^4+x^6,~x^2+x^3+x^7$, whiles $\mathbf{B}$ has $1+x^4+x^8,~x+x^3+x^8,~x+x^3+x^5,~x+x^6+x^8,~x^2+x^3+x^7,
+ ~x^2+x^6+x^7$
+ 
+ Regardless of which permutation matrix is picked, we are certain that the weight 3 RTZ $1+x+x^2$ will not be mapped to itself within the chosen span.
+ 
+ \subsection{Interleavers with coset length $L$ where $L \mod \tau =1$ or $L \mod \tau =2$}
+ 
+Similar to weight 2 RTZ, we further divide the abpve case into 2 categories. The first category is when $N$ is divisible by $3$ and $6$. The second category is where $N $ is divisible by 3 only. Table \ref{tb6} show all permutation matrices which prevent $1+x+x^2$ from being interleaved to itself when $L \mod \tau =1$ or $L \mod \tau =2$ and $N$ is divisible by $3$ and $6$.
+ 
+ \begin{table}[h!]
+\centering
+\begin{tabular}{|c || c  c  c  c  c  c |} 
+ \hline
+ $\mathbf{A}$ & 0 & 3 & 1 & 4 & 2 & 5\\ 
+  \hline
+ $\mathbf{B}$ & 0 & 3 & 2 & 5 & 1 & 4\\ 
+ \hline
+\end{tabular}
+\caption{All unique permutation matrices for the case when $L \mod \tau =1$}
+\label{tb6}
+\end{table}
+ 
+ The remaining weight 3 RTZ which need to be dealt with is $1+x^2+x^4$. 
+ 
+ 
+ For the second category ($N$ divisible by $3$ only), there are no permutation matrices which meet this criteria.
+ 
+  \subsection{Alternate Method for Interleavers with coset length $L$ where $L \mod \tau =1$ or $L \mod \tau =2$}
+  For the case where  $L \mod \tau =1$, there is a point where $1+x+x^2$ is mapped to itself, depending on $N$.
+  
+  For the case where  $L \mod \tau =2$, $1+x+x^2$ is never mapped unto itself, but the lowest weight $3$ RTZ that needs to be dealt with is $x+x^3+x^5$
+  
+  \section{Maximizing Seperation for weight-2 RTZ inputs}
+  
+ \subsection{case $L \mod 3 =0$}
+  From Table \ref{tb1} we select the permutation matrix $\mathbf{A}$. For interleaver length $N>9$, we repeat this pattern. With this permutation matrix, we are sure that the weight-2 RTZ $1+x^9$ will be mapped to itself. We wish to prevent this by transforming $1+x^9$ into a weight -2 RTZ input which has a large seperation the ``1'' bits. Let $t$ and $s$ represent the seperation before and after interleaving.It is worth noting that $t,s$ are multiples of $\tau =3$
+  
+  The mamimum seperation depends on the value of N. Therefore to achieve the largest separation after interleaving $s$ must meet the following condition. 
+  
+   $$s=\text{max} \begin{cases}
+       a\leq\lfloor\frac{N}{2}\rfloor 
+    \end{cases}
+$$
+
+\subsection{case $L \mod 3 =1$}
+
+\subsection{case $L \mod 3 =2$}
+\section{Maximizing seperation for weight-$3$ RTZ inputs}
+
+\subsection{case $L \mod 3 =0$}
+
+\subsection{case $L \mod 3 =1$}
+
+\subsection{case $L \mod 3 =2$}
+
+\section{Maximizing Seperation for weight-$2$  and weight-$3$ RTZ inputs}
+
+\subsection{Choice of Permutation polynomial}
+\paragraph{case $L \mod 3 =0$}
+
+\paragraph{case $L \mod 3 =1$}
+
+\paragraph{case $L \mod 3 =2$}
+
+\subsection{Range of Maximum Separation}
+
+\section{Interleaver implementation}
+
+\section{Simulation Results}
+ \end{document}

@@ -1,0 +1,173 @@
+% IEICE Infromation Theory Conference (Technical Meeting)
+% Stylefile for the IEICE technical report
+
+\newcounter{@paper}
+\newtoks\@authorlist
+\newcount\@authorcnt
+\newcount\@alcnt
+\newcount\p@alcnt
+ \p@alcnt=9\relax
+\newcount\@totalnumber
+\newdimen\authornamesep
+ \authornamesep\z@
+%% \authornamesep1zw
+
+\def\authorlist#1{%
+ \if@paper
+  \@authorlist={#1}\the\@authorlist
+ \else
+  \let\authorentry\Lauthorentry
+  \@authorlist={#1}\@chkmbrship
+ \fi
+}
+
+\def\Lauthorentry{\@ifnextchar[%% ]
+ {\TRL@ae}{\NL@ae}}
+
+\def\NL@ae#1#2#3#4{\@ifnextchar[% ]
+ {\L@aeP{#1}{#2}{#3}{#4}}%
+ {\L@ae{#1}{#2}{#3}{#4}}}
+
+\def\TRL@ae[#1]#2#3#4#5{\@ifnextchar[% ]
+ {\TRL@aeP[#1]{#2}{#3}{#4}{#5}}%
+ {\TRL@aeNP[#1]{#2}{#3}{#4}{#5}}}
+
+\def\L@ae#1#2#3#4{%
+ \@tempcnta\z@
+ \advance \@authorcnt \@ne
+ \get@al{#4}%
+ \def\al@none{0}%
+ \expandafter\xdef
+  \csname @jauthormembership\number\@authorcnt\endcsname{%
+   \csname #3J@member\endcsname}%
+ \fmt@Jan{#1}%
+ \expandafter\xdef\csname @Jauthorname\number\@authorcnt\endcsname{%
+  \@authorname\kern\z@\plural@affi
+   \csname @jauthormembership\number\@authorcnt\endcsname}%
+ \fmt@Ean{#2}%
+ \expandafter\xdef\csname @Eauthorname\number\@authorcnt\endcsname{%
+  \@authorname\nobreak\plural@affi}%
+ \expandafter\xdef\csname @authormembership\number\@authorcnt\endcsname{%
+  \csname #3@member\endcsname}%
+ \expandafter\xdef\csname @authormembership\number\@authorcnt*\endcsname{%
+  \csname #3@members\endcsname}%
+ \global\@totalnumber=\@authorcnt
+ \def\plural@affi{}%
+}
+
+\def\L@aeP#1#2#3#4[#5]{%
+ \@tempcnta\z@
+ \advance \@authorcnt \@ne
+ \get@al{#4}%
+ \def\al@none{0}%
+ \@tempcnta\z@
+ \get@p@al{#5}%
+ \expandafter\xdef\csname @jauthormembership\number\@authorcnt\endcsname{%
+  \csname #3J@member\endcsname}%
+ \fmt@Jan{#1}%
+ \expandafter\xdef\csname @Jauthorname\number\@authorcnt\endcsname{%
+  \@authorname\kern\z@\plural@affi\plural@p@affi
+   \csname @jauthormembership\number\@authorcnt\endcsname
+ }%
+ \fmt@Ean{#2}%
+ \expandafter\xdef\csname @Eauthorname\number\@authorcnt\endcsname{%
+  \@authorname\nobreak\plural@affi\nobreak\plural@p@affi
+ }%
+ \expandafter\xdef\csname @authormembership\number\@authorcnt\endcsname{%
+  \csname #3@member\endcsname}%
+ \expandafter\xdef\csname @authormembership\number\@authorcnt*\endcsname{%
+  \csname #3@members\endcsname}%
+ \global\@totalnumber=\@authorcnt
+ \def\plural@affi{}%
+ \def\plural@p@affi{}%
+}
+
+\def\TRL@aeNP[#1]#2#3#4#5{%
+ \@tempcnta\z@
+ \advance \@authorcnt \@ne
+ \GetEma{#1}%
+ \get@al{#5}%
+ \def\al@none{0}%
+ \expandafter\xdef\csname @jauthormembership\number\@authorcnt\endcsname{%
+  \csname #4J@member\endcsname}%
+ \fmt@Jan{#2}%
+ \expandafter\xdef\csname @Jauthorname\number\@authorcnt\endcsname{%
+  \@authorname\kern\z@\plural@affi\email@affi
+   \csname @jauthormembership\number\@authorcnt\endcsname}%
+ \fmt@Ean{#3}%
+ \expandafter\xdef\csname @Eauthorname\number\@authorcnt\endcsname{%
+  \@authorname\nobreak\plural@affi\email@affi}%
+ \expandafter\xdef\csname @authormembership\number\@authorcnt\endcsname{%
+  \csname #4@member\endcsname}%
+ \expandafter\xdef\csname @authormembership\number\@authorcnt*\endcsname{%
+  \csname #4@members\endcsname}%
+ \global\@totalnumber=\@authorcnt
+ \def\plural@affi{}%
+}
+
+\def\TRL@aeP[#1]#2#3#4#5[#6]{%
+ \@tempcnta\z@
+ \advance \@authorcnt \@ne
+ \GetEma{#1}%
+ \get@al{#5}%
+ \def\al@none{0}%
+ \@tempcnta\z@
+ \get@p@al{#6}%
+ \expandafter\xdef\csname @jauthormembership\number\@authorcnt\endcsname{%
+  \csname #4J@member\endcsname}%
+ \fmt@Jan{#2}%
+ \expandafter\xdef\csname @Jauthorname\number\@authorcnt\endcsname{%
+  \@authorname\kern\z@\plural@affi\plural@p@affi\email@affi
+   \csname @jauthormembership\number\@authorcnt\endcsname
+ }%
+ \fmt@Ean{#3}%
+ \expandafter\xdef\csname @Eauthorname\number\@authorcnt\endcsname{%
+  \@authorname\nobreak\plural@affi\nobreak\plural@p@affi\nobreak\email@affi
+ }%
+ \expandafter\xdef\csname @authormembership\number\@authorcnt\endcsname{%
+  \csname #4@member\endcsname}%
+ \expandafter\xdef\csname @authormembership\number\@authorcnt*\endcsname{%
+  \csname #4@members\endcsname}%
+ \global\@totalnumber=\@authorcnt
+ \def\plural@affi{}%
+ \def\plural@p@affi{}%
+}
+
+%%%%%%%%%%%%%%%%%%
+\newsavebox{\abstractbox}
+\def\abstract{\global\setbox\abstractbox=\hbox\bgroup
+	\begin{minipage}{\textwidth}
+	\textbf{Abstract\quad}}
+\def\endabstract{\end{minipage}\egroup}
+
+\newsavebox{\keywordbox}
+\def\keyword{\global\setbox\keywordbox=\hbox\bgroup
+	\begin{minipage}{\textwidth}
+	\textbf{Key words\quad}}
+\def\endkeyword{\end{minipage}\egroup}
+
+
+\def\@maketitle{%
+  \newpage
+  \null
+  \vskip 2em%
+  \begin{center}%
+  \let \footnote \thanks
+    {\LARGE \@title \par}%
+    \vskip 1.5em%
+    {\large
+      \lineskip .5em%
+      \begin{tabular}[t]{c}%
+        \@author
+      \end{tabular}\par}%
+    \vskip 1em%
+    {\normalsize \@date}%
+    \vskip 1em%
+    {\normalsize \usebox{\abstractbox}}%
+    \vskip 1em%
+    {\normalsize \usebox{\keywordbox}}%
+  \end{center}%
+  \par
+  \vskip 1.5em}
+
+% end of file

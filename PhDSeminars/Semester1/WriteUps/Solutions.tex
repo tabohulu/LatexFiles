@@ -1,0 +1,121 @@
+\documentclass[fontsize=12pt]{article}
+%\usepackage{xeCJK}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage[dvipdfmx]{graphicx}
+%\setCJKmainfont{SimSun}
+\title{HTML/CSS/Javascript
+プログラミング解答 } 
+\author{Kwame Ackah Bohulu}
+\date{\today}
+
+
+\begin{document}
+\maketitle
+
+\newpage
+\section{課題1}
+
+\begin{figure}[h!]
+  \includegraphics[width=0.5\linewidth]{calculator.jpg}
+  \caption{HTML,CSS,Javascript の電卓}
+  \label{fig1}
+\end{figure}
+図\ref{fig1} の電卓のコードは以下に書かれています。
+\begin{verbatim}
+<html>
+<head>
+
+<script type = "text/javascript">
+
+function displaynum(n1)
+{
+document.calculator.screen1.value=calculator.screen1.value+n1;
+}
+
+function solve()
+{
+document.calculator.screen1.value=eval(calculator.screen1.value);
+}
+
+function cl()
+{
+document.calculator.screen1.value="";
+}
+</script>
+<style>
+   
+   .button{
+   width:50;
+   height:50;
+   font-size:25;
+   margin:2;
+   background:grey;
+   border:none;
+   }
+   .textview{
+   width:225;
+   margin:2;
+   font-size:25;
+   padding:5;
+   }
+   .main{
+   position:absolute;
+   top:25%;
+   left:9%;
+   }
+   .bg{
+   position:absolute;
+   background:linear-gradient(to right,red,blue);
+   height:60%;
+   width:25%;
+   left:5%;
+   top:20%;
+   }
+   </style>
+</head>
+
+<body>
+<div class="bg"></div>
+<div class ="main">
+<form name =calculator>
+<input type=textview class=textview name = screen1 style = "text-align:right" disabled><br>
+<input type=button class=button name = btn9 value =9 onclick ="displaynum(btn9.value)">
+<input type=button class=button name = btn8 value =8 onclick="displaynum(btn8.value)">
+<input type=button class=button name = btn7 value =7 onclick ="displaynum(btn7.value)">
+<input type=button class=button name = btnpls value=+ onclick ="displaynum(btnpls.value)"><br>
+<input type=button class=button name = btn6 value =6 onclick ="displaynum(btn6.value)">
+<input type=button class=button name = btn5 value =5 onclick ="displaynum(btn5.value)">
+<input type=button class=button name = btn4 value =4 onclick ="displaynum(btn4.value)">
+<input type=button class=button name = btnmin value = - onclick ="displaynum(btnmin.value)"><br>
+<input type=button class=button name = btn3 value =3 onclick ="displaynum(btn3.value)">
+<input type=button class=button name = btn2 value =2 onclick ="displaynum(btn2.value)">
+<input type=button class=button name = btn1 value =1 onclick ="displaynum(btn1.value)">
+<input type=button class=button name = btnmul value =* onclick ="displaynum(btnmul.value)"><br>
+<input type=button class=button name = btn0 value =0 onclick ="displaynum(btn0.value)">
+<input type=button class=button name = btneq value == onclick ="solve()">
+<input type=button class=button name = btndot value =. onclick ="displaynum(btndot.value)">
+<input type=button class=button name = btndiv value= / onclick ="displaynum(btndiv.value)"><br>
+<input type=button class=button name = btnclr value= C style="width:225" onclick ="cl()">
+
+
+</form>
+</body>
+</html>
+\end{verbatim}
+\section{課題2}
+\begin{verbatim}
+function rotate(x,y,deg) {
+rad = deg * Math.PI / 180;
+yp = y*Math.cos(rad) - x*Math.sin(rad);
+xp = y*Math.sin(rad) + x*Math.cos(rad);
+    return [yp,xp];
+}
+\end{verbatim}
+
+
+
+ 
+\end{document}

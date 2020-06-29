@@ -1,0 +1,118 @@
+\documentclass[20 pts]{article}
+\usepackage{xeCJK}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bm}
+\setCJKmainfont{SimSun}
+\title{Trellis Termination} 
+\author{Kwame Ackah Bohulu}
+\date{2017/11/16}
+\begin{document}
+\maketitle
+
+\newpage
+\begin{table}[h!]
+\begin{center}
+ \begin{tabular}{|| c | c | c ||} 
+ 
+ \hline
+ codeword weight & estimated multiplicity & caused by  \\ [0.5ex] 
+ \hline\hline
+ 8 &1& $D^{N-3}+D^{N-2}$ \\ 
+ \hline
+ 10 & N-3 & $(1+D^{3})D^q\,\,\,\,\,\, q=0:N-4$ \\  
+ \hline
+\end{tabular}
+\end{center}
+\caption{RSC 5/7 component encoder, $\tau=3$, input weight = 2}
+\end{table}
+
+%----------------------
+\begin{table}[h!]
+\begin{center}
+ \begin{tabular}{|| c | c | c ||} 
+ 
+ \hline
+ codeword weight & estimated multiplicity & caused by  \\ [0.5ex] 
+ \hline\hline
+ 7 &N-2& $(1+ D+D^{2})D^s \,\,\,\,\,\, s=0:N-2$ \\ 
+ \hline
+ 8,9 & 2 & $(D^{N-5}+ D^{N-4}+D^{N-2})D^s \,\,\,\,\,\, s=0:1$ \\  
+ \hline
+\end{tabular}
+\end{center}
+\caption{RSC 5/7 component encoder, $\tau=3$, input weight = 3}
+\end{table}
+
+%----------------------
+\begin{table}[h!]
+\begin{center}
+ \begin{tabular}{|| c | c | c ||} 
+ 
+ \hline
+ codeword weight & estimated multiplicity & caused by  \\ [0.5ex] 
+ \hline\hline
+ 8 &N-4& $(1+ D+D^{3}+D^{4})D^t \,\,\,\,\,\, t=0:N-5$ \\ 
+ \hline
+ 9,10 & 2 & $(D^{N-7}+ D^{N-6}+D^{N-4}+D^{N-2})D^t \,\,\,\,\,\, t=0:1$ \\  
+ \hline
+
+\end{tabular}
+\end{center}
+\caption{RSC 5/7 component encoder, $\tau=3$, input weight = 4}
+\end{table}
+%
+\newpage
+\begin{table}[h!]
+\begin{center}
+ \begin{tabular}{|| c | c | c ||} 
+ 
+ \hline
+ codeword weight & estimated multiplicity & caused by  \\ [0.5ex] 
+ \hline\hline
+ 8 &1& $(D^{N-3}+D^{N-2}),(D^{N-4}+D^{N-3}) $ \\ 
+ \hline
+ 10 & N-4 & $(1+D^{4})D^q\,\,\,\,\,\, q=0:N-5$ \\ 
+ \hline 
+\end{tabular}
+\end{center}
+\caption{RSC 37/21 component encoder, $\tau=4$, input weight = 2}
+\end{table}
+
+
+\begin{table}[h!]
+\begin{center}
+ \begin{tabular}{|| c | c | p{6 cm} ||} 
+ 
+ \hline
+ codeword weight & estimated multiplicity & caused by  \\ [0.5ex] 
+ \hline\hline
+ 8 &1& $D^{N-5}+D^{N-4}+D^{N-1} $ \\ 
+ \hline
+ 10 & 3 & $(D^{N-9}+D^{N-8}+D^{N-1}),
+ (D^{N-6}+D^{N-4}+D^{N-2}),(D^{N-5}+D^{N-3}+D^{N-1})$ \\ 
+ \hline 
+\end{tabular}
+\end{center}
+\caption{RSC 37/21 component encoder, $\tau=4$, input weight = 3}
+\end{table}
+
+\begin{table}[h!]
+\begin{center}
+ \begin{tabular}{|| c | c | c ||} 
+ 
+ \hline
+ codeword weight & estimated multiplicity & caused by  \\ [0.5ex] 
+ \hline\hline
+ 8 &N-5& $(1+D+D^{4}+D^5)(D^{t})\,\,\,\,\,\, t=0:N-6 $ \\ 
+ \hline
+ 10 & 3 & $(D^{N-9}+D^{N-8}+D^{N-5}+D^{N-3})(D^{t})\,\,\,\,\,\, t=0:2 $ \\ 
+ \hline 
+\end{tabular}
+\end{center}
+\caption{RSC 37/21 component encoder, $\tau=4$, input weight = 4}
+\end{table}
+
+
+\end{document}

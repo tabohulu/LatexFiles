@@ -1,0 +1,39 @@
+% NewTheorem
+\input{/Users/TEL/Documents/Tex/rules/MyPackages}
+\input{/Users/TEL/Documents/Tex/rules/MyOperations}
+\input{/Users/TEL/Documents/Tex/rules/MyBold}
+\input{/Users/TEL/Documents/Tex/rules/MyCal}
+\input{/Users/TEL/Documents/Tex/rules/MyBB}
+\input{/Users/TEL/Documents/Tex/rules/MyTilde}
+\input{/Users/TEL/Documents/Tex/rules/MyBar}
+\input{/Users/TEL/Documents/Tex/rules/MyNewTheoremJ}
+
+\topmargin -1cm
+\oddsidemargin -1cm
+\textheight 23cm
+\textwidth 18cm
+
+% New Environment
+\newenvironment{teigi}[1]
+    {\begin{itembox}[l]{\bf #1}
+    \begin{definition}}%
+    {\end{definition}
+    \end{itembox}}
+  
+\newenvironment{hodai}
+    {\begin{screen}
+    \begin{lemma}}%
+    {\end{lemma}
+    \end{screen}}
+    
+\newenvironment{teiri}
+    {\begin{shadebox}
+    \begin{theorem}}%
+    {\end{theorem}
+    \end{shadebox}}
+    
+\newenvironment{syomei}
+    {\begin{boxnote}
+    \begin{proof}}%
+    {\end{proof}
+    \end{boxnote}}

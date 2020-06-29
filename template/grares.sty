@@ -1,0 +1,262 @@
+% 卒研発表用スタイルファイル    Feb.9.1994 
+%   modified by Yuki Nagayama  Dec.13.1994
+%   94年度中間発表用に変更 （NTT TeX に対応）
+%   modified by Yasutaka Iida  Apr.16.2007
+%   07年度中間発表用に変更 （platexに対応）
+% grares.tex  for ASCII TeX  jarticle  A4 10pt 2段組み
+% 使い方
+%   \documentclass[twoside]{jarticle}
+%   \usepackage{grares}
+%               ^^^^^^
+% 本文中で設定するもの
+%    \title{論文タイトル}
+%    \name{名前}
+%    \srnum{学籍番号}
+%    \adviser{指導教官名}
+%    \bib{参考文献}
+%    \date{発表年月日(XXXX年X月X日)}
+%    \PAGE{ページ番号}
+%  MKTITLEでタイトル出力 (\maketitleと同じ使い方)
+%  表示しないところは引数を空欄にしておいてください
+%
+% 各自で設定を変えた方がいい場所
+%    line37
+%    \renewcommand{\baselinestreach}{}：行送りの調整
+%      バランスを考えて変更すること
+%    line204-206
+%    \long\def\@makecaption#1#2{%：図のキャプションの大きさ
+%      本文のサイズによって選ぶこと(本文のサイズより一回り小さくするとよい)
+%
+%\typeout{卒研発表用スタイル by Tomokazu Shiga   Feb.9.1994}
+%\typeout{94年度中間発表用スタイル by Yuki N.    Dec.13.1994}
+\typeout{07年度中間発表用スタイル by Yasutaka I.    Apr.16.2007}
+\@ifundefined{@twoc}{%
+\parindent1zw
+\textheight\topskip
+\def\@ps@{1}}{\@warning{Sorry, I igunored `a4j' style}}
+%\renewcommand{\baselinestretch}{0.9}
+\topmargin -6mm %
+\headheight 0.0mm  % ヘッダが使用する高さ [0.0mm]
+\headsep 0.0mm     % ヘッダと本文の間の高さ [0.0mm]
+%\oddsidemargin 6.6mm % 左余白 32mm = 1inch(25.4mm)+6.6mm
+\oddsidemargin -11.4mm %左余白 14mm = 1inch(25.4mm)-11.4mm
+\evensidemargin 6.6mm % 左余白 32mm = 1inch(25.4mm)+6.6mm
+\textwidth 162mm % A4(211mm)-leftmargin(32mm)-rightmargin(16mm)
+\textheight 250mm
+%\kanjiskip 0zw plus .1zw minus .05zw % 文字間隔(1段23文字程度)
+%\kanjiskip .05zw plus .1zw minus .05zw % 文字間隔(1段22文字程度)
+%\columnsep 2zw % 段間の間隔2文字
+\columnsep 3zw % 段間の間隔3文字
+\intextsep 3pt plus 1pt minus 1pt % 図と文章の間隔
+%\intextsep 6pt plus 1pt minus 1pt % 図と文章の間隔
+\textfloatsep=\intextsep
+\newcommand{\PAGE}[1]{\setcounter{page}{#1}} % \PAGE{指定ページ番号}
+\renewcommand{\thepage}{-- \arabic{page} --} % ページ番号の形式
+\def\@twoc{}
+\twocolumn
+\sloppy
+\flushbottom
+{\dimen0\textwidth\dimen1 2zw\divide\dimen0\dimen1\multiply\dimen0\dimen1
+\ifdim.99\textwidth>\dimen0\global\columnsep 2zw\fi}
+\def\arge{\@setsize\arge{15.5pt}\xipt\@xipt}
+
+%　タイトル
+\def\title#1{\gdef\@title{#1}}
+\def\name#1{\gdef\@name{#1}}
+\def\srnum#1{\gdef\@srnum{#1}}
+\def\bib#1{\gdef\@bib{#1}}
+\def\adviser#1{\gdef\@adviser{#1}}
+%
+\def\MKTITLE{\par
+ \begingroup
+ \def\thefootnote{\fnsymbol{footnote}}
+ \def\@makefnmark{\hbox 
+ to 0pt{$^{\@thefnmark}$\hss}} 
+ \if@twocolumn 
+ \twocolumn[\@MKTITLE] 
+ \else \newpage
+ \global\@topnum\z@ \@MKTITLE 
+\fi
+ \thispagestyle{plain}
+ \endgroup
+ \setcounter{footnote}{0}
+ \let\MKTITLE\relax
+ \let\@MKTITLE\relax
+ \gdef\@title{}\gdef\@name{}\gdef\@srnum{}\gdef\@adviser{}
+ }
+%\def\MKTITLE{
+% \par
+% \begingroup
+% \if@twocolumn \twocolumn[\@MKTITLE]
+% \else \newpage
+%    \global\@topnum\z@
+% \@MKTITLE
+% \fi
+% \thispagestyle{plain}
+% \endgroup
+% \let\MKTITLE\relax
+% \let\@MKTITLE\relax
+% \gdef\@title{}\gdef\@name{}\gdef\@srnum{}\gdef\@adviser{}
+% }
+%
+\def\@MKTITLE{
+ \newpage
+ \null
+ \begin{flushleft}
+  {\small \@date \hfill{[\underline{情報伝送研究室}]}\par}
+ \end{flushleft}
+ \vskip .2em
+ \begin{center}
+   {\large\bf \@title \par}
+   \vskip .9em
+   {\normalsize \@name \hspace{.5zw} (\@srnum)\par}
+   {\normalsize \@bib}
+%   {\normalsize \@adviser}    % Check!
+ \end{center}
+ \par
+ \vskip 1.5em}
+
+%セクション等のフォントサイズ，見出し上の開きの変更
+%\def\@section{\@startsection {section}{1}{\z@}{2.25ex plus 1ex minus 
+% .2ex}{1.0ex plus .2ex}{\large\bf}}
+%\def\section#1{\@section*{【#1】}}
+%\def\subsection{\@startsection{subsection}{2}{1\p@}{1.25ex plus 1ex minus 
+% .2ex}{.5ex plus .2ex}{\normalsize\bf}}
+%\def\subsubsection{\@startsection{subsubsection}{3}{3\p@}{1.25ex plus
+% 1ex minus .2ex}{.5ex plus .2ex}{\normalsize\bf}}
+
+% 章・節などの見出し及びフォントの設定
+\renewcommand{\thesection}{\arabic{section}.}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
+\renewcommand{\labelenumi}{\arabic{enumi})}
+%第４引数が見出しの上の空白、第五引数が下の空白
+\def\section{\@startsection{section}{1}{\z@}{2.25ex plus 0.5ex minus
+   .2ex}{1ex plus .2ex}{\font@s}}
+\def\subsection{\@startsection{subsection}{2}{\z@}{1.25ex plus 0.5ex minus
+    .2ex}{0.5ex plus 2ex}{\font@ss}}
+\def\sectionfont#1#2#3{\gdef\font@s{#1}\gdef\font@ss{#2}\gdef\font@sss{#3}}
+%\sectionfont{\large\bf}{\normalsise\bf}{\normalsize\bf}
+%\sectionfont{\large\bf}{\bf}{\bf}
+\sectionfont{\large\bf}{\bf}{\bf}
+%% 章・節などの見出し及びフォントの設定
+%\def\thesection {\arabic{section}.}
+%\def\thesubsection {\arabic{subsection}.}
+%\def\thesubsubsection {\thesubsection \arabic{subsubsection}}
+%
+%\def\@section{\@startsection%
+%  {section}{1}{-.4zw}{2.25ex plus 1ex minus .2ex}
+%  {1.0ex plus .2ex}{\large\bf}}
+%\def\section#1{\@section*{【#1】}} % section 出力（【 】がつく）
+%\def\subsection{%
+%  \@startsection{subsection}{2}{1\p@}%
+%  {1.25ex plus 1ex minus .2ex}{.5ex plus .2ex}{\normalsize\bf}}
+%\def\subsubsection{%
+%  \@startsection{subsubsection}{3}{2\p@}
+%  {1.25ex plus 1ex minus .2ex}{.5ex plus .2ex}{\normalsize\bf}}
+
+% list 環境
+\leftmargini=2.5zw
+\leftmarginii=1zw
+\leftmargin=\leftmargini
+\labelsep=3pt           
+\labelwidth=\leftmargini
+\advance \labelwidth by -\labelsep
+
+\def\@listI{\leftmargin=\leftmargini \parsep=\z@
+\topsep=2pt plus 2pt minus 2pt\itemsep 1pt plus 2pt\relax}
+\let \@listi=\@listI
+\@listi
+
+\def\@listii{\leftmargin=\leftmarginii
+  \labelwidth=\leftmarginii\advance \labelwidth by -\labelsep
+  \topsep=2pt plus 1pt minus 1pt
+  \parsep=\z@
+  \itemsep=0pt plus 1pt\relax}
+\def\@listiii{\leftmargin=\leftmarginiii
+  \labelwidth=\leftmarginiii\advance \labelwidth by -\labelsep
+  \topsep=2pt plus 1pt minus 1pt 
+  \parsep=\z@
+  \partopsep=1pt plus 0pt minus 1pt
+  \itemsep=0pt plus 1pt\relax}
+
+%  キャプション中の強制改行 \parcaption{..\\ ..}
+%  キャプションのインデントとの共存不可
+%\newsavebox{\@parc@ption}
+%\def\parcaption#1{%
+% \sbox{\@parc@ption}{\shortstack[l]{#1}}%
+% \setbox\@tempboxa\hbox{\csname fnum@\@captype\endcsname}%
+% \@tempdima\columnwidth \advance\@tempdima-\wd\@tempboxa
+% \@tempdimb.8\@tempdima
+% \ifdim\wd\@parc@ption>\@tempdimb \@tempdima\@tempdimb
+% \else\@tempdima\wd\@parc@ption\fi
+% \sbox{\@tempboxa}{\parbox[t]{\@tempdima}{\bf#1}}%
+% \caption{\usebox{\@tempboxa}}}
+%\long\def\@makecaption#1#2{
+% \vskip 10pt 
+% \setbox\@tempboxa\hbox{{\bf #1\hspace{.7zw}#2}}
+% \ifdim \wd\@tempboxa >\hsize \unhbox\@tempboxa\par \else \hbox
+%to\hsize{\hfil\box\@tempboxa\hfil} 
+% \fi}
+
+%  図の後の : を削除
+%  キャプションの文字をゴシック体に  （変更：数字を\bfにした）
+%  長いキャプションをインデントする
+%\long\def\@makecaption#1#2{\scriptsize%
+\long\def\@makecaption#1#2{\small%
+%\long\def\@makecaption#1#2{%
+ \vskip 10\p@
+ \setbox\@tempboxa\hbox{{\bf #1}\hspace{.7zw}}%
+ \@tempdima\hsize\advance\@tempdima-\wd\@tempboxa
+ \setbox\@tempboxa\hbox{{\bf #1\hspace{.7zw}#2}}
+ \ifdim \wd\@tempboxa <\hsize
+ \hfil {\bf #1\hspace{.7zw}#2}\hfil\par
+ \else
+ \hbox to
+ \hsize{\hfill {\bf #1}\hspace{.7zw}\parbox[t]\@tempdima{{\bf #2}}\hfil}%
+ \fi}
+
+% 図の [H] オプション
+%\ifx\@Hxfloat\@Hundef\else\expandafter\endinput\fi
+%\let\@Hxfloat\@xfloat
+%\def\@xfloat#1[{\@ifnextchar{H}{\@HHfloat{#1}[}{\@Hxfloat{#1}[}}
+%\def\@HHfloat#1[H]{%
+%\expandafter\let\csname end#1\endcsname\end@Hfloat
+%\vskip\intextsep\vbox\bgroup\def\@captype{#1}\parindent\z@
+%\ignorespaces}
+%\def\end@Hfloat{\egroup\vskip \intextsep}
+
+%  波線
+%  使い方は \cline と同じ
+%  波線間隔は\blinepattern{2pt}{4pt}がデフォルト
+\def\bline#1{\@bline[#1]}
+\def\@bline[#1-#2]{\noalign{\global\@cla#1\relax
+\global\advance\@cla\m@ne
+\ifnum\@cla>0\global\let\@gtempa\@blinea\else
+  \global\let\@gtempa\@blineb\fi
+\global\@clb#2\relax
+\global\advance\@clb-\@cla}\@gtempa
+\noalign{\vskip-\arrayrulewidth}}
+
+\def\@blinea{\multispan\@cla&\multispan\@clb
+\unskip\cleaders\hbox to \bline@period 
+{\hss\rule{\bline@solid}{\arrayrulewidth}\hss}\hfill\cr}
+
+\def\@blineb{\multispan\@clb
+\unskip\cleaders\hbox to \bline@period 
+{\hss\rule{\bline@solid}{\arrayrulewidth}\hss}\hfill\cr}
+
+\def\blinepattern#1#2{%
+  \ifdim#2<#1\errmessage{第1引数 < 第2引数}%
+  \else\gdef\bline@solid{#1}\gdef\bline@period{#2}\fi}
+\blinepattern{2pt}{4pt}
+
+% その他
+\def\PL{\hspace{.3zw}\raise.2ex\hbox{(}} % ( が気に入らないから
+\def\PR{~\hspace{-.3zw}\raise.2ex\hbox{)}\hspace{.1zw}} % ) が気に入らないから
+\def\degree{\kern-.1667em\char'27} % ゜度
+\def\unit#1{{\small [#1]}} % 単位のフォントを \small に
+%\def\ssunit#1{{\normalsize\bf [#1]}} % サブセクション用単位 
+\def\figunit#1{{\small\bf [#1]}} % 図のキャプション用
+% \bf で ゴシック体 \bf(だと思う) が呼ばれるようにする
+\def\sf{\protect\psf\protect\pdg}
+

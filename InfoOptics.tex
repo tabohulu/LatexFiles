@@ -1,0 +1,161 @@
+\documentclass[24 pts]{article}
+\usepackage{xeCJK}
+\usepackage{chngcntr}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+\usepackage{relsize}
+
+
+
+\counterwithin*{equation}{section}
+\counterwithin*{equation}{subsection}
+
+\newcommand{\me}{\mathrm{e}}
+\setCJKmainfont[BoldFont= Yu Mincho Demibold]{MS Mincho}
+\title{Information Optics and Photonics	Report }
+\date{14-02-2017}
+\author{Kwame Ackah Bohulu　1631133 \\ 情報ネットワーク工学 \\情報伝送研究}
+\begin{document}
+\maketitle
+\newpage
+\section{}
+\subsection{(1)}
+In Geometric Optics, the wavelength of the light wave is considered to be much smaller than the size of the physical medium with which it interacts. This makes it possible to treat light as a set of rays emanating from a source and analyse interactions with transparent media in a very simple geometric manner. 
+
+\subsection{(2)}
+The Helmholtz equation is shown below
+\begin{equation}
+\bigtriangledown^2u(\mathbf{r}) + k^2u(\mathbf{r})=0
+\end{equation}
+where the solution for $u(r)$ is given by
+$$ u(\mathbf{r})=A(\mathbf{r})\exp(ik_oS(\mathbf{r}))$$
+
+$$\bigtriangledown^2u(\mathbf{r}) =\frac{\partial ^2u(\mathbf{r}) }{\partial \mathbf{r}^2}$$
+
+splitting $\mathbf{r}$ into its $x,y,z$ components and calculating partial derivatives
+
+\begin{equation*}
+\begin{split}
+\frac{\partial \mathbf{U} }{\partial x}&=ik_o\mathbf{U}\frac{\partial \mathbf{S} }{\partial x} + \exp(ik_oS)\frac{\partial \mathbf{A}}{\partial x}\\
+&=ik_o\mathbf{U}\frac{\partial \mathbf{S} }{\partial x} +\frac{U}{A}\frac{\partial \mathbf{A}}{\partial x}\\
+&=ik_o\mathbf{U}\frac{\partial \mathbf{S} }{\partial x} +\frac{\partial \ln \mathbf{A}}{\partial x}\mathbf{U}
+\end{split}
+\end{equation*}
+
+
+\begin{equation}
+\begin{split}
+\frac{\partial ^2\mathbf{U} }{\partial x^2}&=\bigg\{{-k_o}^2{\frac{\partial \mathbf{S} }{\partial x} }^2+ 2ik_o(\frac{1}{2}\frac{\partial ^2\mathbf{S}}{\partial x^2}+\frac{\partial \ln \mathbf{A}}{\partial x}\frac{\partial \mathbf{S}}{\partial x})\\
+&+ \Big[ \frac{\partial ^2\ln \mathbf{A}}{\partial x^2}+ {(\frac{\partial \ln \mathbf{A}}{\partial x})}^2\Big]\bigg\}\mathbf{U}
+\end{split}
+\end{equation}
+Similarly,
+\begin{equation}
+\begin{split}
+\frac{\partial ^2\mathbf{U} }{\partial y^2}&=\bigg\{{-k_o}^2{\frac{\partial \mathbf{S} }{\partial y} }^2+ 2ik_o(\frac{1}{2}\frac{\partial ^2\mathbf{S}}{\partial y^2}+\frac{\partial \ln \mathbf{A}}{\partial y}\frac{\partial \mathbf{S}}{\partial y})\\
+&+ \Big[ \frac{\partial ^2\ln \mathbf{A}}{\partial y^2}+ {(\frac{\partial \ln \mathbf{A}}{\partial y})}^2\Big]\bigg\}\mathbf{U}
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+\frac{\partial ^2\mathbf{U} }{\partial z^2}&=\bigg\{{-k_o}^2{\frac{\partial \mathbf{S} }{\partial z} }^2+ 2ik_o(\frac{1}{2}\frac{\partial ^2\mathbf{S}}{\partial z^2}+\frac{\partial \ln \mathbf{A}}{\partial z}\frac{\partial \mathbf{S}}{\partial z})\\
+&+ \Big[ \frac{\partial ^2\ln \mathbf{A}}{\partial z^2}+ {(\frac{\partial \ln \mathbf{A}}{\partial z})}^2\Big]\bigg\}\mathbf{U}
+\end{split}
+\end{equation}
+
+Substituting equations 2, 3 and 4 into equation 1 gives
+\begin{equation}
+-k_o^2\Big[|\bigtriangledown \mathbf{S}|^2 -\frac{k^2}{k_o^2}\Big]\mathbf{U}+2ik_o\bigg(\frac{\bigtriangledown^2 \mathbf{S}}{2} + \bigtriangledown \ln\mathbf{A}\cdotp \bigtriangledown\mathbf{S}  \bigg)\mathbf{U}+\Big[\bigtriangledown ^2\ln\mathbf{A}+|\bigtriangledown \ln\mathbf{A}|^2\Big]\mathbf{U}=0
+\end{equation}
+
+The third term on the left has no relationship with $k_o$ so is dropped. Assuming $k/k_o$ remains finite and equals index of refraction $n$ as $k_o$ approaches infinity we have
+$$ |\bigtriangledown\mathbf{S}|^2 - k^2/k_o^2 =0,  |\bigtriangledown\mathbf{S}|^2 =n^2 $$
+
+which may be rewritten as 
+\begin{equation}
+\bigtriangledown S(\mathbf{r})=n(\mathbf{r})
+\end{equation}
+
+\section{}
+\subsection{(1)}
+The Rayleigh-Sommerfield diffraction integral expresses the observed field $U(P_0)$ as a superposition of diverging spherical waves $\exp{ikr}/r$ originating from secondary source located at each and everypoint within $P_1$ within the boundary $\Sigma$
+
+\subsection{(2)}
+beginning with the Rayleigh-Sommerfield differential integral, $\cos{\theta}=z/r_o$
+
+we then rewrite the equation as
+\begin{equation}
+u(x,y;z)=\iint_{\Sigma}^{}u(x',y';0)\frac{1}{i\lambda} \frac{\exp(ikr)}{r}\frac{z}{r}\,dx'\,dy'
+\end{equation}
+
+Assuming $|x|\, |y|\ll z$, we define $$h(x,y;z)=\frac{1}{i\lambda} \frac{\exp(ikr)}{r}\frac{z}{r}$$
+which we may rewrite as $$A(x,y;z)\exp(ikr),\, A(x,y;z)= \frac{1}{i\lambda}\frac{z}{r^2}$$
+
+since $x, \, y$ are $\ll z$ we may expand r as follows
+\begin{equation}
+\begin{split}
+r&=z\Big(1+\frac{x^2+y^2}{z^2}\Big)^{1/2}\\
+&\simeq z+\frac{x^2+y^2}{2z}
+\end{split}
+\end{equation}
+
+By first approximation ie $r\simeq z$
+$$A(x,y;z)= \frac{1}{i\lambda z}$$
+By second order approximation ie $\simeq z+\frac{x^2+y^2}{2z}$
+$$ \exp(ikr)\simeq \exp(ikz)\exp\big(i\frac{k}{2z}(x^2+y^2)\big)$$
+so by paraxial approximation
+
+\begin{equation}
+h(x,y;z)=\frac{ \exp(ikz)}{i\lambda z}\exp\Big(i\frac{k}{2z}(x^2+y^2)\big)
+\end{equation}
+and
+\begin{equation}
+\begin{split}
+ u(x,y;z)&=h(x,y;z)*u(x,y;0)\\
+&=\iint_{-\infty}^{\infty}u(x,y;0)\frac{ \exp(ikz)}{i\lambda z}\exp\Big[i\frac{k}{2z}\big({(x'-x)}^2+{(y'-y)}^2\big)\big]\,dx'\, dy'\\
+&=\iint_{-\infty}^{\infty}u(x,y;0)h(x-x',y-y'),dx'\, dy'\\
+&h(x-x',y-y')=\frac{ \exp(ikz)}{i\lambda z}\exp\Big[i\frac{k}{2z}\big({(x'-x)}^2+{(y'-y)}^2\big)\big]
+\end{split}
+\end{equation}
+
+\subsection{(3a)}
+the distortion of the image as  z increases is as a result of the phase distortion in the transfer function$h(x-x',y-y')$
+
+\subsection{(3b)}
+\begin{equation}
+\begin{split}
+ H(Z)&=\digamma\big[ h(x,y;z)\big]\\
+&=\digamma\big[\frac{ \exp(ikz)}{i\lambda z}\exp\frac{ik}{2z}(x^2+y^2)\big]\\
+&=\exp(ikz)\big[(1-n\lambda f_o)^2)\big]^{1/2}
+\end{split}
+\end{equation}
+Assuming $n_fo\ll1/\lambda$ we apply taylor expansion on $\big[(1-n\lambda f_o)^2)\big]^{1/2}$which yields
+\begin{equation}
+\begin{split}
+H(Z)&=\exp(ikz)(1-\frac{1}{2}\lambda f_o)^2\\
+&=exp(ikz)exp\big(kz\frac{(n\lambda f_o)^2}{2}\big)
+\end{split}
+\end{equation}
+To get rid of distortion, $$ kz\frac{(n\lambda f_o)^2}{2}=2m\pi$$
+
+substituting $k=\frac{2\pi}{\lambda}$ and $d=1/f_o$
+
+\begin{equation}
+\begin{split}
+2m\pi &= \frac{2\pi z}{\lambda}\frac{n^2\lambda^2f_o^2}{2}\\
+2m\pi &= \frac{2\pi z}{\lambda}\frac{n^2\lambda^2}{2d^2}\\
+&z=\frac{2d^2}{n^2 \lambda}m
+\end{split}
+\end{equation}
+when $n=1$ distortion dissapears 
+\begin{equation}
+\therefore z=\frac{2d^2}{\lambda}m
+\end{equation}
+where m is an integer
+
+
+\end{document}

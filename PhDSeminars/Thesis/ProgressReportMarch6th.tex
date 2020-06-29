@@ -1,0 +1,79 @@
+\documentclass[11pt, oneside, dvipdfmx]{book}
+\newcommand{\folder}{/usr/local/share/texmf}
+\input{\folder/hfiles/ebook}
+\usepackage{graphics}
+%\setCJKmainfont{SimSun}
+\title{``
+Coset Interleaver Idea Progress'' }
+\author{Kwame Ackah Bohulu}
+\date{\today}
+\begin{document}
+
+\maketitle
+
+
+
+
+\section{March 5th -March 6th}
+An idea for the coset interleaving method is presented for interlearver length $N=n\tau,~n=\{9,10,...\}$. 
+The notations to be used are listed below.
+
+ \subsection{Notations}
+ \begin{enumerate}
+ \item $N$ :- Interleaver Length, Interleaver size.
+  \item $\mathbf{C}^i$ :- Coset ,$i,~i=\{0,1,...,\tau-1 \}$
+ \item $l=N/\tau$ :- Coset length, Coset size.
+ \item $\tau$ :- Cycle length of RSC encoder ($\tau= 3$ for $5/7$RSC encoder)
+ 
+ \item Seperation:- Assume that there is a set $A=\{a,b,c,...\},~b>a,c>b,$ etc. For any 2 elements in set, the seperation is defined as the difference between the elements. For example, the seperation between $b$ and $a$ is $b-a$
+ \item Step:- Assume that there is a set $A=\{a,b,c,...\},~b>a,c>b,$ etc . For any 2 elements in set, the step is defined as the number of shifts required to get to a desired element in a set from a reference element. For example, from $a$ to $b$ as step of $1$ is required and from $a$ to $c$ a step of $2$ is required.
+ \item $D_1$ :-Interleaving step
+ \item $s$ :- post-interleaving seperation
+ \item $t$ :- pre-interleaving seperation
+
+ \end{enumerate}
+ 
+ \subsection{Interleaving Idea and Procedure}
+ The idea for coset interleaving is as follows. We know that for the $5/7$ RSC encoder ,weight $2$ error inputs, the ``1'' bit have a seperation of $\tau m=3m$, where $m$ is an integer value greater than $0$. For a given interleaver length, we take the bit indices from $0 ~\text{to}~N-1$ and group them into $\tau$ cosets,$\mathbf{C}^0,\mathbf{C}^1,\mathbf{C}^2$. We can observe that the difference between any 2 elements within a given coset is an integer multiple of $3$. This means that during the process of interleaving, weight $2$ error inputs occur when element pairs are mapped to the same coset. A good method to avoid this would be to make sure that if the first element in the pair is mapped to the same coset, the second element in the pair should be mapped to a different coset. This is only possible to a certain extent and sometime during the interleaving process, element pairs are mapped to other elements in the same coset. The next best thing is to make sure that when such a situation happens, the seperation between the interleaved pairs is made as large as possible.
+ %from here
+ The procedure for interleaving is as follows. Assume that we have identical sets $A$ and $B$. Both sets contain the elements $\{0,1,2,...,N-1\}$ which represent the bit indices. We proceed to form 3 cosets $\mathbf{C}^{0}$,$\mathbf{C}^1$,$\mathbf{C}^2$ from both $A$ and $B$. To differentiate between coset we write $\mathbf{C}^{0(A)}$ for coset $0$ of $A$ and $\mathbf{C}^{0(B)}$ for coset $0$ of $B$ respectively
+  We focus on $\mathbf{C}^{0(A)}$.
+ 
+ \begin{enumerate}
+ \item map the $0$th element in $\mathbf{C}^{0(A)}$ to its corresponding element in $\mathbf{C}^{0(B)}$.
+ 
+ \item map the $1$st and $2$nd elements  in $\mathbf{C}^{0(A)}$ to any arbitrary element in $\mathbf{C}^{1(B)}$ and $\mathbf{C}^{2(B)}$  respectively. The indices of the mapped elements in $\mathbf{C}^{0(B)}$,$\mathbf{C}^{1(B)}$,$\mathbf{C}^{2(B)}$
+ serve as a reference point for the rest of the interleaving process. Lets represent these by $j_0,j_1~\text{and}~j_2$ respectively.
+ 
+ \item Representing the indices of the elements of $\mathbf{C}^{0(A)}$ by $i$, the $ith$ element of $\mathbf{C}^{0(A)}$ is maped to an element in $\mathbf{C}^{i \mod 3(A)}$ which is $D_1$ shifts away from $j_{i \mod 3}$. $j_{i \mod 3}$ is now set to the position of this new element.
+ 
+ \item The above step repeated $l-3$ times.
+ \end{enumerate}
+ 
+ Once the intereleaving process for $\mathbf{C}^{0(A)}$ is done, this procedure can be repeated for the remining cosets of $A$
+ 
+ 
+ \subsection{Maximizing the Seperation Between the Interleaved Pairs}
+ Using the above interleaving procedure, We notice that element pairs in any coset of $A$ with a separation of $3*\tau=9$ are always mapped to elements in the corresponding coset of $B$. Let $t$ represent the separation between the coset elements in $A$ and $s$ represent the separation between the coset elements in $B$. When the  element pairs in any coset of $A$ have a separation of either $\tau$ or $2\tau$, one of the elements in the pair is mapped to an element in a different coset in $B$. This means, these codeword that would be produced in this case will have a very high weigth.
+ 
+  We wish to maximize $s$ as much as possible since in Turbo Coding scenario, this corresponds to a weight $2$ error input being present at both component codes leading to a low weight codeword being produced. The relationship between $s$ and $D_1$ is such that $s=D_1\tau$ and with a large enough value of $D_1$ we can maximize the value of $s$ 
+ 
+ For the interleaving procedure described in the previous section, it can be seen that the elements for each coset are picked $\mod l$. This suggests that the  best value of $D_1$ should meet the following conditions
+ 
+ $$ D_1=\text{max} \begin{cases}
+       a\leq\lfloor\frac{l}{2}\rfloor ~|~ \text{gcd}(a,l)=1
+    \end{cases}
+$$
+ 
+ 
+ \subsection{Codeword Weight for Weight-$2$ input events}
+ Having found the maximum value of $s$, we can go ahead and calculate the codeword weight using the formula $w_H =6+(\frac{t+s}{3})*2$
+ \paragraph{Example}
+ For the $5/7$ RSC encoder, $\tau=3$.
+ Let $N=27,~\text{and}~l=9$. The best value of $D_1=\lfloor\frac{l}{2}\rfloor=4$, which means $s=D_1\tau=12$
+ 
+ For this interleaving pattern, $w_H =6+(\frac{t+s}{3})*2=6+(\frac{9+12}{3})*2=20$
+ 
+ 
+ 
+ \end{document}

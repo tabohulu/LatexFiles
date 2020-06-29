@@ -1,0 +1,82 @@
+\headcommand {\slideentry {0}{0}{1}{1/1}{}{0}}
+\headcommand {\beamer@framepages {1}{1}}
+\headcommand {\sectionentry {1}{Introduction}{2}{Introduction}{0}}
+\headcommand {\beamer@sectionpages {1}{1}}
+\headcommand {\beamer@subsectionpages {1}{1}}
+\headcommand {\beamer@subsectionentry {0}{1}{1}{2}{Turbo Codes}}\headcommand {\beamer@subsectionpages {2}{1}}
+\headcommand {\slideentry {1}{1}{1}{2/2}{Turbo Codes}{0}}
+\headcommand {\beamer@framepages {2}{2}}
+\headcommand {\beamer@subsectionentry {0}{1}{2}{3}{Interleavers}}\headcommand {\beamer@subsectionpages {2}{2}}
+\headcommand {\slideentry {1}{2}{1}{3/3}{Interleavers}{0}}
+\headcommand {\beamer@framepages {3}{3}}
+\headcommand {\beamer@subsectionentry {0}{1}{3}{4}{Purpose of Research}}\headcommand {\beamer@subsectionpages {3}{3}}
+\headcommand {\slideentry {1}{3}{1}{4/4}{Purpose of Research}{0}}
+\headcommand {\beamer@framepages {4}{4}}
+\headcommand {\sectionentry {2}{System Model}{5}{System Model}{0}}
+\headcommand {\beamer@sectionpages {2}{4}}
+\headcommand {\beamer@subsectionpages {4}{4}}
+\headcommand {\beamer@subsectionentry {0}{2}{1}{5}{Turbo Encoder}}\headcommand {\beamer@subsectionpages {5}{4}}
+\headcommand {\slideentry {2}{1}{1}{5/5}{Turbo Encoder}{0}}
+\headcommand {\beamer@framepages {5}{5}}
+\headcommand {\beamer@subsectionentry {0}{2}{2}{6}{Turbo Decoder}}\headcommand {\beamer@subsectionpages {5}{5}}
+\headcommand {\slideentry {2}{2}{1}{6/6}{Turbo Decoder}{0}}
+\headcommand {\beamer@framepages {6}{6}}
+\headcommand {\beamer@subsectionentry {0}{2}{3}{7}{RSC Encoders}}\headcommand {\beamer@subsectionpages {6}{6}}
+\headcommand {\slideentry {2}{3}{1}{7/7}{RSC Encoders}{0}}
+\headcommand {\beamer@framepages {7}{7}}
+\headcommand {\slideentry {2}{3}{2}{8/8}{RSC Encoders}{0}}
+\headcommand {\beamer@framepages {8}{8}}
+\headcommand {\sectionentry {3}{Interleaver Design}{9}{Interleaver Design}{0}}
+\headcommand {\beamer@sectionpages {5}{8}}
+\headcommand {\beamer@subsectionpages {7}{8}}
+\headcommand {\beamer@subsectionentry {0}{3}{1}{9}{Problem Statement}}\headcommand {\beamer@subsectionpages {9}{8}}
+\headcommand {\slideentry {3}{1}{1}{9/9}{Problem Statement}{0}}
+\headcommand {\beamer@framepages {9}{9}}
+\headcommand {\beamer@subsectionentry {0}{3}{2}{10}{Linear Interleaver Design}}\headcommand {\beamer@subsectionpages {9}{9}}
+\headcommand {\beamer@subsubsectionentry {0}{3}{2}{1}{10}{$\tau $-seperated weight 2 error prevention }}
+\headcommand {\slideentry {3}{2}{1}{10/10}{Linear Interleaver Design}{0}}
+\headcommand {\beamer@framepages {10}{10}}
+\headcommand {\slideentry {3}{2}{2}{11/11}{Linear Interleaver Design}{0}}
+\headcommand {\beamer@framepages {11}{11}}
+\headcommand {\beamer@subsubsectionentry {0}{3}{2}{2}{12}{$\tau $-seperated weight 4 errors }}
+\headcommand {\slideentry {3}{2}{3}{12/12}{Linear Interleaver Design}{0}}
+\headcommand {\beamer@framepages {12}{12}}
+\headcommand {\beamer@subsectionentry {0}{3}{3}{13}{Multi-Shift Interleaver Design}}\headcommand {\beamer@subsectionpages {10}{12}}
+\headcommand {\beamer@subsubsectionentry {0}{3}{3}{1}{13}{Sequential representation of Linear Interleaver }}
+\headcommand {\slideentry {3}{3}{1}{13/13}{Multi-Shift Interleaver Design}{0}}
+\headcommand {\beamer@framepages {13}{13}}
+\headcommand {\beamer@subsubsectionentry {0}{3}{3}{2}{14}{ Multi-Shift Interleaver Parameters}}
+\headcommand {\slideentry {3}{3}{2}{14/14}{Multi-Shift Interleaver Design}{0}}
+\headcommand {\beamer@framepages {14}{14}}
+\headcommand {\beamer@subsubsectionentry {0}{3}{3}{3}{15}{Interleaving Example }}
+\headcommand {\slideentry {3}{3}{3}{15/15}{Multi-Shift Interleaver Design}{0}}
+\headcommand {\beamer@framepages {15}{15}}
+\headcommand {\beamer@subsubsectionentry {0}{3}{3}{4}{16}{Search for Good Multi-Shift Interleavers }}
+\headcommand {\slideentry {3}{3}{4}{16/16}{Multi-Shift Interleaver Design}{0}}
+\headcommand {\beamer@framepages {16}{16}}
+\headcommand {\sectionentry {4}{Results}{17}{Results}{0}}
+\headcommand {\beamer@sectionpages {9}{16}}
+\headcommand {\beamer@subsectionpages {13}{16}}
+\headcommand {\beamer@subsectionentry {0}{4}{1}{17}{Interleaver Search Results}}\headcommand {\beamer@subsectionpages {17}{16}}
+\headcommand {\slideentry {4}{1}{1}{17/17}{Interleaver Search Results}{0}}
+\headcommand {\beamer@framepages {17}{17}}
+\headcommand {\beamer@subsectionentry {0}{4}{2}{18}{Interleaver Search : Simulation Results}}\headcommand {\beamer@subsectionpages {17}{17}}
+\headcommand {\slideentry {4}{2}{1}{18/18}{Interleaver Search : Simulation Results}{0}}
+\headcommand {\beamer@framepages {18}{18}}
+\headcommand {\beamer@subsectionentry {0}{4}{3}{19}{ Comparison : Simulation Results}}\headcommand {\beamer@subsectionpages {18}{18}}
+\headcommand {\slideentry {4}{3}{1}{19/19}{ Comparison : Simulation Results}{0}}
+\headcommand {\beamer@framepages {19}{19}}
+\headcommand {\slideentry {4}{3}{2}{20/20}{ Comparison : Simulation Results}{0}}
+\headcommand {\beamer@framepages {20}{20}}
+\headcommand {\slideentry {4}{3}{3}{21/21}{ Comparison : Simulation Results}{0}}
+\headcommand {\beamer@framepages {21}{21}}
+\headcommand {\sectionentry {5}{Conclusion and Future Works}{22}{Conclusion and Future Works}{0}}
+\headcommand {\beamer@sectionpages {17}{21}}
+\headcommand {\beamer@subsectionpages {19}{21}}
+\headcommand {\slideentry {5}{0}{1}{22/22}{}{0}}
+\headcommand {\beamer@framepages {22}{22}}
+\headcommand {\beamer@partpages {1}{22}}
+\headcommand {\beamer@subsectionpages {22}{22}}
+\headcommand {\beamer@sectionpages {22}{22}}
+\headcommand {\beamer@documentpages {22}}
+\headcommand {\def \inserttotalframenumber {22}}

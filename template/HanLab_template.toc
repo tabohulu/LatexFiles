@@ -1,0 +1,19 @@
+\contentsline {chapter}{\numberline {‘æ1Í}Introduction}{1}
+\contentsline {chapter}{\numberline {‘æ2Í}Review of Turbo Codes}{2}
+\contentsline {section}{\numberline {2.1}Encoding}{2}
+\contentsline {section}{\numberline {2.2}Turbo Decoding}{4}
+\contentsline {section}{\numberline {2.3}RSC encoders and $\tau $-seperated weight error events}{6}
+\contentsline {chapter}{\numberline {‘æ3Í}Interleaver Design for Turbo Codes}{8}
+\contentsline {section}{\numberline {3.1}Turbo Codes with Linear Interleavers}{8}
+\contentsline {subsection}{\numberline {3.1.1}Linear Interleaver Design for $a-\tau $ weight-$2$ errors}{8}
+\contentsline {subsection}{\numberline {3.1.2}Linear Interleavers and $a-\tau $ weight-$4$ errors}{11}
+\contentsline {section}{\numberline {3.2}Turbo Codes with Multi-Shift Interleaver}{13}
+\contentsline {subsection}{\numberline {3.2.1}Multi-Shift Interleaver Design via Sequential Representation of Linear Interleavers}{13}
+\contentsline {subsection}{\numberline {3.2.2}Search for Good Interleavers}{14}
+\contentsline {subsection}{\numberline {3.2.3}Performance Against $a-\tau $ weight-$4$ errors}{15}
+\contentsline {chapter}{\numberline {‘æ4Í}Results}{16}
+\contentsline {section}{\numberline {4.1}Simulation Results for Interleaver Search}{16}
+\contentsline {section}{\numberline {4.2}Comparison with Linear Interleavers}{16}
+\contentsline {chapter}{\numberline {‘æ5Í}Conclusion and Future Works}{19}
+\contentsline {chapter}{Ó«}{20}
+\contentsline {chapter}{Ql•¶Œ£}{20}

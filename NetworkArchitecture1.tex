@@ -1,0 +1,71 @@
+\documentclass[24 pts]{article}
+\usepackage{xeCJK}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+\usepackage{relsize}
+
+\newcommand{\me}{\mathrm{e}}
+\setCJKmainfont[BoldFont= Yu Mincho Demibold]{MS Mincho}
+\title{コンピュータネットワーク特論レポート1	 }
+\date{23-11-2016}
+\author{Kwame Ackah Bohulu　1631133}
+\begin{document}
+\maketitle
+\newpage
+\paragraph{1}
+According to the Shannon-Hartley theorem, the maximum achievable data rate at which information can be sent over a noisy channel is equal to the channel capacity. The equation for channel capacity is given below
+$$C=B\log_2(1+SNR)$$
+For the given channel 
+$$B=3 \times 10^3,  \ SNR=10^{\frac{SNR_{dB}}{10}} = 10^3$$
+therefore 
+\begin{equation*}
+\begin{split}
+C=3 \times 10^3\log_2(1+10^3)\\
+\approx 30\times10^3 bps
+\end{split}
+\end{equation*}
+\newpage
+\paragraph{2}
+In Manchester encoding one signal element is represented by two data elements whiles in NRZ one signal element is represented by one data element. The minimum Bandwidth required for the encoding schemes is given below.
+$$BW_{min}=c\times R\times \frac{1}{r}$$
+where
+c=case factor\\
+R=data rate\\
+r=number of data elements/number of signal elements\\
+\paragraph{}
+Assuming average case factor ie $c=\frac{1}{2}$\\
+$$B_{min(NRZ)}=\frac{R}{2}$$
+$$B_{min(Manchester)}=R$$
+Therefore, to achieve a data rate of R bps the minimum required Bandwidth for NRZ and Manchester encoding are $\frac{R}{2}$ and $R$ respectively.
+\paragraph{}
+Reference:(McGraw-Hill Forouzan Networking) Forouzan, Behrouz A. Fegan, Sophia Chung-Data Communications and Networking-McGraw-Hill Higher Education (2007)
+\newpage
+\paragraph{3}
+The relationship between the bit rate and the symbol rate is given by
+$R=S\log_2(s)$
+where s is the number of symbols used and S is the symbol rate
+For the case of QPSK , s=4 ans S=1200 symbols/sec
+therefore
+\begin{equation*}
+\begin{split}
+R=1200\log_2(4)\\
+=2400 bps
+\end{split}
+\end{equation*}
+\paragraph{4}
+Total time required to transmit data, $T_{total}$=round trip delay+ $2\times$ circuit setup delay+upload time +download time.\\
+round trip delay for VSAT with hub =0.54 sec
+\paragraph{upload time}
+uplink speed=1 Megabit/sec =0.125 Megabytes/sec.\\
+time required to upload a 2Gb data file =$$\frac{2\times 10^9} {0.125\times 10^6}=16000 seconds$$
+
+\paragraph{download time}
+downlink speed=2 Megabit/sec =0.250 Megabytes/sec.\\
+time required to download a 2Gb data file =$$\frac{2\times 10^9} {0.250\times 10^6}=8000 seconds$$
+
+Therefore  $$T_{total}=0.54+2.4+16000+8000=24,0002.94 seconds\approx 6.667 hours$$
+
+\end{document}

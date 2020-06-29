@@ -1,0 +1,587 @@
+\documentclass{beamer}  % presen 12pt
+\mode<presentation>
+%\usepackage{hyperref}
+\usetheme{Madrid}
+\usepackage{beamerthemesplit}
+\usepackage[export]{adjustbox}
+\usepackage{color}
+\usepackage{tikz}
+%\input{../../stylefiles/BeamerJ}
+%\usepackage{xeCJK}
+%\setCJKmainfont{MS Gothic}
+%\input{../../stylefiles/BeamerJ}
+
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+
+
+
+\title[Deterministic Interleaver Design for Turbo Codes]{Deterministic Interleaver Design for Turbo Codes}
+\author[Bohulu]{ \underline{Bohulu Kwame Ackah} \\ Chenggao Han}
+\institute[UEC]{Graduate School of Informatics and Engineering\\ The University of Electro-Communications}
+\date[Week 3]{\today}
+
+\begin{document}
+\frame{\titlepage}
+
+\addtobeamertemplate{navigation symbols}{}{%
+    \usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \hspace{1em}%
+    \insertframenumber/\inserttotalframenumber
+}
+
+\section{Introduction}
+\subsection{Turbo Codes}
+\begin{frame}
+
+	\frametitle{1. Turbo Codes : Brief Introduction}
+	\begin{itemize}
+\setlength\itemsep{2em}
+	\item　AWGN channel capacity approacing code
+
+\item Parallel concatenation of 2 convolutional codes via an interleaver
+
+	\item　Good performance due to interleaver
+	\end{itemize}
+	% \footnote{RSC : Recursive Systematic Convolutional}
+\end{frame}
+
+%slide 2
+\subsection{Interleavers}
+\begin{frame}
+\frametitle{2. Interleavers}
+
+
+\begin{itemize}
+\setlength\itemsep{2em}
+\item Function: rearrange element positions 
+
+\item Divided into 2 groups
+\begin{itemize}
+\setlength\itemsep{1em}
+\item Random Interleavers
+\begin{itemize}
+\item Advantage: Good performance for large frame sizes
+
+\item Disadvantage: Require storage of interleaver tables.
+\end{itemize}
+\item Deterministic Interleavers
+\begin{itemize}
+\item Advantage : Interleaving done via algorithm
+
+\item Disadvantage: For large frame sizes, random interleaver still better.
+\end{itemize}
+\end{itemize}
+
+\end{itemize}
+
+\end{frame}
+
+\subsection{Purpose of Research}
+
+\begin{frame}
+\frametitle{3. Purpose of Research}
+\begin{itemize}
+\setlength\itemsep{2em}
+\item Jing Sun, Oscar Y. Takeshita ”Interleavers for Turbo Codes Using Permutation Polynomials over Integer Rings”, IEEE Trans. Inform. Theory, vol. 51,
+pp. 101 - 119 Jan. 2005
+
+\item Purpose : Deterministic interleaver that outperforms Random Interleaver
+
+\begin{itemize}
+\item For large frame sizes
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\section{System Model}
+\subsection{Turbo Encoder}
+\begin{frame}
+\frametitle{4. Turbo Encoder}
+
+\begin{figure}
+\centering
+		\includegraphics[height = 4cm, width=0.65\textwidth]{TurboEncoder.pdf}
+	\end{figure}
+
+%\begin{figure}%[h!]
+%\centering
+%		\includegraphics[width=0.55\textwidth]{RSCExample3.pdf}
+		%\caption{$[\frac{1+D^2}{1+D+D^2}]$  RSC Encoder}
+	%	\label{RSC}
+	%	\end{figure}
+
+%\blfootnote{N: Interleaver size, M: No. of memory elements}
+\begin{itemize}
+\item N: Interleaver size, M: No. of memory elements
+\item $\mathbf{x}$: information bits,  length: $N-M$
+\item $\mathbf{p}^{(1)}$: upper parity checkbits, $\mathbf{p}^{(2)}$:upper parity checkbits ,length: $N$
+
+%\item $\mathbf{p}^{(2)}$:upper parity checkbits, length: $N$
+\end{itemize}
+
+\end{frame}
+
+
+
+%slide 5
+\subsection{Turbo Decoder}
+\begin{frame}
+\frametitle{5. Turbo Decoder}
+
+\begin{figure}
+\centering
+		\includegraphics[width=9cm]{TurboDecoder.pdf}
+	\end{figure}
+\begin{itemize}
+\item $y^s$ :systematic bits
+
+\item $y^p$ : upper parity check bits,  $y^{p'}$ : lower parity check bits
+
+%\item $y^{p'}$ : lower parity check bits
+
+\item $L(u_i)$ : Log-Likelihood Ratio, $L^e_{12}, L^e_{21}$ :extrinsic information
+
+%\item 
+\end{itemize}
+
+\end{frame}
+
+%Slide 6
+\subsection{RSC Encoders}
+%\subsection{$\tau$-seperated weight 2m errors}
+\begin{frame}
+\frametitle{6. RSC Encoders }
+\begin{itemize}
+\setlength\itemsep{2em}
+
+\item  RSC encoders can be characterized by their cycle length ($\tau$) 
+\begin{itemize}
+\item length of the cycle by input $[1, 0, 0, 0, 0,...]$
+\end{itemize}
+
+\begin{example} 
+\begin{columns}
+
+
+
+%\centering
+%$\Big[\frac{1+D^2}{1+D+D^2}\Big]$ (5/7)  RSC Encoder
+\column{0.55\textwidth}
+\begin{figure}%[h!]
+%\centering
+		\includegraphics[height = 4.5cm, width=\textwidth]{RSCExample3.pdf}
+		%\caption{$[\frac{1+D^2}{1+D+D^2}]$  RSC Encoder}
+		\label{RSC}
+		\end{figure}
+\column{0.45\textwidth}
+\begin{itemize}
+%\setlength\itemsep{2em}
+\item $\Big[\frac{1+D^2}{1+D+D^2}\Big]$ (5/7)  RSC Encoder
+ \item output : $[1,|1,1,0|,|1,1,0|,|1,1,0|...]$ 
+
+ \item cycle : $[1,1,0]$ , $\tau = 3$
+
+\end{itemize}
+
+\end{columns}
+\end{example}
+
+
+
+\end{itemize}
+
+\end{frame}
+
+%Slide 9
+%\subsection{$\tau$-seperated weight 2m errors}
+\begin{frame}
+\begin{itemize}
+ 
+\setlength\itemsep{2em}
+
+\frametitle{7. RSC Encoders and $\tau$-seperated weight 2m errors}
+
+\item weight $2m$ information sequences 
+\begin{itemize}
+\item "1" bit pair seperated by $\tau -1$ "0" bits
+\item effective free distance $d_{eff}$
+\end{itemize}
+
+
+\begin{example}
+\centering
+ $N=16$, input=$[1, 0, 0, 1,.....,0]$
+\begin{figure}
+		\includegraphics[width=0.95\textwidth]{RSCExample.pdf}
+		
+	\end{figure}
+\end{example}
+\item  \textcolor{red}{low-weight  codewords}.
+
+
+\end{itemize}
+
+\end{frame}
+
+%Slide 10
+\section{Interleaver Design}
+\subsection{Problem Statement}
+\begin{frame}
+\frametitle{8. $\tau$-seperated weight 2m error in Turbo Codes}
+
+
+
+\begin{center}
+\includegraphics[width=8cm]{weight2m.pdf}
+\end{center}
+
+
+
+
+\begin{itemize}
+\item  ターボ符号でのエラーイベント: $(t_i,s_j)_v$,RSC符号１:$t_i$, RSC符号２:$s_j$
+\end{itemize}
+
+
+\end{frame}
+
+\subsection{Linear Interleaver Design}
+\subsubsection{$\tau$-seperated weight 2 error prevention }
+\begin{frame}
+\frametitle{9.  Turbo Codes and Linear Interleavers }
+
+
+\begin{itemize}
+\item  index mapping function :
+\begin{equation}
+ \Pi_{\mathfrak{L}_N}(i) \equiv Di \mod N , \, gcd(N,D)=1
+\end{equation}
+\begin{centering}
+ $D$ : interleaver depth
+\end{centering}
+
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{9.  Turbo Codes and Linear Interleavers }
+
+\begin{center}
+\includegraphics[height = 3cm,width=0.6\textwidth]{weight2.eps}
+\end{center}
+
+\begin{itemize}
+
+
+\item input - output distance relationship
+ \begin{equation} 
+ Dt =s \mod N
+ \label{cong}
+ \end{equation}
+\begin{itemize}
+\item 
+$t=a\tau
+\mapsto s=b\tau$ :
+ \textcolor{red}{low-weight turbo codewords}.
+
+\item Solution: \textcolor{green}{$\min{ a+b}$ s.t. $Da\tau =b\tau \mod N$} 
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+%Slide 11
+\subsubsection{$\tau$-seperated weight 4 errors }
+\begin{frame}
+\frametitle{10.  Turbo Codes and Linear Interleavers}
+\begin{itemize}
+\item Weight $4$ input :$ (1+D^t)(1+D^{\tau})$
+
+\begin{itemize}
+\item $t$ s.t $Dt \equiv \tau \mod N$
+\end{itemize}
+\begin{example}
+\begin{itemize}
+\item  $N=32,\, \tau=3, \, D=5,\, t=7$
+
+\item input : $(1+D^3)(1+D^7)$  , output :$(1+ D^3)(1+D^{15})$
+
+\item codeword weight : $20$, multiplicity $\rightarrow N$
+\end{itemize}
+
+
+
+\end{example}
+\item Dominate BER performance [2]
+
+\end{itemize}
+\blfootnote {[2] Oscar Y. Takeshita, Member, IEEE, and Daniel J. Costello ,
+''New Deterministic Interleaver Designs for Turbo Codes'',IEEE Trans. Inform. 
+Theory, vol.  46,pp. 1988-2006,Nov. 2000}
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Slide 12
+\subsection{Multi-Shift Interleaver Design}
+\subsubsection{Sequential representation of Linear Interleaver }
+\begin{frame}
+\frametitle{7. Sequential representation of Linear Interleaver}
+
+\begin{itemize}
+\setlength\itemsep{2em}
+%\item $d_{ef}$: ２エラーイベントの入力による、符号語の最低距離
+
+
+
+ \item Algorithm for linear interleaving
+
+
+
+\begin{itemize}
+\setlength\itemsep{1.5em}
+\item 1. $p_0=0$
+ 
+\item 2. $p_i=(p_{i-1}+\textcolor{red}{D}) \mod N,\,\,\,\,\,  \mathit{D \,is \,an \,odd \,integer}$ 
+
+\end{itemize}
+
+
+
+
+\end{itemize}
+
+
+\end{frame}
+%Slide 13
+\subsubsection{ Multi-Shift Interleaver Parameters}
+\begin{frame}
+\frametitle{8. New Interleaver Design}
+
+\begin{itemize}
+\setlength\itemsep{1.5em}
+
+\item Algorithm for proposed interleaver (multi-shift interleaver)
+
+\begin{itemize}
+\item 1. $p_0=0$
+ 
+ \item 2. $p_i=p_{i-1}+\textcolor{red}{d_{((i-1) \mod V) } }\mod N,\,\,\,\,\,  \mathit{d_0 \,is \,an \,odd \,integer}$
+
+\item Make D variable to get rid of linear congruence.
+\end{itemize}
+
+\item cycle set $\mathbb{D}=\{d_0,d_1,...,d_{V-1}\},\,\,\, V=N/\Delta s$
+\begin{itemize}
+\item $d_i=d_{i-1}+\Delta s$
+\end{itemize}
+
+\item For $N=2^r,\,\,\, r\in \{ 1,2,...\}$ set $\Delta s= 2^q, \,\,\, q\in\{2,3,..,r-1\}$
+
+
+
+
+%\item Algorithm in equation form:  $$\Pi_{\mathit{M}|{N:(d_0,\Delta s)}}(i)= \Big(  d_0 + \Delta s \frac{(i-1)}{2}\Big)i \mod N$$
+
+
+
+\end{itemize}
+
+
+\end{frame}
+
+
+
+% slide 14
+\begin{frame}
+\subsubsection{Interleaving Example }
+\frametitle{9. Interleaving Example}
+\begin{example}
+\begin{itemize}
+
+\item original vector $$\mathbf{x}=[0, 1, 2, 3,...,31]$$
+\setlength\itemsep{2em}
+\item $N=32, \,\, \Delta s =4, \,\, d_0=5$ 
+\begin{itemize}
+\item $\mathbb{D}=\{5, 9, 13, 17, 21, 25, 29, 1\}$
+
+\item 
+\begin{equation*}
+\begin{split}
+\mathbf{p}= &[ 0, 5, 14, 27, 12, 1, 26, 23, 24, 29, 6, 19, 4, 25, 18, 15, 16, 21\\,
+ &30, 11, 28, 17, 10, 7, 8, 13, 22, 3, 20, 9, 2, 31]
+\end{split}
+\end{equation*}
+ \item interleaved vector:
+\begin{equation*}
+\begin{split}
+\mathbf{x}'=&[0,5,30,27,12,1,10,23,24,29,22,19, 4, 25 ,2, 15,16, 21, 14, 11, 28\\,&17,
+  26, 7, 8, 13, 6, 3, 20, 9, 18, 31]
+\end{split}
+\end{equation*}
+\end{itemize}
+
+
+
+\end {itemize}
+\end{example}
+\end{frame}
+
+
+
+
+% slide 15
+\begin{frame}
+\subsubsection{Search for Good Multi-Shift Interleavers }
+\frametitle{10. Search for Good Interleaver}
+
+\begin{itemize}
+\setlength\itemsep{2em}
+\item selection criteria :effective free distance ($d_{eff}$) .
+
+\item procedure for choosing good interleavers
+
+\begin{itemize}
+\item choose $d_0$ from $(\sqrt{N},N/2)$
+
+\item calculate hamming weight for  $\Delta s \in 2^q$
+
+
+
+\item best $\Delta s$ = largest $d_{eff}$
+
+
+
+\item repeat for $d_0$ within range 
+
+\item best interleaver : largest $d_{eff}$, least value of $\Delta s$ and multiplicity
+\end{itemize}
+
+
+
+\end{itemize}
+
+\end{frame}
+
+% slide 18
+\section{Results}
+\subsection{Interleaver Search Results}
+\begin{frame}
+\frametitle{11. Results : $5/7$ component encoder. $N=256$}
+\begin{table}[h!]
+\centering
+\begin{tabular}{||c |c |c |c||} 
+ \hline
+ $d_0$ & 17 & 31 & 47 \\ [0.5ex] 
+ \hline\hline
+ $\Delta s$ & 64 & 128 & 64 \\ 
+ \hline
+  $d_{eff}$ & 38 & 38 & 38 \\ 
+  \hline
+  $N_{free, eff}$ & 207 & 208 & 209 \\ [1ex] 
+ \hline
+\end{tabular}
+%\caption{ $5/7$,  component encoder. $N=256$}
+\label{tab1}
+\end{table}
+\blfootnote{ $N_{free, eff}$ : multiplicity of $d_{eff} $codewords}
+\end{frame}
+
+% slide 19
+\subsection{Interleaver Search : Simulation Results}
+\begin{frame}
+\frametitle{12. Results for Table }
+\begin{tikzpicture}[remember picture,overlay]
+            \node[at=(current page.center)] {
+                \includegraphics[width=1.35\paperwidth]{myInterleaver_(comparison_256)_5_7_3.eps}
+            };
+        \end{tikzpicture}
+
+\end{frame}
+
+% slide 20
+\subsection{ Comparison : Simulation Results}
+\begin{frame}
+\frametitle{13. Results for $5/7$ Component Code. $N=1024$}
+\begin{tikzpicture}[remember picture,overlay]
+            \node[at=(current page.center)] {
+                \includegraphics[width=1.35\paperwidth]{msi_linear_256_1000Frames_2.eps}
+            };
+        \end{tikzpicture}
+
+\end{frame}
+
+% slide 21
+\begin{frame}
+\frametitle{14. Results for $7/5$ Component Code. $N=1024$}
+\begin{tikzpicture}[remember picture,overlay]
+            \node[at=(current page.center)] {
+                \includegraphics[width=1.35\paperwidth]{msi_linear_1024_1000_7_5Frames.eps}
+            };
+        \end{tikzpicture}
+
+\end{frame}
+
+% slide 19
+
+\begin{frame}
+\frametitle{15. Results for $5/7$ Component Code. $N=16384$}
+ \begin{tikzpicture}[remember picture,overlay]
+            \node[at=(current page.center)] {
+                \includegraphics[width=1.35\paperwidth]{msi_linear_16384.eps}
+            };
+        \end{tikzpicture}
+
+\end{frame}
+
+
+% slide 19
+\section{Conclusion and Future Works}
+\begin{frame}
+\frametitle{16. Conclusion and Future Works}
+\begin{block}{Conclusion}
+\begin{itemize}
+\setlength\itemsep{2em}
+\item The multi-shift
+interleaver outperforms the linear interleaver for both medium and long frame sizes. 
+\end{itemize}
+\end{block}
+
+\begin{block}{Future Research }
+
+
+
+\begin{itemize}
+
+
+\item Comparison with other interleavers
+
+\item Theoretical BER bound for Interleaver
+
+
+
+
+
+
+
+\end{itemize}
+\end{block}
+\end{frame}
+\end{document}

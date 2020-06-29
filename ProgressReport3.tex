@@ -1,0 +1,30 @@
+\documentclass[20 pts]{article}
+\usepackage{xeCJK}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bm}
+\setCJKmainfont{SimSun}
+\title{Trellis Termination} 
+\author{Kwame Ackah Bohulu}
+\date{2017/11/16}
+\begin{document}
+\maketitle
+
+\newpage
+\section{Turbo Codes using linear interleavers}
+mapping function for linear interleaver
+
+$$\Pi_L=Di \mod N,\,\,\, 0\leq i\leq N-1, \,\,\,\, gcd(N,D)=1$$
+
+focus on weight-2 inputs. let the distance between the ``1'' bits be $t$. For a block
+size $N$ range of $t$ is $$1 \leq t \leq N-1$$ . After interleaving the position of
+the ``1'' bits are changed. Let the distance between the ``1'' bits of the interleaved 
+sequence be $s$.
+
+Using the linear interleaver, we assume that an input with the ``1'' bits seperated
+by distance$t$ will always be interleaved to sequence with the ``1'' bits seperated by 
+distance $s$. However this holds true only when the first bit position is $1$. When the
+first bit position is greater than one a distance of $t$ is interleaved to a distance of $s$
+or $-s \mod N$ depending on the position of the ``1'' bits.
+\end{document}

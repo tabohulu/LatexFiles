@@ -1,0 +1,66 @@
+\documentclass[20 pts]{article}
+\usepackage{xeCJK}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bm}
+\setCJKmainfont{SimSun}
+\title{プログラミング言語基礎論第1回レポート} 
+\author{Kwame Ackah Bohulu, 1631133}
+\date{22-06-2017}
+\begin{document}
+\maketitle
+
+\newpage
+\paragraph{[1]}
+
+primes :: Int ->[Int]\newline
+primes n =seive [2..]\newline
+       where \newline
+       seive (p:xs)= p:seive (take n [x|x <- xs, mod x p > 0])\newline
+       seive[]=[]\newline
+       
+    \paragraph{[2]}
+       poly :: (Num a) => [a] -> a -> a\newline
+poly [] v=0\newline
+poly (x:xs) v = x*v + poly xs v\newline
+       
+        \paragraph{[3]}
+       
+       fib2 :: Int -> Int\newline
+fib2 n = fibsub n (1, 1)\newline
+fibsub :: Int -> (Int, Int) -> Int\newline
+fibsub n (x,y) | n== 0 =x\newline
+               | otherwise = fibsub (n-1) (y,x+y)\newline
+               
+               fib2関数は0.00秒で値を計算して、メモリ量は102984 bytesなので、fib2関数は効率的である。
+               
+               \paragraph{[5]}
+               (1). data BETree a = BLeaf a | BNode a (BETree a) (BETree a)\newline
+               deriving (Eq, Show)\paragraph{}
+               (2). sumBETree :: (Num a) => a -> BETree a -> a\\
+sumBETree u (BLeaf x) = u + x\\
+sumBETree u (BNode x lt rt) =  sumBETree (x + sumBETree u lt) rt\\
+
+\paragraph{}
+depthBETree :: BETree a -> Int\\
+depthBETree (BLeaf x) = 0 \\
+depthBETree (BNode x lt rt) = 1 + max (depthBETree lt) (depthBETree rt)\\
+\paragraph{}
+
+upAccBETree :: (Num a) => a -> BETree a -> BETree a\\
+upAccBETree u (BLeaf x) = BLeaf (u+x)\\
+upAccBETree u (BNode x lt rt) = BNode(sumBETree (x + sumBETree u lt) rt) ((upAccBETree u lt)) (upAccBETree u rt)\\
+\newpage
+\paragraph{[6]}
+               
+               
+               f :: Int -> [Int]\\
+f a = if a <= 0 then [0] else a : f (a-1)\\
+
+g :: (Num a) => ([a],[a]) -> [a]\\
+g ([],ys)=[]\\
+g (xs,[])=[]\\
+g ((x:xs), (y:ys)) = (x+y) : g(xs,ys)\\
+
+\end{document}

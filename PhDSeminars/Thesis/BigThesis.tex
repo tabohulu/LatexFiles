@@ -1,0 +1,382 @@
+\documentclass[11pt, oneside, dvipdfmx]{book}
+\newcommand{\folder}{/usr/local/share/texmf}
+\input{\folder/hfiles/ebook}
+%\setCJKmainfont{SimSun}
+\title{Thesis}
+\author{Kwame Ackah Bohulu}
+\date{\today}
+\begin{document}
+
+\maketitle
+\chapter{Bit Error Probability for Turbo Codes Derivation}
+\section{Maximum Likelihood Detection (MLD)}
+Assume that there exists an input space $\bbR^M$ with $M=2^k $ elements. From this input space,a $k$-bit binary information sequence  $\bx_m =(x_{m,0},x_{m,1},...x_{m,k-1})$ is mapped to  an element $\bc_m =(c_{m,0,}c_{m,1},...,c_{m,n-1} )$ in the output space $\bbR^N$ with $N=2^n$ elements. The $M$ elements in $\bbR^M$ form a code and $\cC \subset \bbR^n$ The BPSK modulated codeword $\by_m=(y_{m,0},y_{m,1},...,y_{m,n-1})$ is transmitted over the AWGN channel and is received at the receiver as $\br =(r_{0},r_{1},r_{n-1})$
+
+The task of the receiver is to obtain an estimate of $\bx_,~\hat{\bx_m}$ from $\br$. The probability of a correct decision given $\br$ $P[\text{correct decision} | \br] = P[\hat{\bx_m}~\text{sent} | \br]$ and the probability of a correct decision 
+$P[\text{correct decision} ] = \int P[\hat{\bx_m}~\text{sent} | \br]p(\br) d\br$
+
+For optimal accuracy the receiver must decide in favor of the $\bx_m$ that maximizes $P[\bx_m|\br]$ upon observing $\br$
+
+\begin{equation}
+\begin{split}
+\hat{\bx}_m& = \argmax_{1 \leq m \leq m} P[\bx_m|\br]\\
+& \argmax_{1 \leq m \leq M} P[\bc_m|\br]
+\end{split}
+\end{equation}
+
+This decision rule is known as \textit{maximum a posteriori (MAP) probability rule} and it may be simplified to
+
+\begin{equation}
+\hat{\bx}_m=\argmax_{1 \leq m \leq M}\frac{ P_{x_m}p(\br|\bc_m)}{p(\br)} =\argmax_{1 \leq m \leq N}P_{x_m}p(\br|\bc_m)
+\end{equation}
+Since $p(\br_m)$ is independent of $\bx_m$. In the case where $P_{x_m}=1/M$
+
+
+\begin{equation}
+\hat{\bx}_m=\argmax_{1 \leq m \leq M}p(\br|\bc_m)
+\label{3}
+\end{equation}
+
+(\ref{3}) is known as the \textit{Maximum Likelihood (ML) rule}. It is worth noting that what the receiver is essentially doing is dividing an output space $\bbR^N$ into $M$ decision spaces $D_1,D_2,...,D_M$ and if $\br \in D_m,~\hat{\bx_m} = \bx_m$ 
+
+For the MAP detector $D_m=\{r \in \bbR^N : P[\bx_m|\br] > P[\bx_m'|\br],~\forall~ 1 \leq m \leq M,~m' \neq M \}$
+
+\section{Error Probability}
+From the above discussion, we realize that an error occurs if $r \notin D_m$ when $\bc_m$ is sent. The symbol error probability of a receiver is given by
+\begin{equation}
+P_e = \sum_{m=1}^{M} P_{\bx_m} P[\br \in D_m | \bc_m ~\text{sent}] = \sum_{m=1}^{M} P_{\bx_m} P_{e|\bc_m}
+\end{equation}
+Where $$P_{e|m} = \sum_{1 \leq m' \leq M,~m'\neq m}^{} \int_{D_{m'}} p(\br|\bc_{m})d\br$$ is the error probability when the message $\bx_m$ is sent and 
+
+\begin{equation}
+P_e = \sum_{m=1}^{M} P_{\bx_m} \sum_{1 \leq m' \leq M,~m'\neq m}^{} \int_{D_{m'}} p(\br|\bc_{m})d\br
+\label{5}
+\end{equation}
+(\ref{5}) gives the \textit{symbol error probability}
+
+We define $D_{mm'} =\{ p(\br|\bc_m') > p(\br|\bc_m) \}$  and we see that $D_{m'} \leq D_{mm'}$
+
+Again, we define the \textit{pairwise error probability} $P_{m \rightarrow m'}$ as 
+
+\begin{equation}
+P_{m \rightarrow m'}= \int_{D_{mm'}} p(\br|\bc_{m})d\br
+\label{6}
+\end{equation}
+
+fixing (\ref{6}) into (\ref{5}) we get 
+
+\begin{equation}
+\begin{split}
+P_e \leq & \sum_{m=1}^{M} P_{\bx_m} \sum_{1 \leq m' \leq M,~m'\neq m}^{} \int_{D_{mm'}} p(\br|\bc_{m})d\br\\
+& \leq \sum_{m=1}^{M} P_{\bx_m} \sum_{1 \leq m' \leq M,~m'\neq m}^{}P_{m \rightarrow m'}\\
+& \leq \frac{1}{M}\sum_{m=1}^{M}~  \sum_{1 \leq m' \leq M,~m'\neq m}^{}P_{m \rightarrow m'}\\
+\end{split}
+\label{7}
+\end{equation}
+where $P_{x_m}=1/M$ for the case where the messages are equiprobable
+
+
+\section{Symbol Error Probability for Linear Block Codes}
+Without loss of generality, we assume that the all zero codeword $\mathbf{0}$
+From the above discussion, we realize that an error occurs if the receiver decides upon $\bc_m \neq \mathbf{0} $ as the codeword that was transmitted and this event is defined by the \textit{pairwise error probability} $P_{\mathbf{0} \rightarrow c_m}$. The symbol error probability of the linear block code is then 
+\begin{equation}
+P_e = \sum_{c_m \in \cC,~c_{m} \neq \mathbf{0}}^{} P_{\mathbf{0} \rightarrow c_m}
+\end{equation}
+Since codewords with the same weight have the same $P_{\mathbf{0} \rightarrow c_m}$ we have 
+\begin{equation}
+P_e = \sum_{i=d_{\text{min}}}^{n} A_iP_{2}(i)
+\end{equation}
+Where $A_i$ is the number of codewords if a given weight $i$ and $P_2(i)$ is the PEP of codewords with weight $i$ 
+
+\subsection{Upper bound on Pairwise Error Probability (PEP) for AWGN channel}
+We attempt to find the PEP for the case of the AWGN channel  
+\begin{equation}
+P_{\bc_m \rightarrow \bc_m'}
+\end{equation}
+
+Let us assume that there are two possible codeword $\bc_m ~\text{and}~ \bc_{m'}$ that can be transmitted over the AWGN channel with equal probability. The decision regions for these codewords are seperated by the perpendicular bisector of the line that connects these two codewords. Furthermore, we assume that $\bc_m$ is sent and we want to find the $P_{\bc_m \rightarrow \bc_m'} = P[\bc_{m'} detected|\bc_m sent]$
+This would mean that there is a point $A$ from $\bc_m$ which has a distance larger than $d_{mm'}/2,~d_{mm'}=||\bc_m'-\bc_m||$ since $\bc_m$ is sent, then $\bn=\br-\bc_m$ and the scalar projection of $\br-\bc_m$ on $\bc_m'-\bc_m$ is $\frac{\bn \cdot (\bc_m'-\bc_m)}{d_{mm'}}$. With the above information, we can write the error probability as
+
+\begin{equation}
+\begin{split}
+P_{\bc_m \rightarrow \bc_m'}&=P\Bigg[\frac{\bn \cdot (\bc_m'-\bc_m)}{d_{mm'}} > \frac{d_{mm'}}{2}\Bigg]\\
+&=P\Bigg[\bn \cdot (\bc_m'-\bc_m) > \frac{d_{mm'}^2}{2}\Bigg]\\
+\end{split}
+\end{equation}
+
+Let $d=\bc_m'-\bc_m$. Since $\bn $ is a Gaussian random variable $\bn \cdot (\bc_m'-\bc_m) $ has zero mean. We wish too find the variance of $\bn \cdot (\bc_m'-\bc_m)$ which is $E(x^2)-(E(x))^2 = E(x^2)$
+
+\begin{equation}
+\begin{split}
+ E(x^2)&=E\Bigg\{ \sum_{i=1}^{N} n_i^2 \cdot d_i^2 \Bigg\}\\
+ &=E\Bigg\{ \sum_{i=1}^{N} n_i^2  \Bigg\}\Bigg\{ \sum_{i=1}^{N} d_i^2 \Bigg\}\\
+ &=\frac{N_0}{2}d_{mm'}^2
+\end{split}
+\end{equation}
+And $P_{\bc_m \rightarrow \bc_m'}=Q \Bigg(\sqrt{\frac{d_{mm'}^2}{2N_0}} \Bigg)$
+
+If we assume
+\section{Bit Error Probability for Linear Block codes}
+Let $N$ be the block length of a code with $2^N$ codewords. 
+From the previous section, we saw that for AWGN channels 
+\begin{equation}
+ P_{\mathbf{0} \rightarrow c_m} = Q\Bigg(\sqrt{\frac{d^2_E(\bc_m)}{2N_o}}\Bigg)
+ \label{pepAWGN}
+\end{equation}
+For BPSK modulation $d^2_E(c_m) = 4E_bR_c\text{w}(c_m)$ and we have 
+\begin{equation}
+ P_{\mathbf{0} \rightarrow c_m} = Q\Bigg(\sqrt{\frac{2E_bR_c\text{w}(\bc_m)}{N_o}}\Bigg)
+ \label{pepBPSK}
+\end{equation}
+the corresponding bit error probability when $\bc_m$ is transmitted is given by 
+\begin{equation}
+P_b(\mathbf{0}\rightarrow c_m) =\frac{w(\bx_m)}{N} Q\Bigg(\sqrt{\frac{2E_bR_c\text{w}(\bc_m)}{N_o}}\Bigg)
+\end{equation}
+
+Finally using the union bound, the average bit error probability is bounded by
+
+\begin{equation}
+P_b = \frac{1}{N} \sum_{m=1}^{2^{N}-1} w(\bx_m)Q\Bigg(\sqrt{\frac{2E_bR_c\text{w}(\bc_m)}{N_o}}\Bigg)
+\end{equation}
+
+
+\chapter{Summary of ``Interleavers for Turbo Codes Using Permutation
+Polynomials Over Integer Rings'' by Sun, Takeshita }
+
+\section{Introduction}
+In this research paper, a new deterministic interleaver (The Quadratic permutation Polynomial Interleaver) is proposed. It is based on permutation polynomials over the ring of integers modulo $\bN,~\bbZ_N$
+
+It has been observed that a subset of error events with input
+weight $2m,~m$ being a small positive integer, usually dominates
+the performance when the frame sizes arent very short. The criteria for selecting good interleavers is based on the effective free distance and for values of $m<4$ a method for finding these error events is presented.
+
+\section{Permutation Polynomials over $\bbZ_N$}
+The following theorem shows how to identify a permutation polynomial over $\bbZ_N,~N=2^n$
+
+\begin{MyTheorem}
+Let $P(x)=a_0+a_1x+a_2x^2+...+a_mx^m$ be a polynomial with integer coefficients. $P(x)$ is a Permutation Polynomials over $\bbZ_N$ if and only if 
+\begin{enumerate}
+\item $a_1$ is odd
+
+\item $a_2+a_4+a_6+...$ is even
+
+\item $a_3+a_5+a_7+...$ is even
+\end{enumerate}
+\end{MyTheorem}
+
+For the more general case where $N=p^n$ we have the following theory
+\begin{MyTheorem}
+ $P(x)$ is a Permutation Polynomials over $\bbZ_N$ if and only if 
+it is a permutation polynomial over $\bb_Z(p)$ and $P'(x) \neq 0 \mod{ p} ~\forall ~\bbZ_N$
+\end{MyTheorem}
+
+For polynomials of degree two, the criteria for permutation polynomials is simplified by the following corollary
+
+\begin{corollary}
+A degree two polynomial of the form $P(x) =ax+bx^2$ is a permutation polynomial over $\bbZ_{p^n}$ iff $a \neq 0 ~\text{and} ~ b=0 \mod p$
+\end{corollary}
+
+\section{Permutation Polynomial-Based Interleavers(PPI)}
+In general, if a polynomial $P(x)$ is a permutation polynomial over $\bbZ_N$, then an interleaver based on this permutation polynomial can be defined as $$ \pi_{\cP_N} : x \rightarrow P(x), ~ \forall x$$
+
+A plot of the PPI reveals a period pattern which does not necessarily imply bad performance. This can be better explained considering input weight $2$ error events.
+
+\begin{MyDefinition}{input weight $2$ error events (2W event)}
+An input weight $2$ error event is defined as an error event with two information bits in error. for a Turbo Code(TC) this corresponds to one input weight $2$ error event in each component code
+\end{MyDefinition}
+
+It is widely know  that this kind of error event determines the effectrive free distance ($d_{\text{eff}}$) and consequently, the performance of the TC. 
+
+A 2W event in the first component code can be represented by the pair $(x,x+t)$ and it is interleaved to $(\pi(x),\pi(x+t))$ in the second component code. $\Delta(x,t)=\pi(x+t) - \pi(x) \mod N$ gives the distance between the interleaved points. if $t$ is fixed, it is possible to plot a graph of $\Delta(x,t)$ against $x$. It is observed that all the points are uniformly located along a few equally
+separated horizontal lines. We are interested in points close to the line$\Delta(x,t)=0$. If the coefficents $a,b$ are well chosen, if is possible to have point far from the line $\Delta(x,t)=0$
+
+\section{Permutation Polynomial Search} We wish to find the best PPI for a given component code. For a fixed frame size $N$ and fixed polynomial degree, it comes down to choosing the coefficents of the permutation polynomial. Since the focus is on polynomials of degree $2$. It comes down to selecting values for $a ~\text{and}~b$ .
+
+The minimum distance of a subset of error events of a TC, namely the input weight $2m$ error events(2mW), is used as a criteria to select values for $a ~\text{and}~b$. Though it doesnt always exist when RS convilutional codes are used, the existence of a tail biting trellis is used to simplify analysis. This helps ignore the boundary effects and makes finding errors easy.
+
+\subsection{Input Weight 2m Error (2mW) Events}
+A typical 2mW event is shown. It is made up of $m$ 2W events in each component code and they are connected via an interleaver. The $ith$ 2W event in the first component code begins at $x_i$ and has length $t_i$. In the second component code, the error event has length $s_i$. In our analysis we assume that $t_i,s_i$ are all multiples of the cycle length which is the cycle at the output of a conponent encoder when the input is $[1,0,0,0,0,...]$
+
+An error pattern is represented by the length $2m$ vector $[t_1,t_2,...,t_m,s_1,s_2,....,s_m]$
+
+For the 2mW error event shown in the figure,we have 
+
+\begin{equation}
+P(x_2)-P(x_1) = s_1
+\end{equation}
+
+\begin{equation}
+P(x_3)-P(x_1+t_1) = s_2
+\end{equation}
+
+\begin{equation}
+\begin{split}
+P(x_4)-P(x_2+t_2) =& s_3\\
+&\cdot\\
+&\cdot\\
+&\cdot
+\end{split}
+\end{equation}
+
+\begin{equation}
+P(x_{m-1})-P(x_{m-3}+t_{m-3}) = s_{m-2}
+\end{equation}
+
+\begin{equation}
+P(x_{m})-P(x_{m-2}+t_{m-2}) = s_{m-1}
+\end{equation}
+
+\begin{equation}
+P(x_{m}+t_m)-P(x_{m-1}+t_{m-1}) = s_{m}
+\end{equation}
+
+For such a 2mW event to occur all $m$ equations need to be satisfied. $x_m$ takes values  $0,1,...,N-1$ and $t_i,s_i$ are multiples of $\tau$
+
+Given an error pattern it is possible to uniquely determine its Hamming distance assuming the error events dont overlap.
+
+it is calculated by the equation below 
+
+\begin{equation}
+6m +\Bigg( \frac{\sum |t_i| + \sum |s_i|}{\tau} \Bigg) w_o
+\end{equation}
+
+\section{Search for Good Interleavers using $d_{eff}$}
+Effective free distance of a TC is determined by its 2W events. For the permutation polynomial, we have 
+
+\begin{equation}
+\Delta(x,t) = P(x+t) -P(x) = 2btx +bt^2+at
+\end{equation}
+
+The distance to zero can be represented by
+
+\begin{equation}
+\begin{split}
+s =& \pm \Delta(x,t) \mod p_N^{o_{c_1}}\\
+=&\pm (bt^2 +at) \mod p_N^{o_{c_1}}
+\end{split}
+\end{equation}
+where $c_1 = 2bt$
+
+Given $a,b,\tau$ we define $\cL_{a,b,\tau} = \min(|t|+|s|)$ where $t,s$ are multiples of $\tau$. For a given component code, $\cL_{a,b,\tau}$ can be used to calculate $d_{eff}$. In a search for good interleavers, there is a need to limit the range of values for $a,b$. The following lemma gives info on how to
+
+\begin{lemma}
+For 2W event analysis, if we write $b=b_1b_0=b_1\cdot p_N^{o_b}$, we can assume $b_1=1$
+\end{lemma}
+
+\begin{lemma}
+For 2W event analysis,given $b=b_1\cdot p_N^{o_b}$, we only need to consider $a$ such that  $1 \leq a < p_N^{o_b}$
+\end{lemma}
+
+\chapter{$P_b$ considering distance between weight $2m$ error event points}
+
+For a linear block code with BPSK modulation, the probability of decoding $\bc$ when the all zero information sequence $\mathbf{0}$ is transmitted is given by
+
+\begin{equation}
+P_r\{\mathbf{0} \rightarrow \bc\} =Q\Bigg( \sqrt{2R_cW_H(\bc)\gamma_b}\Bigg)
+\end{equation}
+where $\gamma_b=\frac{E_b}{N_o}$, $W_H(\bc)$ is the Hamming weight of $\bc$ and $R_c$ is the rate of the code.
+The corresponding bit error probability is
+
+\begin{equation}
+P_b(\mathbf{0} \rightarrow \bc) =\frac{j}{N}Q\Bigg( \sqrt{2R_cW_H(\bc)\gamma_b}\Bigg)
+\label{bitPEP}
+\end{equation}
+Where $j$ denotes the weight of the information sequence and $N$ denotes the lenght of the information sequence.
+ 
+From[SunTakeshita], we know that for input-weight $2m$ error (2mW) events it is possible to calculate the Hamming weight of the code using the equation below
+
+\begin{equation}
+\begin{split}
+W_H(\bc)=&6m +\Bigg( \frac{\sum |t_i| + \sum |s_i|}{\tau} \Bigg) w_o\\
+&=3j +\Bigg( \frac{\sum |t_i| + \sum |s_i|}{\tau} \Bigg) w_o
+\end{split}
+\end{equation}
+
+Where 
+\begin{description}
+\item [$j$] $ = 2m$
+\item [$m$] is the number of 2mW events present in the codeword, 
+\item [$\tau$] represents the cyclic shift of the component code, 
+\item[$w_o$] is the weight of the output sequence of the input $1+D^{\tau}$, 
+\item[$t_i,~s_i$] represent the seperation between the ``1'' bits in the first and second component codes respectively , $i=\{1,2,...,m\}$
+
+\end{description}
+Since $t_i,~s_i$ must all be multiples of $\tau$, we may write $t_i=q_i\tau,~s_i=r_i\tau$. Where $q_i,r_i \in \bbZ,~q_i,r_i =\{1,2,...,\lfloor \frac{N}{\tau} \rfloor \}$.
+By a little change of subject we have,
+\begin{equation}
+W_H(\bc)=3j +\Bigg( \sum |q_i| + \sum |r_i| \Bigg) w_o
+\end{equation}
+
+Substituting into (\ref{bitPEP}) gives
+\begin{equation}
+\begin{split}
+P_b(\mathbf{0} \rightarrow \bc) =&\frac{j}{N}Q\Bigg( \sqrt{2R_c\gamma_b \Bigg[3j +\Bigg( \sum |q_i| + \sum |r_i| \Bigg) w_o\Bigg]}\Bigg)\\
+=&\frac{j}{N}Q\Bigg( \sqrt{\Gamma \Bigg[3j +\Bigg( \sum |q_i| + \sum |r_i| \Bigg) w_o\Bigg]}\Bigg)\\
+=&\frac{2m}{N}Q\Bigg( \sqrt{\Gamma \Bigg[6m +\Bigg( \sum |q_i| + \sum |r_i| \Bigg) w_o\Bigg]}\Bigg)\\
+\end{split}
+\end{equation}
+where $\Gamma =2R_c\gamma_b$
+
+Applying the union bound, the average error probability is given by 
+
+\begin{equation}
+P_b \leq \frac{1}{N}\sum_{m=1}^{N/2} 2m \sum_{i=1}^{l}Q\Bigg( \sqrt{\Gamma \Bigg[6m +\Bigg( \sum |q_i| + \sum |r_i| \Bigg) w_o\Bigg]}\Bigg)
+\end{equation}
+where $$ l=\sum_{z=\tau}^{N-1} \Bigg\lfloor \frac{z}{\tau}\Bigg \rfloor $$
+
+is the size of the set of possible values for $q_i,r_i$
+
+%If we wish to limit or design to the case where the maximim value of $q_i,r_i =3$, then l becomes $$ l  = \sum_{i=1}^{3} N- i\tau, ~ i\tau \leq N$$. In the case where $i\tau>N$, we set $N-i\tau=0$
+
+\chapter{``A Code-Mathed Interleaver Design for Turbo Codes'' by Wen Feng, Jinhong Yuan and Branka S. Vucetic}
+
+\section{Abstract}
+A code-matched interleaver design for turbo codes
+in which a particular interleaver is constructed to match the code
+weight distribution is proposed. The design method is based on the
+code distance spectrum. The low weight paths in the code trellis
+which give large contributions to the error probability in the
+signal-to-noise ratio region of interest for practical communication
+systems are eliminated so that they do not appear in the overall
+code trellis after interleaving. The proposed interleaver improves
+the code error performance at moderate to high signal-to-noise
+ratio and considerably increases the asymptotic slope of the error
+probability curves.
+\section{Introduction}
+interleavers are widely used with error control coding for channels which exibit bursty error characteristics and cancatenated codes, especially Turbo codes.
+Basic role of an interleaver is to construct a long random code and can be used to change the weight distribution of thee Turbo code. A number of Interleavers have been used in combination with turbo codes.
+
+\begin{description}
+\item[block interleaver] Matrix of $N=r \times l$ where $r$ is the number of rows and $l$ is the number of colums. input data is written along row and read out along columns. A type of block interleaver that terminates both component encoders in the same state was also proposed, known as ``simile'' interleaver
+
+\item[Pseudorandom interleaver] variation of the block interleaver where data is written sequentiallly and read out in a pseudo-random manner.The S-random interleaver is an improved version of this interleaver and can ``spread'' low-weight input patterns to generate higher weight codewords.
+
+\item[convolutional interleaver] data is multiplexed into and out of a fixed number of shift registers
+
+\item[prime interleaver] it is also based on block interleaving and can make turbo code generate codewords with good hamming distance
+\end{description}
+%\chapter{Basics of Logic}
+
+%\section{Basic Definitions}
+%\begin{description}
+%\item[statement] Declarative sentence which is either true or false, never both
+
+%\item[postulate] Statement that is assumed to be true. Often expressed using undefined terms. %postulates and definitions are used to define statements called \texit{theorems}
+
+%\item[lemma] theorem which is important because it serves as a stepping stone towards the statement or proof of a theory
+
+%\item[corollary] theorem which is a direct consequence or a special case of a preceeding theory
+
+%\item[$\forall ~x$ (universal quantifier)] for every $x$, for all $x$, for each $x$
+
+%\item[$\exists ~x$(existential quantifier)] for some $x$, for atleast one $x$,there exists an $x$
+
+%\item[$\backepsilon$] such that
+
+%\item[counter example] a demonstration in which a statement is shown to be false for a certain value of the variable. useful for proving a statement with a universal quantifier false
+
+%\item[~p] if p is a proposition, then it represents the negation of p
+
+%\item[connectives] used to join propositions to form compound statements. they inclue ``and''(^, called a \textit{conjunction}), \text{implication}($\implies$) and \textit{biconditional}($\iff$)
+%\end{description}
+\end{document}

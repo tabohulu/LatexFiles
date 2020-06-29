@@ -1,0 +1,229 @@
+\documentclass[fontsize=12pt]{article}
+%\usepackage{xeCJK}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathrsfs}
+\usepackage{bm}
+\usepackage[dvipdfmx]{graphicx}
+%\setCJKmainfont{SimSun}
+\title{Minimum Free Distance of CCSDS Turbo Encoders
+Under (Truncated) Mobius Interleavers} 
+\author{Kwame Ackah Bohulu}
+\date{\today}
+\begin{document}
+\maketitle
+
+\newpage
+
+
+\section{Introduction}
+\begin{enumerate}
+\item A lot of research has been done concerning different turbo code interleavers in relation to error performance [14], [18], [20]
+
+\item Main purpose of interleaver is to increase the minimum hamming distance of the turbo code. The performance of the turbo code depends on the minimum distance and the multiplicity of the minimum distance codewords in the high SNR region
+
+\item Lower and upper bounds for Turbo codes provided in [3], [6], [13]. In [2] an interleaver acheiving the upper bound is constructed.
+
+\item Deterministic interleavers are used due to to simple implementation and analysis, some examples are given in [5], [17],[18]
+
+\item One of the interleavers introduced in [17] is the Mobius Interleaver, which is based on the Mobius permutation function in finite fields. 
+
+\item In this paper, the analysis of the minimum distance and error performance of turbo codes implementing Mobius Interleavers is presented.
+
+\item The Binary Fixed Point (BFP) algorithm as well as Monte Carlo Simulations are used for the analysis of minimum distance and error performance respectively.
+
+\item The BFP algorithm uses patterns that pass through the interleaver unchanged for estimation of minimum free distance. The unchanged pattens are found by determining the cycle structure of the interleaver and all its shifted versions.
+
+\item In this Paper, the Consultative Committee for Space Data System (CCSDS) turbo code standard is used[23]. A new class of deterministic interleaver (Truncated Mobius Interleaver ) based on the Mobius Interleaver is introduced. 
+
+\item Since it is easy to find the cycle structure of the interleaver and all shifted versions easily, the parameters Total Number of Cycles(TNC) and an upper-bound of the Total Number of Binary fixed points (TNB) are easily found.
+
+\item A subclass of the truncated Mobius interleaver with small TNB (which means faster BFP algorithm processing) is also provided. 
+
+\item Error performance comparison of the new interleaver with random and S-Random interleavers is done via simulation.
+\end{enumerate}
+
+\section{Turbo Codes and Interleavers}
+\paragraph{Brief Recap of Turbo Codes \newline}
+\begin{enumerate}
+\item Turbo encoder is made up 2 recursive convolutional encoders (usually of the same type) that are parallelly concatenated via interleaver. An example of the CCSDS turbo encoder standard is shown in Fig.1 of main paper.
+
+\item It is known that there are certain inputs that produce low-weight parity outputs when fed into the first encoder. The interleaver's job is to rearrange such inputs so that they do not occur in the second encoder and generate a low-weight turbo codeword.
+
+\item An interleaver is a device that permutes(re-arranges) the order of a bit sequence fed into it. It is represented by $\Pi(\mathbf{x})$, where $\mathbf{x}=(x_0,x_1,....,x_{k-1})$ and $k$ is the length of the interleaver.
+
+\item Denoting the codeword length by $n$, the rate $r=\frac{k}{n}$
+
+\item Asuming BPSK modulation and transmission over the AWGN channel the following union bound estimates are used to measure the Frame Error Rate(FER) and the Bit Error Rate(BER).
+
+\begin{equation}
+FER \approx \frac{N_{\text{free}}}{2}\text{erfc}\Big(\sqrt{rd_{\text{free}}SNR}\Big)
+\end{equation}
+
+\begin{equation}
+BER \approx \frac{W_{\text{free}}}{2k}\text{erfc}\Big(\sqrt{rd_{\text{free}}SNR}\Big)
+\end{equation}
+
+Where $d_{\text{free}}, N_{\text{free}}$ and $W_{\text{free}}$ are the minimum free distance of the turbo code, The number of codewords with weight equal to $d_{\text{free}}$ and the sum of the weights of all information sequences that generate codewords with weight equal to $d_{\text{free}}$ SNR $\triangleq E_b/N_o$
+
+\item From the equations, we deduce that is a turbo code has large $d_{\text{free}}$ and small $N_{\text{free}}$ and $W_{\text{free}}$,it has a low FER and BER and high SNR.
+\end{enumerate}
+
+\paragraph{ Mobius Interleaver vs Truncated Mobius Interleaver \newline}
+\begin{enumerate}
+\item The Mobius Interleaver is based on the Mobius permutation function over $\mathbb{F}_{q}$ and it was investigated in terms of cycle structure in [17]
+
+\item The Mobius permutation function is represented by
+\begin{equation}T(x)=\left\{\begin{array}{ll}
+\frac{a x+b}{c x+d} & x \neq \frac{-d}{c} \\
+\frac{a}{c} & x=\frac{-d}{c}
+\end{array}\right.
+\label{eqn3}
+\end{equation}
+where $a,b,c,d \in \mathbb{F}_{q}, c \neq 0 \: \text{and}\: ad - bc =0$
+
+\item The Mobius interleaver is then constructed using the  equation 
+\begin{equation}
+\Pi_T(i) =\ln(T(\alpha^i))
+\end{equation}
+where $\ln(.),\: \alpha$ are the discrete logarithm with $\ln(0) = 0$ and the primitive element of $\mathbb{F}_{q}$ respectively
+
+\item In [4],[17], the authors found the cycle structure of Mobius interleavers using the characteristic polynomial when the permutation function $T$ is known. The characteristic polynomial t(x) is given by
+\begin{equation}
+t(x) =x^2 + (a+d)x +(ad-bc)
+\end{equation}
+
+\item By setting $b=0$  in (\ref{eqn3}), we make 0 a fixed point and removing 0 from both the input and output, we still have an interleaver. This new interleaver is known as the \textit{truncated Mobius interleaver} 
+
+\item Its permutation function is denoted by $T'$ and its characteristic polynomial $t'(x)$ is given by 
+\begin{equation}
+t'(x) =x^2 + (a+d)x +ad = (x-a)(x-d)
+\end{equation}
+
+\item Results about cycle structure of the truncated Mobius interleaver are given below. 
+\paragraph{Proposition 1. \newline} Let $\mathbb{F}_{q}$ be a finite field with $q=p^{m}$ elements for some prime $p$ and positive integer $m$ and ord $(z)$ denotes the order of $z \in \mathbb{F}_{q \cdot}$ For the truncated Mobius permutation
+$T^{\prime},$ we have
+\begin{enumerate}
+\item If $a \neq d$ and $k=\operatorname{ord}\left(\frac{a}{d}\right)=\frac{q-1}{s},$ then $T^{\prime}$ has $s-1$
+cycles of length $k$, one cycle of length $k-1$ and one cycle of length 1
+\item Suppose $t^{\prime}(x)=(x-a)^{2},$ for $a \in \mathbb{F}_{q^{.}}^{*}$ Then $T^{\prime}$ has $p^{m-1}-1$ cycles of length $p$ and one cycle of length $p-1$
+\end{enumerate}
+
+\item The most useful property of the truncated Mobius interleaver is that the cycle structure is known for the primary interleaver as well as all of its shifted version. The cycle shift is defined as follows.
+
+\paragraph{Definition 1. \newline} The s-th cycle shift to left (right) of a permutation $\Pi$ of length $k$ is defined as a transformation that applies to all of the outputs of the primary permutation from left (right, respectively) for all $0<s<k$. More 
+precisely, the s-th cycle shift to left (right) of $\Pi$ denoted by $\Pi_{s}^{(\ell)}\left(\Pi_{s}^{(r)}\right)$ is another permutation, which acts as 
+$$x \mapsto \Pi(x)+s \:(\bmod k), \:\left(x \mapsto \Pi(x)-s \:(\bmod k)\right)$$
+
+\item Given any interleaver, cycle shifts to the left or right of that interleaver are reffered to as its shifted versions. It is worth noting that all shifted versions of the truncated Mobius interleaver are also truncated Mobius interleavers.
+
+\item More precisely, given a truncated Mobius interleaver with coefficients $(a,0,c,d)$, the $s$-th shift interleaver has coeffiecients $(a', b', c', d') = (a\alpha^s, 0, c, d )$ when shifted to the left and $(a', b', c,' d') = (a/\alpha^s, 0, c, d )$ when shifted to the right
+
+\item An example to review to review the all the properties of the truncated Mobius interleaver are given in the main paper.
+\end{enumerate}
+
+\section{Binary Fixed Point (BFP) Algorithm }
+\begin{enumerate}
+\item Finding the exact value of $d_{\text{free}}$ for a turbo code by checking all input is not the best way to go. Instead some efficient algorithms in [9], [15] are used instead.
+
+\item The downside to these algorithms is that as the interleaver length increases, the computation complexity and runtime also increases and for that reason, this paper focuses on algorithms with lower runtime that [9]
+
+\item There are input patterns that pass throught the interleaver unchanged. If such inputs pass through the first component encoder and produce low-weight parity outputs, the turbo codeword will also have a low weight.
+
+\item Combining this with the fact that the convolutional encoder is time invariant, these patterns will produce low weight codewords through out the  encoder.
+
+\item The BFP algorithm[7] uses  these Binary Fixed Points to estimate the value of $d_{\text{free}}$. What is different about this interleaver is that, the interleaver (not the inputs) is shifted to the left and to the right.
+
+\item The following steps are involved in using the BFP algorithm
+\begin{enumerate}
+\item Find the cycle structure of the primary interleaver and all of its shifted versions and collect them in a set. Suppose that we have the following interleaver
+\[
+\Pi_{T}=\left(\begin{array}{cccccc}
+0 & 1 & 2 & 3 & 4 & 5 \\
+1 & 3 & 5 & 0 & 4 & 2
+\end{array}\right)
+\]
+We find the cycle structure of the respective permutation and collect these cycles in a set $\mathcal{T}=$ \{(0,1,3),(2,5),(4)\}
+
+\item Find all of the subsets of the aforementioned set in
+previous step. For the example given in previous step, we have:
+\[
+\begin{array}{c}
+P(\mathcal{T})=\{\phi,\{(0,1,3)\},\{(2,5)\},\{(4)\},\{(2,5),(4)\}, \\
+\{(0,1,3),(2,5)\},\{(0,1,3),(4)\} \\
+\{(0,1,3),(2,5),(4)\}\}
+\end{array}
+\]
+
+\item Generate a binary sequence (pattern) for each of these subsets with placing 1 in places, where the elements belong to the subset and 0 in other places in the pattern. The above power set $P(\mathcal{T})$ corresponds to the following set of binary vectors:
+\[
+\begin{aligned}
+\mathcal{B}_{T}=&\{000000,110100,001001,000010\\
+&111101,110110,001011,111111\}
+\end{aligned}
+\]
+\item Feed the turbo encoder with these patterns and nominate the Hamming weight of the output codeword with less Hamming weight as minimum free distance.
+\end{enumerate}
+\item By considering all shifted versions we are able to test all extended binary fixed point patterns
+
+\item In order to obtain a true cycle shift, we place $s$ zeros at the beginning of the primary pattern.
+
+\item Also, in $s$-th shift to left,
+we ignore cycles with any number less that $s$ and in the similar
+manner in the s-th shift to right we should ignore cycles with
+any number greater that $k-s$ with interleaver length $k$.
+\end{enumerate}
+
+\section{Truncated Mobius Interleaver and the Binary Fixed Point (BFP) Algorithm}
+\begin{enumerate}
+\item The speed and computational complexity of the BFP algorithm depends on the number of binary fixed points present in the interleaver.
+
+\item There are two important parameters in relation to the BFP algorithm, these are the Total Number of Cycles(TNC) and  the Total Number of Binary fixed points (TNB)
+
+\item TNC is an integer value which shows the total number of cycles present in the primary interleaver as well as its shifted versions.
+
+\item TNB is also an integer value that expresses the number of binary inputs that should be fed into the turbo encoder to figure out $d_{\text{free}}$.It goes without saying that there is a relationship between TNC and TNB.
+
+\item Unlike the Mobius Interleaver, it is possible to find the exact value of TNC for the truncated Mobius interleaver. We can also obtain an upperbound on the value of TNB
+
+\item It is only possible to obtain an upper bound on the value of TNB since some cycles are gotten rid of during the left and right shifts of the interleaver. The exact number of cycles gotten rid off is not known and we assume that one cycle is lost for every shift.
+
+\item The following Theorem summarizes how to calculate for TNC and TNB
+\paragraph{Theorem 1. \newline} Let $\mathbb{F}_{q}$ be a finite field with $q=p^{m}$ elements for some prime $p$ and primitive element $\alpha .$ Let us also assume $\frac{a}{d}=\alpha^{z}$ and ord $\left(\alpha^{z}\right)=f$ for some positive integers $f$ and $z$ In a truncated Möbius permutation constructed based on $T^{\prime}$ over $\mathbb{F}_{q}$ as in (3), we distinguish between two cases:
+If $a \neq d,$ then we have:
+\begin{equation}
+\begin{split}
+&T N C=\left[\sum_{t_{i} | q-1, t_{i} \neq 1} 2 \phi\left(t_{i}\right)\left(\frac{q-1}{t_{i}}+1\right)\right] -\left(\frac{q-1}{f}+1\right)+2 p^{m-1}\\
+&\text{and}\\
+&T N B \leq\left[\sum_{t_{i} | q-1, t_{i} \neq 1} 2 \phi\left(t_{i}\right) 2^{\frac{q-1}{t_{i}}}\right]+2^{p^{m-1}}-2(q-2)
+\end{split}
+\end{equation}
+If $a=d:$
+\begin{equation}
+\begin{split}
+&TNC=\left[\sum_{t_{i} | q-1, t_{i} \neq 1} 2 \phi\left(t_{i}\right)\left(\frac{q-1}{t_{i}}+1\right)\right]+p^{m-1}\\
+&\text{and}\\
+&TNB \leq\left[\sum_{t_{i} | q-1, t_{i} \neq 1} 2 \phi\left(t_{i}\right) 2^{\frac{q-1}{t_{i}}}\right]+2^{p^{m-1}}-2(q-2)
+\end{split}
+\end{equation}
+
+\item The Corollary below shows how the TNC can be made to grow linearly instead of exponentially.
+
+\paragraph{Corollary 1. \newline} Let $\mathbb{F}_{q}$ be a finite field with $q=p=2 p^{\prime}+1$ elements for some primes $p, p^{\prime}$ and in a truncated Möbius permutation constructed based on $T^{\prime}$ over $\mathbb{F}_{q}$ we put $a=d$
+then we have
+\[
+\begin{aligned}
+T N C=&1+2\left(2+\frac{q-3}{2}\right)+3\left[2\left(\frac{q-1}{2}-1\right)\right] \\
+&+2\left[2\left(\frac{q-1}{2}-1\right)\right]=6 q-13
+\end{aligned}
+\]
+The upper bound on TNB can also be presented as follows:
+\[
+\begin{array}{c}
+T N B \leq 2+2\left(2^{1+\frac{q-3}{2}}\right)+2^{2}\left[2\left(\frac{q-1}{2}-1\right)\right] \\
++2^{1}\left[2\left(\frac{q-1}{2}-1\right)\right]-2(q-2)=2^{2+\frac{q-3}{2}}+4 q-12
+\end{array}
+\]
+\end{enumerate}
+\end{document}

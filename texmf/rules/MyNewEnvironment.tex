@@ -1,0 +1,40 @@
+% New Environment
+\newenvironment{MyDefinition}[1]
+    {\begin{itembox}[l]{\bf #1}
+    \begin{definition}}%
+    {\end{definition}
+    \end{itembox}}
+    
+\newenvironment{MyTheorem}
+    {\begin{shadebox}
+    \bigskip
+    \begin{theorem}}%
+    {\end{theorem}
+    \smallskip
+    \end{shadebox}}
+ 
+\newenvironment{MyProof}
+    {\begin{boxnote}
+    	%\begin{quote}
+    %\begin{proof}
+    }
+    {%\end{proof}
+    %\end{quote}
+\end{boxnote}}
+ 
+ \newenvironment{MyExample}
+ {\begin{shaded}
+ 		\begin{quote}
+ 		\begin{example}}%
+ 		{\end{example}
+   \end{quote}
+\end{shaded}}
+  
+\newenvironment{MyLemma}
+    {\begin{doublebox}
+    \begin{lemma}}%
+    {\end{lemma}
+    \end{doublebox}}
+    
+
+    

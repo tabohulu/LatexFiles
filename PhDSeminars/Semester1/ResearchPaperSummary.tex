@@ -1,0 +1,80 @@
+\documentclass[fontsize=12pt]{article}
+%\usepackage{xeCJK}
+\usepackage{titling}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage[dvipdfmx]{graphicx}
+%\setCJKmainfont{SimSun}
+\title{Research Paper Summary IEEE TIT \\2013/01 - 2013/09 } 
+\author{Kwame Ackah Bohulu}
+\date{\today}
+\begin{document}
+\maketitle
+
+\newpage
+\title{Zigzag Codes: MDS Array Codes
+With Optimal Rebuilding}
+\author{Itzhak Tamo, Zhiying Wang, and Jehoshua Bruck, Fellow, IEEE}
+\date{2013/03}
+\maketitle
+
+Abstract - Maximum distance separable (MDS) array codes are
+widely used in storage systems to protect data against erasures. We
+address the rebuilding ratio problem, namely, in the case of erasures,
+what is the fraction of the remaining information that needs
+to be accessed in order to rebuild exactly the lost information? It
+is clear that when the number of erasures equals the maximum
+number of erasures that an MDS code can correct, then the rebuilding
+ratio is 1 (access all the remaining information). However,
+the interesting and more practical case is when the number of erasures
+is smaller than the erasure correcting capability of the code.
+For example, consider an MDS code that can correct two erasures:
+What is the smallest amount of information that one needs to access
+in order to correct a single erasure? Previous work showed
+that the rebuilding ratio is bounded between$\frac{1}{2}$ and$\frac{3}{4}$ 
+; however,
+the exact value was left as an open problem. In this paper, we solve
+this open problem and prove that for the case of a single erasure
+with a two-erasure correcting code, the rebuilding ratio is $\frac{1}{2}$ . In
+general, we construct a new family of $r$-erasure correcting MDS
+array codes that has optimal rebuilding ratio of $\frac{1}{r}$in the case of
+a single erasure. Our array codes have efficient encoding and decoding
+algorithms (for the cases $r=2$ and $r=3$ , they use a finite
+field of size 3 and 4, respectively) and an optimal update property.
+\paragraph{}
+Index Terms - Distributed storage, network coding, optimal rebuilding,
+RAID
+
+\newpage
+\title{On Generalized Reed-Solomon Codes Over
+Commutative and Noncommutative Rings}
+\author{Guillaume Quintin, Morgan Barbier, and Christophe Chabot}
+\date{2013/09}
+\maketitle
+
+Abstract -In this paper, we study generalized Reed-Solomon
+codes (GRS codes) over commutative and noncommutative
+rings, we show that the classical Welch-Berlekamp and Guruswami-Sudan
+decoding algorithms still hold in this context,
+and we investigate their complexities. Under some hypothesis, the
+study of noncommutative GRS codes over finite rings leads to the
+fact that GRS codes over commutative rings have better parameters
+than their noncommutative counterparts. Also, GRS codes
+over finite fields have better parameters than their commutative
+rings counterparts. But we also show that given a unique decoding
+algorithm for a GRS code over a finite field, there exists a unique
+decoding algorithm for a GRS code over a truncated power series
+ring with a better asymptotic complexity. Moreover, we generalize
+a lifting decoding scheme to obtain new unique and list decoding
+algorithms designed to work when the base ring is, for example, a
+Galois ring or a truncated power series ring or the ring of square
+matrices over the latter ring.
+\paragraph{}
+Index Terms-Algebra, algorithm design and analysis, decoding,
+error correction, Reed-Solomon codes.
+
+
+ 
+\end{document}

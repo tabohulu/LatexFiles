@@ -1,0 +1,74 @@
+\documentclass[24 pts]{article}
+\usepackage{xeCJK}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+\usepackage{relsize}
+
+\newcommand{\me}{\mathrm{e}}
+\setCJKmainfont[BoldFont= Yu Mincho Demibold]{MS Mincho}
+\title{コンピュータネットワーク特論レポート2	 }
+\date{07-12-2016}
+\author{Kwame Ackah Bohulu　1631133}
+\begin{document}
+\maketitle
+\newpage
+\paragraph{1}
+Since the probability of a frame beign received undamaged is 0.8, after 10 transmissions, 2 out of the 10 frames will be in error, and those two frames will require re-transmission. After those 2 frames are re-transmitted, at least 1 out of the two frames will be in error and will therefor require another transmission. So to get the entire timing through an average of 13 times is required.
+\newpage
+\paragraph{2}
+propagation time = $20\ ms$,
+bit rate = $2\ Kbps$, No. of transmittable bits(r)
+\begin{equation*}
+\begin{split}
+ r=20\times 10^-3 \times 2 \times10^3\\
+=40 bits\\
+=5 \ bytes
+\end{split}
+\end{equation*}
+To ensure an efficiency of at least 50\% for the stop-and-wait protocol, the frame size should range from $2.5$ bytes to $5$ bytes  
+
+\paragraph{3}
+throughput(TP)=receive window/ round trip time\\
+data rate =$128\times10^3$bps
+frame size=$512$ bytes =$4096$ bits\\
+receive window =frame size(in bits) $\times$ n, where n= window size\\
+round trip time=$2\times 270$ ms + transmission time\\
+transmission time =$\frac{frame \\\ size(in \\\ bits)\times n}{data \ rate}$\\
+ack frame size assumed to be 0
+\paragraph{}
+\textbf{case n=1}\\
+transmission time =$\frac{4096\times 1}{128\times 10^3}= 0.032$s\\
+TP=$\frac{4096)\times 1}{0.54+0.032}=7.161$Kbps\\
+
+\paragraph{}
+\textbf{case n=7}\\
+transmission time =$\frac{4096\times 7}{128\times 10^3}= 0.224$s\\
+TP=$\frac{4096)\times 7}{0.54+0.224}=37.529$Kbps\\
+
+\paragraph{}
+\textbf{case n=15}\\
+transmission time =$\frac{4096\times 15}{128\times 10^3}= 0.48$s\\
+TP=$\frac{4096)\times 15}{0.54+0.48}=60.235$Kbps\\
+
+\paragraph{}
+\textbf{case n=127}\\
+transmission time =$\frac{4096\times 127}{128\times 10^3}= 4.064$s\\
+TP=$\frac{4096)\times 127}{0.54+4.064}=112.987$Kbps\\
+
+
+
+
+\newpage
+\paragraph{4}
+propagation speed =$\frac{2}{3}\times 3\times 10^8 = 2 \times 10^8$\\
+T1 data rate =1.544 Mpbs
+total time required for propagation over 10 Km cable(t)=$\frac{10\times10^3}{2 \times 10^8} = 5\times 10^-5$ s\\
+Amount of data that can fit into cable =$1.544\times 10^6 \times 5\times 10^-5 = 77.2$ bits
+
+
+
+
+\end{document}

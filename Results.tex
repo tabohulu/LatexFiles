@@ -1,0 +1,63 @@
+\documentclass[20 pts]{article}
+%\usepackage{xeCJK}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{csvsimple}
+\usepackage{caption}
+\usepackage{longtable}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{graphicx}
+%\setCJKmainfont{SimSun}
+\title{Results} 
+\author{Kwame Ackah Bohulu, 1631133}
+\date{22-06-2017}
+
+
+\begin{document}
+\maketitle
+\newpage
+\section{a-$\tau$separated input weight 2 error events}
+For an RSC encoder,input weight 2 error events with the  ''1'' bits separated by a 
+multiple of the cycle length,
+ $\tau$ (a-$\tau$separated input weight 2 error events) tend to produce low-weight 
+ codewords. Therefore in turbo codes employing RSC encoders as component codes,
+ when these error events are present in both component codes ,a low-weight 
+ turbo codeword is produced.
+ 
+ \paragraph{}
+ In the analysis of distance properties of the interleaver we assume that only 
+ $\tau$-seperated input weight 2 events present in both component encoders
+ are sufficient to determine the effective free 
+ distance of the turbo code. We then confirm the validity of this assumption by 
+ considering all input weight 2 error events. 
+ 
+ \paragraph{}
+ For the interleaver defined by
+ \begin{equation}
+\Pi_{\mathbf{\pi}}(i) \equiv Di  \mod N, \ 0 \leq i \leq N, \ gcd(N,D)=1 
+\label{two}
+\end{equation}
+\newpage
+\csvautolongtable[
+      table head=\caption{Effective Free Distance calculations for RSC 5/7 , $\tau=3,\ N=2^{10}$}\label{tab:t1}\\\hline
+               \csvlinetotablerow\\\hline
+               \endfirsthead\hline
+               \csvlinetotablerow\\\hline
+               \endhead\hline
+               \endfoot,
+               respect all
+               ]{RSC_5_7.csv}
+
+\newpage
+
+\csvautolongtable[
+      table head=\caption{Effective Free Distance calculations for RSC 5/7 , bit positions, $\tau=3,\ N=2^{10}$}\label{tab:t1}\\\hline
+               \csvlinetotablerow\\\hline
+               \endfirsthead\hline
+               \csvlinetotablerow\\\hline
+               \endhead\hline
+               \endfoot,
+               respect all
+               ]{positions.csv}
+\end{document}

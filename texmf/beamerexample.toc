@@ -1,0 +1,12 @@
+\beamer@sectionintoc {1}{現代通信システムの構成}{2}{0}{1}
+\beamer@sectionintoc {2}{アナログ信号からデジタル信号の生成}{3}{0}{2}
+\beamer@subsectionintoc {2}{1}{標本化}{3}{0}{2}
+\beamer@subsectionintoc {2}{2}{量子化}{4}{0}{2}
+\beamer@sectionintoc {3}{デジタル通信システム}{5}{0}{3}
+\beamer@subsectionintoc {3}{1}{情報源符号化/復号化}{5}{0}{3}
+\beamer@subsectionintoc {3}{2}{通信路符号化/復号化}{7}{0}{3}
+\beamer@subsectionintoc {3}{3}{変調/復調}{8}{0}{3}
+\beamer@sectionintoc {4}{通信路}{10}{0}{4}
+\beamer@subsectionintoc {4}{1}{加法性雑音通信路}{11}{0}{4}
+\beamer@subsectionintoc {4}{2}{線形フィルタ通信路}{12}{0}{4}
+\beamer@subsectionintoc {4}{3}{線形時変フィルタ通信路}{13}{0}{4}

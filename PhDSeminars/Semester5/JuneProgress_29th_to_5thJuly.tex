@@ -1,0 +1,452 @@
+\documentclass[11pt, oneside, dvipdfmx]{book}
+\newcommand{\folder}{/usr/local/share/texmf}
+%\newcommand{\folder}{/home/hanchenggao/Documents/texmf}
+\input{\folder/hfiles/ebook}
+\usepackage {graphicx}
+\usepackage {graphics}
+%\setCJKmainfont{SimSun}
+\title{``
+Progress So Far'' }
+\author{Kwame Ackah Bohulu}
+\date{\today}
+\begin{document}
+
+\maketitle
+\section{Notation}
+\begin{enumerate}
+\item RTZ (Return-To-Zero) input :- A RTZ input is a binary input which causes a RSC encoder's final state to be return to zero after it has exited the zero state.
+
+\item $\tau$ :- cycle length of the RSC encoder. For the $5/7$ RSC encoder $\tau = 3$
+
+\item $N$ :- Interleaver length. 
+
+\item $\cN$:- Integer set of $\{0,1,\cdots,N-1\}$
+
+\item $\bbN$: Indexed set  of $\{0,1,\cdots,N-1\}$ in the natural order.
+
+\item We assume that $N/\tau=C$
+
+\item $\cC$ and $\bbC$ are definded in a similar manner.
+
+\item $\cC^{t}:=\left\{c+t\right\}_{c \in \cC}$ and $\bbC^t$ is the indexed set with the elements of $\cC^t$ where  $t=(0,1,...,\tau-1)$. Where it becomes necessary to distinguish between the elements of $\cC^{t}$ and $\bbC^{t}$, we will write the elements of $\bbC^{t}$ as $c_{x'}^{t'}$ and the elements of $\cC^{t}$ as $c_x^{t}$
+
+\item Permutation matrix 
+\begin{equation*}
+\bPi = \begin{bmatrix}
+\bpi^0\cr
+\bpi^1\cr
+\vdots\cr
+\bpi^{K-1}
+\end{bmatrix}
+= \begin{bmatrix}
+\bpi_0 , \bpi_1,\cdots,\bpi_{\tau-1}
+\end{bmatrix}
+= \begin{bmatrix}
+\pi_{t}^{(i)}
+\end{bmatrix}_{i=0,~t=0}^{K-1,~\tau -1}
+\end{equation*}
+where $\pi_{t}^{(i)} \in \{0,1,\tau-1\}$. 
+
+\item For the row vector $\bpi^{(i)}$, let $\mathscr{S}^e[\bpi^{(i)}]$ be the left-hand cycle shift of $\bpi^{(i)}$ and $\mathscr{S}^e[\bpi_t]$ be the up cycle shift of $\bpi_t$
+\item We assume that the operation outputs the elements in $\bbC^t$ in order while $t$ is appeared in $\bpi^k$. For example, $\bpi^0 = (0,0,1)$ outputs $(c_0^0,c_1^0,c_0^1)$. From this example, we can see that the column index of $i$ in $\pi^{(i)}$ represents the coset it belongs to before interleaving and the value $\pi_{j}^{(i)}$ specifies the coset after interleaving
+\item Our goal is to find a prefer $\bPi$ and $\bbC^t$, $t = 0,1,\cdots,\tau-1$.
+\end{enumerate}
+
+
+\section{Cosets and RTZ inputs}
+
+\begin{enumerate}
+\item a weight $2$ input sequence
+\begin{itemize}
+	\item polynomial: $P(x)=x^{h\tau+t}(1+x^{\alpha \tau}) = x^t(x^{h\tau}+x^{(h+\alpha)\tau})$
+	\item coset: the $h$th and $(a+\alpha)$th elements in $\bbC^t$
+\end{itemize}
+\item a weight $3$ input sequence
+\begin{itemize}
+	\item polynomial: $Q(x) =x^{h\tau+t}(1+x^{\beta \tau +1}+x^{\gamma \tau +2})=x^{h\tau+t}+x^{(h+\beta) \tau +t+1}+x^{(h+\gamma) \tau +t+2}$. 
+	Notice that $h \leq \beta$ is not a necessary condition.
+	\item coset: the $h$th element in $\bbC^{t}$, $(h+\beta)$th element in $\bbC^{[t+1]_\tau}$, and $(h+\gamma)$th element in $\bbC^{[t+2]_\tau}$.
+\end{itemize}
+\end{enumerate}
+
+\section{Representation of interleaver}
+If the mapping relationship between elements in $\bx$ and $\by$ are read column wise as shown below
+
+$$  
+ \begin{bmatrix}
+0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
+0 & 5 & 1 & 6 & 2 & 7 & 3 & 8 & 4 \\
+\end{bmatrix}
+$$
+the interleaver is represented by $\bbN=\{0,5,1,6,2,7,3,8,4\}$.
+
+Let $\bbC^0=\{0,6,3\}$, $\bbC^1=\{1,7,4\}$, and $\bbC^2=\{5,2,8\}$. Then, the permutation matrix of $\bbN$ is
+$\bPi = (0,2,1)$. Notice the row of $\bPi$ takes cyclicly.
+
+
+\section{Coset Interleaver Design For Weight-$2$ RTZ inputs}
+From the definition of Weight-$2$ RTZ inputs in the previous section, we know that the index of the ``1'' bits are in the same coset $\cC^t$ and represented by the elements $c_a^t$ and $c_{a+\alpha}^t$. After interleaving, another weight-$2$ RTZ input occurs if the ``1'' bits are mapped to the elements $c_{a'}^{t'}$ and $c_{a'+\alpha'}^{t'}$
+ in $\bbC^{t'}$.
+Therefore, to convert a weigth-$2$ RTZ input into a non-RTZ input we need a permutation matrix $\bPi$ which satisfies the condition below 
+
+\begin{equation}
+\pi_{j}^{(i)} \neq \pi_{j}^{(i')},~|i-i'| \leq N_c
+\label{eq1}
+\end{equation}
+Since $\bPi$ consisting of $\tau$ elements, the maximum length of column elements consisting of values different each other is $\tau$. Thus, the cut-off interleaver length for which (\ref{eq1}) is satisfied is $N_c=\tau=3$.
+
+
+
+
+%To answer the first question, we will do a little thought exercise. 
+
+%For interleavers with length $0>N\leq 9$, the number of elements in each coset is at most equal to the number of coset and it is possible map elements in the same coset to elements in another coset.
+%However, when $N>9$, it is not possible to prevent elements in the same coset from being mapped to the same coset since the number of elements in each coset is greater than the number of cosets. Therefore, 
+\begin{enumerate}
+	\item One cycle permutation: Each row is permutation of the sequence $(0,1,2)$. Setting the element at the first row and first column to $0$, there are exactly 4 permutation matrices that exist for cut-off length $N_c$.
+	Let
+	\begin{equation*}
+	\bpsi=\begin{bmatrix} 0\cr 1\cr 2\cr \end{bmatrix},~
+	\bpsi'=\begin{bmatrix} 0\cr 2\cr 1\cr \end{bmatrix}
+	\end{equation*}
+We then have 
+	\begin{equation}
+	\begin{split}
+	[\bpsi,\mathscr{S}^1[\bpsi],\mathscr{S}^2[\bpsi]]=
+	&
+	\begin{bmatrix}
+	0 & 1 & 2\cr
+	1 & 2 & 0\cr
+	2 & 0 & 1
+	\end{bmatrix}:=\bpsi(\bpsi) \\
+	[\bpsi',\mathscr{S}^1[\bpsi'],\mathscr{S}^2[\bpsi']]=
+	&
+	\begin{bmatrix}
+	0 & 1 & 2\cr
+	2 & 0 & 1\cr
+	1 & 2 & 0
+	\end{bmatrix}:=\bpsi(\bpsi')\\
+	[\bpsi,\mathscr{S}^2[\bpsi],\mathscr{S}^1[\bpsi]]=
+	&
+	\begin{bmatrix}
+	0 & 2 & 1\cr
+	2 & 1 & 0\cr
+	1 & 0 & 2
+	\end{bmatrix}:=\bpsi'(\bpsi)\\
+	[\bpsi',\mathscr{S}^2[\bpsi'],\mathscr{S}^1[\bpsi']]=
+	&
+	\begin{bmatrix}
+	0 & 2 & 1\cr
+	1 & 0 & 2\cr
+	2 & 1 & 0
+	\end{bmatrix}:=\bpsi'(\bpsi')\\
+	\end{split}
+	\end{equation}
+	
+	%{\bf find all such matrices.}
+	
+	\item Two cycle permutation: Two rows are permutation of the sequence $(0,0,1,1,2,2)$.
+	
+	There are no permutation matrices that satisfying cut-off length $N_c $. This is because the sequence length is not divisible by $N_c$, there will always be 2 elements of the same value in each row of $\bPi$
+	
+	
+	\item Three cycle permutation: Three rows are permutation of the sequence$(0,0,0,1,1,1,2,2,2)$. 
+	
+	Example of the permutation matrices satisfying cut-off length $N_c = 9$ are shown in \ref{tb1}
+	
+	\begin{eqnarray}
+	\begin{bmatrix}
+	0 & 0 & 0\cr
+	1 & 1 & 1\cr
+	2 & 2 & 2
+	\end{bmatrix}
+	\label{Eq:2}
+	\end{eqnarray}
+	
+	{\bf find all such matrices.}
+\end{enumerate}
+
+
+
+
+
+Table \ref{tb1} shows all unique coset interleaving arrays of length $N_c$ that convert weight-$2$ RTZ inputs to non-RTZ inputs. They are labeled from $A$ to $X$. A coset interleaving array is unique if a shift of the elements in the array does not produce another another coset interleaving array.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c || c | c|| c|c || c | c|| c|} 
+ \hline
+ $A$ & $ \begin{bmatrix}0 & 0 & 0\cr1 & 1 & 1\cr2 & 2 & 2\end{bmatrix}$ 
+ &
+  $B$ & $\begin{bmatrix} 0 & 0 & 0 \cr 1 & 1 & 2 \cr 2 & 2 & 1\end{bmatrix}$ 
+  &
+  $C$ &$\begin{bmatrix} 0 & 0 & 0 \cr 1 & 2 & 1 \cr 2 & 1 & 2\end{bmatrix}$
+  &
+  $D$ & $\begin{bmatrix}0 & 0 & 0 \cr 1 & 2 & 2 \cr 2 & 1 & 1\end{bmatrix}$\\
+ \hline
+  $E$ & $\begin{bmatrix}0 & 0 & 0 \cr 2 & 1 & 1 \cr 1 & 2 & 2\end{bmatrix}$ 
+ &
+ $F$ & $\begin{bmatrix}0 & 0 & 0 \cr 2 & 1 & 2 \cr 1 & 2 & 1\end{bmatrix}$ 
+ &
+  $G$ & $\begin{bmatrix}0 & 0 & 0 \cr 2 & 2 & 1 \cr 1 & 1 & 2\end{bmatrix}$ 
+ &
+  $H$ & $\begin{bmatrix} 0 & 0 & 0\cr 2 & 2 & 2\cr 1 & 1 & 1\end{bmatrix}$\\ 
+ \hline
+   $I$ & $\begin{bmatrix} 0 & 0 & 1 \cr 1 & 1 & 0 \cr 2 & 2 & 2\end{bmatrix}$
+ &
+  $J$ & $\begin{bmatrix}0 & 0 & 1 \cr 1 & 2 & 0 \cr 2 & 1 & 2\end{bmatrix}$ 
+ &
+  $K$ & $\begin{bmatrix}0 & 0 & 1 \cr 2 & 1 & 0 \cr 1 & 2 & 2 \end{bmatrix}$
+ &
+ $L$ & $\begin{bmatrix}0 & 0 & 1 \cr 2 & 2 & 0 \cr 1 & 1 & 2\end{bmatrix}$\\ 
+ \hline
+ $M$ & $\begin{bmatrix}0 & 0 & 2 \cr 1 & 1 & 0 \cr 2 & 2 & 1 \end{bmatrix}$
+ &
+  $N$ & $\begin{bmatrix}0 & 0 & 2 \cr 1 & 2 & 0 \cr 2 & 1 & 1 \end{bmatrix}$ 
+ &
+ $O$ & $\begin{bmatrix}0 & 0 & 2 \cr 2 & 1 & 0 \cr 1 & 2 & 1\end{bmatrix}$ 
+&
+ $P$ & $\begin{bmatrix}0 & 0 & 2 \cr 2 & 2 & 0 \cr 1 & 1 & 1\end{bmatrix}$\\ 
+ \hline
+ $Q$ & $\begin{bmatrix}0 & 1 & 0 \cr 1 & 0 & 1 \cr 2 & 2 & 2 \end{bmatrix}$
+&
+  $R$ & $\begin{bmatrix}0 & 1 & 0 \cr 1 & 0 & 2 \cr 2 & 2 & 1\end{bmatrix}$ 
+&
+ $S$ & $\begin{bmatrix}0 & 1 & 0 \cr 1 & 2 & 1 \cr 2 & 0 & 2 \end{bmatrix}$
+ &
+ $T$ & $\begin{bmatrix}0 & 1 & 0 \cr 2 & 0 & 1 \cr 1 & 2 & 2\end{bmatrix}$\\ 
+ \hline
+ $U$ & $\begin{bmatrix}0 & 1 & 0 \cr 2 & 0 & 2 \cr 1 & 2 & 1\end{bmatrix}$ 
+ &
+ $V$ & $\begin{bmatrix}0 & 1 & 0 \cr 2 & 2 & 1 \cr 1 & 0 & 2\end{bmatrix}$ 
+ &
+ $W$ & $\begin{bmatrix}0 & 1 & 1 \cr 1 & 2 & 0 \cr 2 & 0 & 2 \end{bmatrix}$
+ &
+ $X$ & $\begin{bmatrix}0 & 2 & 0 \cr 2 & 0 & 2 \cr 1 & 1 & 1\end{bmatrix}$\\ 
+   \hline
+
+  \end{tabular}
+\caption{All unique coset interleaving arrays of length $N_c =9$ for weight-$2$ RTZ inputs}
+\label{tb1}
+\end{table}
+
+The interleaver length used in turbo coding are way greater than $N_c$ and it is not possible to transform weight-$2$ RTZ inputs into non-RTZ inputs for all values of $i$. All is not lost however, since not all weight-$2$ RTZ inputs produce low-weight codewords. 
+The formula for calculating the Hamming weight ($w_H$) of the Turbo codeword produced by a weight-$2$ RTZ input occuring in both component codes is given by[SunTakeshita] 
+\begin{equation}
+\begin{split}
+w_H=&2+(2 + \frac{\Delta_c}{\tau} )w_0+ (2 + \frac{\Delta_{c'}}{\tau})w_0\\
+=&6+\Big(\frac{\Delta_c+\Delta_{c'}}{\tau}\Big)w_0,~w_0=2
+\end{split}
+\label{eq3}
+\end{equation}
+
+For all the $\Pi$ in Table \ref{tb1}, since $\Delta c = 9=3\tau$ and $\Delta c':=(c_{a'+\alpha'}^{t'}-c_{a'}^{t'})$  we have
+\begin{equation}
+\begin{split}
+w_H=&6+\Big(3+\frac{\Delta c'}{3}\Big)w_0,~w_0=2
+\end{split}
+\end{equation}
+
+
+%This means that by altering the value of $t$ and $s$, we can increase the weight of the codeword produced. With this knowledge,
+%all we need to do is to make sure that the if the input to the interleaver is a weight-$2$ RTZ inputs with a small value of $t$, it is converted to a weight-$2$ RTZ with a large value of $s$
+
+%In summary, an interleaver designed to deal with weight-$2$ RTZ inputs when $N>N_c$ should
+%\begin{enumerate}
+%\item Convert  weight-$2$ RTZ inputs to non-RTZ inputs
+
+%\item Convert  weight-$2$ RTZ inputs to a weight-$2$ RTZ inputs with a large value of $s$ when condition 1 isnt possible.
+
+%\end{enumerate}
+
+%An interleaver design method which makes use of the above points is as follows.
+%Given an interlever with length $N$, we break it up into $\frac{N}{N_c}$ blocks each of length $N_c$. At the beginning of the $n$th block, the coset interleaving pattern is repeated until the last block. By applying this method, we make sure that when the weight-$2$ RTZ occurs within a  block, condition 1 is met and condition 2 is met when the weight-$2$ RTZ occurs in 2 consecutive blocks i.e. when  $t=N_c$.
+
+%This method only works when $N_c | N$ and we will delay the details of what to do when $N_c \not| N$.
+
+\section{Coset Interleaver Design For Weight-$3$ RTZ inputs}
+As mentioned earlier, a weight-$3$ RTZ input is formed when the indices of the ``1'' bits each occur in different cosets.  It goes without saying that the simplest way to convert a weight-$3$ RTZ input into a non-RTZ input is to make sure that at least two of indices of the ``1'' bits occur within the same coset after interleaving.
+
+Following the pattern in the previous section for weight-$2$ RTZ inputs, we need a permutation matrix $\bPi$ for weight-$3$ RTZ events. The best permutation matrix would be one that totally gets rid of all weight-$3$ RTZ interleavers of length $N_c=9$. This is not possible for reasons that will be made clear soon. It is however possible to control the kind weight-$3$ RTZ that occurs. 
+To further explain this, we introduce the concept of layers and layer distances. We take $\cN$ and assuming that $\tau | N$, we feed the elements of $\cN$ into a $N/ \tau \times \tau$ matrix $\bN$. Furthermore we label colums $0$ to $\tau$ $k,j,i$ respectively. The layer is defined as the row where an element of $\cN$ exists. Furthermore given two element in $\bN$, the layer distance is the difference between the row indices, with the index of the first row set to $0$. It is clear that each column corresponds to a coset and therefore a weight-$3$ RTZ input occurs when the indices of the ``1'' bits each occur in different columns. When $N=N_c=9$, the number of elements in each coset is always equal to the number of cosets and therefore it is impossible to completely get rid of weight-$3$ RTZ inputs when $N=N_c$.
+
+Let $l,l'$ be the pre-interleaving layer distance and the post-interleaving layer distance.
+We know that the codeword weight of a turbo code due to weight-$3$ RTZ inputs is given by
+\begin{equation}
+w_H=
+\begin{cases}
+3+2(l+l'),& i<k ,~i'<k'\\
+7+2(l+l') & i \geq k,~i' \geq k'\\
+5+2(l+l')& i \geq k,~i'<k' ~\text{or}~i<k ~ i' \geq k'
+\end{cases}
+\label{eq6}
+\end{equation}
+
+where $k',i'$ is similarly defined but with respect to $\Pi$. To increase the value of $w_H$ , we need to make $l'$ as large as possible for $N_c$ when $i'<k'$ or $i \geq k$
+
+Unique permutation matrices which meet this criteria are shown in Table \ref{tb2} and they are labeled from $A$ to $L$
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c || c  |c  ||c  |} 
+ \hline
+ $A$ & $\begin{bmatrix} 0 & 0 & 0 \cr 1 & 1 & 1 \cr 2 & 2 & 2\end{bmatrix}$ 
+  &
+ $B$ & $\begin{bmatrix}0 & 0 & 0 \cr 1 & 1 & 2 \cr 1 & 2 & 2\end{bmatrix}$\\ 
+ \hline
+$C$ & $\begin{bmatrix}0 & 0 & 0 \cr 1 & 1 & 2 \cr 2 & 1 & 2\end{bmatrix}$ 
+ &
+$D$ & $\begin{bmatrix}0 & 0 & 0 \cr 1 & 1 & 2 \cr 2 & 2 & 1\end{bmatrix}$\\ 
+ \hline
+ $E$ & $\begin{bmatrix}0 & 0 & 0 \cr 2 & 2 & 1 \cr 1 & 1 & 2\end{bmatrix}$ 
+ &
+ $F$ & $\begin{bmatrix}0 & 0 & 0 \cr 2 & 2 & 1 \cr 1 & 2 & 1\end{bmatrix}$\\ 
+ \hline
+ $G$ & $\begin{bmatrix}0 & 0 & 0 \cr 2 & 2 & 1 \cr 2 & 1 & 1\end{bmatrix}$ 
+ &
+  $H$ & $\begin{bmatrix}0 & 0 & 1 \cr 0 & 1 & 1 \cr 2 & 2 & 2\end{bmatrix}$\\ 
+ \hline
+  $I$ & $\begin{bmatrix}0 & 0 & 1 \cr 1 & 1 & 2 \cr 2 & 0 & 2\end{bmatrix}$ 
+ &
+ $J$ & $\begin{bmatrix}0 & 0 & 2 \cr 0 & 2 & 2 \cr 1 & 1 & 1\end{bmatrix}$\\ 
+ \hline
+  $K$ & $\begin{bmatrix}0 & 0 & 2 \cr 2 & 2 & 1 \cr 1 & 0 & 1\end{bmatrix}$
+ &
+  $L$ & $\begin{bmatrix}0 & 1 & 0 \cr 1 & 1 & 2 \cr 2 & 0 & 2\end{bmatrix}$\\ 
+ \hline
+\end{tabular}
+\caption{All unique permutation matrices of length $N_c =9$ for weight-$3$ RTZ inputs}
+\label{tb2}
+\end{table}
+
+Depending on which permutation matrix is chosen from Table \ref{tb2}, Equation \ref{eq6} can be simplified. 
+
+In general $w_H$ for turbo codewords as a result of weight-$3$ RTZ inputs can be written as $$w_H=3 + w_p+ w'_p$$, where $w_p,w'_p$ refer to the pre-interleaving parity weight and the post-interleaving parity weight respectively. The value of $w_p$ for the pre-interleaving weight-$3$ is dependent on the elements in $\cC^t$
+
+Let $(c_{\alpha}^{t},~c_{\alpha+\beta}^{t+1},~c_{\alpha+\gamma}^{t+2})$ be the vector representing a weight-$3$ RTZ input, where 
+\begin{equation}
+\begin{split}
+c_{\alpha}^{t}&=\alpha\tau+ t\\
+c_{\alpha+\beta}^{t+1}&=(\alpha+\beta)\tau+ t+1\\
+c_{\alpha+\gamma}^{t+2}&=(\alpha+\gamma)\tau+ t+2\\
+\end{split}
+\label{eq7}
+\end{equation}
+if $c_{\alpha}^{t}$ is the smallest value in the vector, then
+\begin{equation}
+l=
+\begin{cases}
+\beta ,& \beta>\gamma \\
+\gamma & \beta < \gamma\\
+\end{cases}
+\label{eq8}
+\end{equation}
+And 
+\begin{equation}
+w_p=
+\begin{cases}
+2\beta+2,& i \geq k, ~\beta>\gamma \\
+2\beta & i < k, ~\beta>\gamma\\
+2\gamma+2,& i \geq k,~ \beta<\gamma \\
+2\gamma & i < k, ~\beta<\gamma\\
+\end{cases}
+\label{eq9}
+\end{equation}
+where $i=\lfloor\frac{c_*^2}{3}\rfloor$, $k=\lfloor\frac{c_*^0}{3}\rfloor$ and * is the element position in $\cC^t$\newline
+By deciding on the $\Pi$ we can easily calculate all values of $l$ and $w_p$
+
+$w'_p$ on the other hand is dependent on the elements in $\bbC^{t},~t=0,1,..,\tau-1$
+Let $(c_{\alpha'}^{t'},~c_{\alpha'+\beta'}^{t'+1},~c_{\alpha'+\gamma'}^{t'+2})$ be the vector representing a weight-$3$ RTZ input, where 
+\begin{equation}
+\begin{split}
+c_{\alpha'}^{t'}&=\alpha\tau+ t'\\
+c_{\alpha'+\beta'}^{t'+1}&=(\alpha+\beta)\tau+ t'+1\\
+c_{\alpha'+\gamma'}^{t'+2}&=(\alpha+\gamma)\tau+ t'+2\\
+\end{split}
+\label{eq10}
+\end{equation}
+if $c_{\alpha'}^{t'}$ is the smallest value in the vector, then
+\begin{equation}
+l'=
+\begin{cases}
+\beta ,& \beta>\gamma \\
+\gamma & \beta < \gamma\\
+\end{cases}
+\label{eq11}
+\end{equation}
+And 
+\begin{equation}
+w'_p=
+\begin{cases}
+2\beta+2,& i' \geq k', ~\beta>\gamma \\
+2\beta & i' < k',~\beta>\gamma \\
+2\gamma+2,& i' \geq k',~\beta<\gamma  \\
+2\gamma & i' < k',~\beta<\gamma \\
+\end{cases}
+\label{eq12}
+\end{equation}
+where $i'=\lfloor\frac{c_*^2}{3}\rfloor$ ,$k'=\lfloor\frac{c_*^0}{3}\rfloor$ and * represents its position in $\bbC^t$\newline
+As an example, Table \ref{tb3} shows all the weight-$3$ RTZ inputs and the corresponding equations for calculating $w_H$
+
+\begin{table}
+\centering
+\begin{tabular}{||c | c  |c  |c  |c |} 
+ \hline
+ RTZ index & $i,k$ condition &$ l$ & $w_p$& $w_H$\\
+ \hline
+ $(0~4~8)$ & $i>k$ & $2$ & $6$ & $
+\begin{cases}
+11+2\beta,& i' \geq k',~\beta>\gamma \\
+11+2\gamma,& i' \geq k' ,~\beta<\gamma\\
+9+2\beta & i' < k',~\beta>\gamma\\
+9+2\gamma & i' < k',~\beta<\gamma\\
+\end{cases}$\\
+ \hline
+ $(0~5~7)$ & $i>k$ & $2$ & $6$ & $\begin{cases}
+11+2\beta,& i' \geq k',~\beta>\gamma \\
+11+2\gamma,& i' \geq k' ,~\beta<\gamma\\
+9+2\beta & i' < k',~\beta>\gamma\\
+9+2\gamma & i' < k',~\beta<\gamma\\
+\end{cases}$\\
+ \hline
+ $(1~3~8)$ & $i>k$ & $2$ & $6$ & $\begin{cases}
+11+2\beta,& i' \geq k',~\beta>\gamma \\
+11+2\gamma,& i' \geq k' ,~\beta<\gamma\\
+9+2\beta & i' < k',~\beta>\gamma\\
+9+2\gamma & i' < k',~\beta<\gamma\\
+\end{cases}$\\
+ \hline
+ $(1~5~6)$ & $i<k$ & $2$ & $4$ & $
+ \begin{cases}
+9+2\beta,& i' \geq k',~\beta>\gamma \\
+9+2\gamma,& i' \geq k' ,~\beta<\gamma\\
+7+2\beta & i' < k',~\beta>\gamma\\
+7+2\gamma & i' < k',~\beta<\gamma\\
+\end{cases}$\\
+ \hline
+ $(2~3~7)$ & $i<k$ & $2$ & $4$ & $ 
+ \begin{cases}
+9+2\beta,& i' \geq k',~\beta>\gamma \\
+9+2\gamma,& i' \geq k' ,~\beta<\gamma\\
+7+2\beta & i' < k',~\beta>\gamma\\
+7+2\gamma & i' < k',~\beta<\gamma\\
+\end{cases}$\\
+ \hline
+ $(2~4~6)$ & $i<k$ & $2$ & $4$ & $ 
+ \begin{cases}
+9+2\beta,& i' \geq k',~\beta>\gamma \\
+9+2\gamma,& i' \geq k' ,~\beta<\gamma\\
+7+2\beta & i' < k',~\beta>\gamma\\
+7+2\gamma & i' < k',~\beta<\gamma\\
+\end{cases}$\\
+ \hline
+\end{tabular}
+\caption{All unique permutation matrices of length $N_c =9$ for weight-$3$ RTZ inputs}
+\label{tb3}
+\end{table}
+
+\paragraph{To Do}
+\begin{enumerate}
+\item add elements for inter-block Weight-3 RTZ inputs
+\end{enumerate}
+ \end{document}

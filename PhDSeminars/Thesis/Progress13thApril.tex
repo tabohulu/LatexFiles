@@ -1,0 +1,455 @@
+\documentclass[11pt, oneside, dvipdfmx]{book}
+\newcommand{\folder}{/usr/local/share/texmf}
+\input{\folder/hfiles/ebook}
+\usepackage {graphicx}
+\usepackage {graphics}
+%\setCJKmainfont{SimSun}
+\title{``
+Progress So Far'' }
+\author{Kwame Ackah Bohulu}
+\date{\today}
+\begin{document}
+
+\maketitle
+\section{Notation}
+\begin{enumerate}
+\item RTZ (Return-To-Zero) input :- A RTZ input is a binary input which causes a RSC encoder's final state to be return to zero after it has exited the zero state.
+
+\item $N$ :- Interleaver length. We assume that $\tau | N$
+
+\item $\tau$ :- cycle length of the RSC encoder. For the $5/7$ RSC encoder $\tau = 3$
+
+\item $\bx$ :- input vector to the interleaver. It contains the indices of the input bit sequence $\bx = \{0,1,..,N-1\}$
+
+\item $\by$ :- output from  the interleaver. It contains the elements of $\bx$ rearranged according to the interleaving rule.
+
+\item $\bc^k$ :- Coset vector containing elements of $\bx$ such that $\bx \bmod \tau = k,~k=0,1,...,\tau-1$
+\end{enumerate}
+
+
+\section{Cosets and RTZ inputs}
+Let $\bx=\{0,1,..,N-1\}$ be the vector containing the indices of an input bit sequence of length $N$. Assuming that $\tau | N$, we proceed to form $3$ cosets vectors from $\bx$ which we will represent by $\bc^0,\bc^1~\text{and}~\bc^2$.  Having done this, we show how RTZ inputs may be related to the idea of cosets.
+
+For every RSC encoder, there are base RTZ inputs and compound RTZ inputs. Compound RTZ inputs are formed from the combination of one or more base RTZ inputs. These RTZ inputs are important in the sense that they tend to generate low weight codewords which in turn affects the error correcting performance of the RSC code. In the case of the turbo code, we can design an interleaver to transform RTZ inputs in two ways so as to improve the error correcting capability of the turbo code by increasing its minimum distance. These 2 ways include either transforming the RTZ input into a non-RTZ input or transforming the RTZ input into another RTZ input which produces a parity bit sequence with a larger weight than the original. We refer to the latter kind of RTZ input as a heavy RTZ input.
+
+As shown in the previous section, the base RTZ inputs for the 5/7 RSC have weights $2$ and $3$ respectively and any RTZ input with weight greater than $3$ is a compound RTZ input. From a coset perspective, the conditions required for weight $2$ or $3$ inputs to be RTZ inputs are listed below.
+
+\begin{enumerate}
+\item Let $P(x)=x^a+x^b$ be the polynomial representation of a weight $2$ input sequence. $a,b \in \mathcal{W}$ and represent the index of the ``1'' bits. $P(x)$ is a RTZ input iff $a \mod 3 = b \mod 3$
+
+\item Let $Q(x) =x^a+x^b+x^c$ be the polynomial representation of a weight $3$ input sequence. $a,b,c \in \mathcal{W}$ and represent the index of the ``1'' bits. $Q(x)$ is a RTZ input iff $\{a \mod 3,b \mod 3,c \mod 3\} =(0,1,2)$
+
+\end{enumerate}
+
+In other words, weight $2$ RTZ inputs have the index of their ``1'' bits occur in the same coset, whiles weight $3$ RTZ inputs have the index of each ``1'' bits occur in different cosets. For example the weight $1+x^3$ input is RTZ because $0 \mod 3 = 3 \mod 3 =0$ whiles $1+x^2$ is not RTZ because $0 \mod 3 \neq 2 \mod 3$.Also $x+x^5+x^9$ is a weight $3$ RTZ input since $1 \mod 3,~5 \mod 3,~9 \mod 3$ give the sorted set $(0,1,2)$ whiles $1+x^3+x^6$ is not a weight $3$ RTZ input.
+
+With this insight, we can easily identify weight weight $2$ and weight $3$ RTZ inputs and come up with a strategy to transform weight $2$ and weight $3$ RTZ inputs into non-RTZ inputs. Before we move on to the next section, we introduce the notion of the coset interleaving pattern and coset interleaving array with an example.
+
+Assuming we have a linear interleaver $\Pi_L(x_i) =\alpha x_i \bmod N$ with $N=9$ and angular coefficient $\alpha=5$. We have $\bx=\{0,1,2,3,4,5,6,7,8\}$ and $\by=\{0,5,1,6,2,7,3,8,4\}$.
+To show the mapping relation between $\bx$ and $\by$ we may use the set we use the notation  $\mathbf{x} \mapsto \mathbf{y} =\{0 \mapsto 0,~1 \mapsto 5,...,8 \mapsto 4 \}$
+A more visually pleasing representation will be in $2 \times N$ matrix representation where the mapping relationship between elements in $\bx$ and $\by$ are read column wise as shown below
+
+$$  
+ \begin{bmatrix}
+0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
+0 & 5 & 1 & 6 & 2 & 7 & 3 & 8 & 4 \\
+\end{bmatrix}
+$$
+
+The coset interleaver pattern is simply replacing the elements of $\bx \mapsto \by$ with the cosets they belong to, in other words finding the value of each element in $\bx,~\by$ $\bmod 3$ 
+
+  We then have $\mathbf{x} \mapsto \mathbf{y}$ becomes $\{0 \mapsto 0,~1 \mapsto 2,...,2 \mapsto 1 \} = (\mathbf{x} \mapsto \mathbf{y})_{\mod 3}$ and the matrix representation becomes
+  
+  $$  
+ \begin{bmatrix}
+0 & 1 & 2 & 0 & 1 & 2 & 0 & 1 & 2 \\
+0 & 2 & 1 & 0 & 2 & 1 & 0 & 2 & 1 \\
+\end{bmatrix}
+$$
+  
+
+The coset interleaving array is $\mathbf{y}_{\mod 3}$ and the coset interleaving pattern is $(\mathbf{x} \mapsto \mathbf{y})_{\mod 3}$. The coset interleaving pattern shows the input and output relation of the interleaver interms of its cosets.
+
+\section{Coset Interleaver Design For Weight-$2$ RTZ inputs}
+From the definition of Weight-$2$ RTZ inputs in the previous section, we know that the index of the ``1'' bits are in the same coset. Let the indices of the ``1'' bits before interleaving be represented by $i$ and $i+m\tau ,~m=1,2,...,\lfloor \frac{N-1}{3} \rfloor,~i=0,1,..N-1$. Let the indices of the ``1'' bits after interleaving be represented by $\Pi(i)$ and $\Pi(i+m\tau)$. Also let $t=(i-m\tau) -i=m\tau$ and $s = \Pi(i+m\tau) - \Pi(i)$ be the pre-interleaving separation and post interleaving separation respectively.
+
+To convert a weigth-$2$ RTZ input into a non-RTZ input the following condition should be met.
+\begin{equation}
+\begin{split}
+ \Pi(i) \bmod 3 & \neq \Pi(i+m\tau) \bmod 3,~\forall ~i,m\\
+ &\text{OR}\\
+ t \bmod 3 &\neq s \bmod 3
+ \end{split}
+ \label{eq1}
+\end{equation}
+
+%With this knowlege, it goes without saying that to convert a weight-$2$ RTZ input into a non-RTZ input, we have to make sure that the index of the ``1'' bits are in different cosets
+Next, we consider the following question.
+
+\begin{enumerate}
+\item Is there a cut-off interleaver length ($N_c$) beyond which the condition in (\ref{eq1}) cannot be met.
+
+\item What is the best course of action to take when the condition
+ in (\ref{eq1}) cannot be met
+\end{enumerate}
+
+To answer the first question, we will do a little thought exercise. 
+
+For interleavers with length $0>N\leq 9$, the number of elements in each coset is at most equal to the number of coset and it is possible map elements in the same coset to elements in another coset.
+However, when $N>9$, it is not possible to prevent elements in the same coset from being mapped to the same coset since the number of elements in each coset is greater than the number of cosets. Therefore, the cut-off interleaver length is $N_c=9=\tau^2$.
+
+Table \ref{tb1} shows all unique coset interleaving arrays of length $N_c$ that convert weight-$2$ RTZ inputs to non-RTZ inputs. They are labeled from $A$ to $X$. A coset interleaving array is unique if a shift of the elements in the array does not produce another another coset interleaving array.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c || c  c  c  c  c  c  c  c  c |} 
+ \hline
+ $A$ & 0 & 0 & 0 & 1 & 1 & 1 & 2 & 2 & 2\\ 
+  \hline
+  $B$ & 0 & 0 & 0 & 1 & 1 & 2 & 2 & 2 & 1\\ 
+  \hline
+  $C$ & 0 & 0 & 0 & 1 & 2 & 1 & 2 & 1 & 2\\ 
+  \hline
+  $D$ & 0 & 0 & 0 & 1 & 2 & 2 & 2 & 1 & 1\\ 
+ \hline
+  $E$ & 0 & 0 & 0 & 2 & 1 & 1 & 1 & 2 & 2\\ 
+ \hline
+ $F$ & 0 & 0 & 0 & 2 & 1 & 2 & 1 & 2 & 1\\ 
+ \hline
+  $F$ & 0 & 0 & 0 & 2 & 2 & 1 & 1 & 1 & 2\\ 
+ \hline
+  $H$ & 0 & 0 & 0 & 2 & 2 & 2 & 1 & 1 & 1\\ 
+ \hline
+  $I$ & 0 & 0 & 1 & 1 & 1 & 0 & 2 & 2 & 2\\ 
+ \hline
+  $J$ & 0 & 0 & 1 & 1 & 2 & 0 & 2 & 1 & 2\\ 
+ \hline
+  $K$ & 0 & 0 & 1 & 2 & 1 & 0 & 1 & 2 & 2\\ 
+ \hline
+ $L$ & 0 & 0 & 1 & 2 & 2 & 0 & 1 & 1 & 2\\ 
+ \hline
+  $M$ & 0 & 0 & 2 & 1 & 1 & 0 & 2 & 2 & 1\\ 
+ \hline
+  $N$ & 0 & 0 & 2 & 1 & 2 & 0 & 2 & 1 & 1\\ 
+ \hline
+ $O$ & 0 & 0 & 2 & 2 & 1 & 0 & 1 & 2 & 1\\ 
+ \hline
+ $P$ & 0 & 0 & 2 & 2 & 2 & 0 & 1 & 1 & 1\\ 
+ \hline
+ $Q$ & 0 & 1 & 0 & 1 & 0 & 1 & 2 & 2 & 2\\ 
+ \hline
+  $R$ & 0 & 1 & 0 & 1 & 0 & 2 & 2 & 2 & 1\\ 
+ \hline
+ $S$ & 0 & 1 & 0 & 1 & 2 & 1 & 2 & 0 & 2\\ 
+ \hline
+ $T$ & 0 & 1 & 0 & 2 & 0 & 1 & 1 & 2 & 2\\ 
+ \hline
+ $U$ & 0 & 1 & 0 & 2 & 0 & 2 & 1 & 2 & 1\\ 
+ \hline
+ $V$ & 0 & 1 & 0 & 2 & 2 & 1 & 1 & 0 & 2\\ 
+ \hline
+ $W$ & 0 & 1 & 1 & 1 & 2 & 0 & 2 & 0 & 2\\ 
+ \hline
+ $X$ & 0 & 2 & 0 & 2 & 0 & 2 & 1 & 1 & 1\\ 
+ \hline
+\end{tabular}
+\caption{All unique coset interleaving arrays of length $N_c =9$ for weight-$2$ RTZ inputs}
+\label{tb1}
+\end{table}
+
+The interleaver length used in turbo coding are way greater than $N_c$ and it is not possible to transform weight-$2$ RTZ inputs into non-RTZ inputs for all values of $i$. All is not lost however, since not all weight-$2$ RTZ inputs produce low-weight codewords. 
+The formula for calculating the Hamming weight ($w_H$) of the Turbo codeword produced by a weight-$2'$ RTZ input occuring in both component codes is given by[SunTakeshita] 
+\begin{equation}
+\begin{split}
+w_H=&2+(2 + \frac{t}{3} )w_0+ (2 + \frac{s}{3})w_0\\
+=&6+\Big(\frac{t+s}{3}\Big)w_0,~w_0=2
+\end{split}
+\label{eq3}
+\end{equation}
+This means that by altering the value of $t$ and $s$, we can increase the weight of the codeword produced. With this knowledge,
+all we need to do is to make sure that the if the input to the interleaver is a weight-$2$ RTZ inputs with a small value of $t$, it is converted to a weight-$2$ RTZ with a large value of $s$
+
+In summary, an interleaver designed to deal with weight-$2$ RTZ inputs when $N>N_c$ should
+\begin{enumerate}
+\item Convert  weight-$2$ RTZ inputs to non-RTZ inputs
+
+\item Convert  weight-$2$ RTZ inputs to a weight-$2$ RTZ inputs with a large value of $s$ when condition 1 isnt possible.
+
+\end{enumerate}
+
+An interleaver design method which makes use of the above points is as follows.
+Given an interlever with length $N$, we break it up into $\frac{N}{N_c}$ blocks each of length $N_c$. At the beginning of the $n$th block, the coset interleaving pattern is repeated until the last block. By applying this method, we make sure that when the weight-$2$ RTZ occurs within a  block, condition 1 is met and condition 2 is met when the weight-$2$ RTZ occurs in 2 consecutive blocks i.e. when  $t=N_c$.
+
+This method only works when $N_c | N$ and we will delay the details of what to do when $N_c \not| N$.
+
+\section{Coset Interleaver Design For Weight-$3$ RTZ inputs}
+As mentioned earlier, a weight-$3$ RTZ input is formed when the indices of the ``1'' bits each occur in different cosets.  It goes without saying that the simplest way to convert a weight-$3$ RTZ input into a non-RTZ input is to make sure that at least two of indices of the ``1'' bits occur within the same coset after interleaving.
+
+With regards to the cut-off interleaver length ($N_c$) within which this is possible, the simple answer would be that as long as $N>3n,~n>1$ then $N_c=N$. For reasons that will be explained in a later section, we set  $N_c=9$.
+
+Next, we explore coset interleaver patterns for interleaver length $N=N_c$. In the case of weight-$2$ RTZ inputs and an interleaver length of $N=N_c$, the only RTZ inputs that exist are $1+x^3$ and $1+x^6$. With the coset interleaver patterns listed in Table \ref{tb1}, we manage to get rid of all of them. For the case of the weight-$3$ RTZ however, there are $9$ of such RTZ inputs for interleaver length$N=N_c$. Getting rid of all of them might not be possible, which means we might have to alter the conditions for choosing coset interleaver patterns for weight-$3$ RTZ inputs, such as prioritizing coset interleaver patterns that contain weight-$3$ RTZ inputs which produce parity bits beyond a certain weight. 
+To calculate the parity weight and by extension, the Hamming weight of a turbo codeword produced by a weight-$3$ RTZ input, we introduce the idea of layer distance $l$.  
+
+We proceed to form a $N/\tau \times \tau$ matrix $\bX$ from $\bx$. We assign indices to each row and refer to each row of $\bX$ as a layer. Elements of $\bX$ that are on the same row are said to be in the same layer and  elements of $\bX$  that are in the same column are obviously in the same coset.
+ The layer distance $l$ is the difference betweeen two rows indices of $\bX$.
+ $\mathcal{L}(x)$ represents the layer of $x$ and can be calculated as $\mathcal{L}(x)=\lfloor \frac{x}{3} \rfloor$
+ 
+ Assume we are given a weight-$3$ RTZ input of the form $x^a+x^b+x^c,~a<b<c$. Let $l_1 =\mathcal{L}(b) - \mathcal{L}(a) ,~l_2=\mathcal{L}(c) - \mathcal{L}(a)$ be the pre-interleaving layer distance between $b,a$ and $c,a$ respectively. The parity weight $w_p$ for the given weight-$3$ RTZ is $w_p=2 (\max(l_1,l_2))+2$.
+ Again assuming after interleaving, $x^a+x^b+x^c$ is transformed into another weight-$3$ RTZ input of the form $x^{a'}+x^{b'}+x^{c'},,~a'<b'<c'$. Also let $l'_1= \mathcal{L}(b') - \mathcal{L}(a')~,l'_2=\mathcal{L}(c') - \mathcal{L}(a')$ be the post-interleaving layer distance between $b',a'$ and $c',a'$ respectively.
+ And the Hamming weight of the turbo codeword will be 
+ \begin{equation}
+ \begin{split}
+ w_H =& 2 (\max(l_1,l_2))+2 + 2 (\max(l'_1,l'_2))+2 +3\\
+ &=7+2 \Big(\max(l_1,l_2) + \max(l'_1,l'_2) \Big)
+ \end{split}
+ \label{eq4}
+ \end{equation}
+For example the weight-$3$ RTZ input $1+x+x^2$, $1_1=l_2=0$ and $w_p=2$.
+If the output after interleaving is still $1+x+x^2$ or any shifted version, the hamming weight of the turbo codeword $w_H=7$
+It should be mentioned that if $a \bmod 3=2$ or $a' \bmod 3 = 2$ the value of the layer distance reduces by $1$.
+With this in mind, for interleaver length $N=N_c$, we select coset interleaver arrays which produce a parity weight $w_p>2$, i.e. those which get rid of the weight-$3$ RTZ $1+x+x^2$. Unique coset interleaving arrays which meet this criteria are shown in Table \ref{tb2} and they are labeled from $A$ to $L$
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c || c  c  c  c  c  c  c  c  c |} 
+ \hline
+ $A$ & 0 & 0 & 0 & 1 & 1 & 1 & 2 & 2 & 2\\ 
+  \hline
+ $B$ & 0 & 0 & 0 & 1 & 1 & 2 & 1 & 2 & 2\\ 
+ \hline
+$C$ & 0 & 0 & 0 & 1 & 1 & 2 & 2 & 1 & 2\\ 
+ \hline
+$D$ & 0 & 0 & 0 & 1 & 1 & 2 & 2 & 2 & 1\\ 
+ \hline
+ $E$ & 0 & 0 & 0 & 2 & 2 & 1 & 1 & 1 & 2\\ 
+ \hline
+ $F$ & 0 & 0 & 0 & 2 & 2 & 1 & 1 & 2 & 1\\ 
+ \hline
+ $G$ & 0 & 0 & 0 & 2 & 2 & 1 & 2 & 1 & 1\\ 
+ \hline
+  $H$ & 0 & 0 & 1 & 0 & 1 & 1 & 2 & 2 & 2\\ 
+ \hline
+  $I$ & 0 & 0 & 1 & 1 & 1 & 2 & 2 & 0 & 2\\ 
+ \hline
+ $J$ & 0 & 0 & 2 & 0 & 2 & 2 & 1 & 1 & 1\\ 
+ \hline
+  $K$ & 0 & 0 & 2 & 2 & 2 & 1 & 1 & 0 & 1\\ 
+ \hline
+  $L$ & 0 & 1 & 0 & 1 & 1 & 2 & 2 & 0 & 2\\ 
+ \hline
+\end{tabular}
+\caption{All unique permutation matrices of length $N_c =9$ for weight-$3$ RTZ inputs}
+\label{tb2}
+\end{table}
+
+As mentioned earlier, there are $9$ weight-$3$ RTZ inputs for $N=N_c$. The weight-$3$ RTZ inputs that remain depends on the coset interleaver pattern that is chosen.
+
+\section{Coset Interleaver Design For Weight-$2$ and Weight-$3$RTZ Inputs}
+In this section we attempt to design an interleaver while considering both weight-$2$ and weght-$3$ RTZ inputs.
+
+We begin by determining coset interleaver patterns which fulfil the conditions for both weight-$2$ and weight-$3$ inputs when $N=N_c$. To recap this coset interleaver pattern should fulfil the following conditions
+
+\begin{enumerate}
+\item Should convert all weight-$2$ RTZ inputs into non-RTZ inputs
+
+\item Should convert all weight-$3$ RTZ inputs into non-RTZ inputs (best case) or RTZ inputs which produce high weight parity bits.
+\end{enumerate}
+
+There are $4$ coset interleaving arrays of length $N_c$ and these are shown in Table \ref{tb3} labelled $A$ to $D$
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c || c  c  c  c  c  c  c  c  c |} 
+ \hline
+ $A$ & 0 & 0 & 0 & 1 & 1 & 1 & 2 & 2 & 2\\ 
+  \hline
+ $B$ & 0 & 0 & 0 & 1 & 1 & 2 & 2 & 2 & 1\\ 
+ \hline
+$C$ & 0 & 0 & 0 & 2 & 2 & 1 & 1 & 1 & 2\\ 
+ \hline
+$D$ & 0 & 0 & 0 & 2 & 2 & 2 & 1 & 1 & 1\\ 
+ \hline
+
+\end{tabular}
+\caption{All unique coset interleaving arrays of length $N_c =9$ for weight-$2$ and weight-$3$ RTZ inputs}
+\label{tb3}
+\end{table}
+
+For the case where $N>Nc$, we divide $N$ into $N/N_c$ blocks of length $N_c$ and at the $nth$ block, the coset interleaver pattern is repeated untill the last block. Regardless of which coset interleaver pattern is chosen, the following things should be confirmed
+
+\paragraph{Weight-$2$ RTZ}
+\begin{enumerate}
+\item The weight-$2$ RTZ is mapped to another weight-$2$ RTZ iff the pre-interleaving distance $t$ is a multiple of $N_c$
+\end{enumerate}
+
+\paragraph{Weight-$3$ RTZ}
+\begin{enumerate}
+\item The weight-$3$ RTZ is never mapped to the weight-$3$ RTZ $1+x+x^2$
+\end{enumerate}
+
+With this in mind, the only coset interleaver patterns which can do this are $A$ and $D$ of Table \ref{tb3}
+
+\section{Implementation of Coset Interleaver}
+Now that we have used the coset interleaver pattern to place a limit of the kinds of RTZ inputs that occur after interleaving, we present an algorithm that not only implements the coset interleaver pattern, but also determines the best input output RZT pairing to increase the minimum codeword weight for weight-$2$ and weight-$3$ RTZ inputs.
+
+\subsection{Implementation Algorithm}
+Let $N$ be the interleaver length, $L=N/3$ be the coset length and $\bx =\{0,1,...,N-1\}$ be the input to the interleaver. Also let $\bc^k,~k=0,1,2$ contain elements in $\bx$ such that $x_i \bmod 3 = k$
+The algorithm is as follows
+
+\begin{algorithm}
+    \caption{Coset Interleaver Algorithm 1}
+    \label{alg1}
+\begin{algorithmic}
+    \REQUIRE	 $i=0,~k=0,~j=0,~L \bmod 3 = 0$
+    \FOR{$i=0$ to $N-1$}
+    \STATE $y[i] = \bc^k[j]$
+    \STATE $j=j+D \mod L$
+    \IF{$i +1 \mod 3= 0$}
+    \STATE $k=k+1 \mod 3$
+    \ENDIF
+    \ENDFOR
+\end{algorithmic}
+\end{algorithm}
+Algorithm \ref{alg1} only works for cases where $L \bmod 3 = 0$. If $L \bmod 3 =1$ or $L \bmod 3 =2$ The change to the algorithm is as follows
+
+\begin{algorithm}
+    \caption{Coset Interleaver Algorithm 2}
+    \label{alg2}
+\begin{algorithmic}
+    \REQUIRE	 $i=0,~k=0,~j=0,~r=0$
+    \FOR{$i=0$ to $N-1$}
+    \STATE $y[i] = \bc^k[j]$
+    \STATE $j=j+D \mod L$
+    \IF{$i +1 \mod 3= r$}
+    \STATE $k=k+1 \mod 3$
+    \ELSIF {$i +1 \mod L= 0$}
+    \STATE $k=k+1 \mod 3$
+    \STATE $r=i+1 \mod 3$
+    \ENDIF
+    \ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+For the case of Algorithm \ref{alg2},
+when $L \bmod 3 =0$, the coset interleaving pattern is always $\{0 \mapsto 0, 1 \mapsto 0, 2 \mapsto 0, 0 \mapsto 1, 1 \mapsto 1, 2 \mapsto 1, 0 \mapsto 2, 1 \mapsto 2, 2 \mapsto 2 \}$ for every $n$th block of length $N_c=9$. When $L \bmod 3 =1$ or $L \bmod 3 =2$, there is a slight change in the coset interleaver pattern. The coset interleaver pattern that is generated when $N=15$ ($L=5$ and $5 \bmod 3 =2$) and $N=12$ ($L=4$ and $4 \bmod 3 =1$) is show in Table \ref{tb4} and Table \ref{tb5} respectively.
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c | c  |c  |c  |c  |c  |c  |c  |c  |c  |c  |c  |c  |c  |c |} 
+ \hline
+ 0 & 1 & 2 &  0 & 1 & 2 &  0 & 1 & 2 &  0 & 1 & 2 &  0 & 1 & 2 \\ 
+  \hline
+ 0 & 0 & 0 &  1 & 1 & 2 &  2 & 2 & 0 &  0 & 1 & 1 &  1 & 2 & 2 \\ 
+ \hline
+\end{tabular}
+\caption{Coset Interleaver pattern when $L \bmod 3 =2$}
+\label{tb4}
+\end{table}
+
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c | c  |c  |c  |c  |c  |c  |c  |c  |c  |c  |c  |} 
+ \hline
+ 0 & 1 & 2 &  0 & 1 & 2 &  0 & 1 & 2 &  0 & 1 & 2\\ 
+  \hline
+ 0 & 0 & 0 &  1 & 2 & 2 &  2 & 0 & 1 &  1 & 1 & 2 \\ 
+ \hline
+\end{tabular}
+\caption{Coset Interleaver pattern when $L \bmod 3 =1$}
+\label{tb5}
+\end{table}
+For the coset interleaver pattern in Table \ref{tb4} and Table \ref{tb5}, the minimum pre-interleaving separation $t$ at which a weight $2$ RTZ input is mapped to another weight-$2$ RTZ input is $t=6$.
+Also, for the coset interleaver pattern in Table \ref{tb5}, there is a point in the coset interleaver pattern where the weight-$3$ RTZ input  $1+x+x^2$ is mapped to itself.
+
+Fortunately the multiplicity of these irregularities is few and by carefully choosing the value of $D$ these irregularities pose no problem to the effectiveness of the interleaver.
+
+Unfortunately, when $\lceil \frac{L}{3}  \rceil \bmod 3 =0$, Algorithm \ref{alg2} is unable to produce an interleaver and requires further adjustment(*Still thinking about it)
+
+
+\subsection{Choosing D for the coset interleaver}
+As seen from the algorithms above, there is a factor $D$ which needs to be chosen. This factor is important as it determines the values of $s$, which is the post-interleaving separation for weight-$2$ RTZ inputs as well as $l'_1$ and $l'_2$ which are the post-interleaving layer distances for weight-$3$ RTZ inputs. This in turn influences the minimum weight codeword of the turbo code.
+
+For the case of weight-$2$ RTZ inputs we know that the minimum pre-interleaver separation $t$ within which a RTZ input occurs is $t=9$ for the case when $L \bmod 3 = 0$ and  $t=6$ for the case when $L \bmod 3 = 1$ or $L \bmod 3 = 2$. For the different values of $t$ we need to make sure that the post-interleaving distance $s$ is close to $\lfloor\frac{L}{2}\rfloor$
+
+For the case when $L \bmod 3 = 1$ or $L \bmod 3 = 2$, finding $D$ is a s simple as solving the congruence equation below
+
+\begin{equation}
+\begin{split}
+tD \equiv &\lfloor\frac{L}{2}\rfloor \mod L \\ 
+6D\equiv&\lfloor\frac{L}{2}\rfloor \mod L
+\end{split}
+\label{eq5}
+\end{equation}
+
+However, when $L \bmod 3 = 0$, finding the best $D$ is a bit more complicated. Let $ \bd$ be a vector containing integer values from the vector $\bx'=\{2,...,L-1\}$ which meet the condition gcd$(x'_i,L)=1$.
+The process for finding the best $D$ is shown below.
+
+\begin{algorithm}
+    \caption{Algorithm to find $D$ when $L \mod 3 =0$}
+    \label{alg3}
+\begin{algorithmic}
+    \FOR{$i=0$ to $||\bd||$}
+    \STATE $f(d_i) =|\lfloor\frac{L}{2}\rfloor - (9d_i \bmod L)|$
+    \ENDFOR
+     \STATE $\bD=\text{arg min} f(d_i)$
+\end{algorithmic}
+\end{algorithm}
+
+From Algorithm \ref{alg3}, the value of $D$ can be arbritraly chosen from $\bD$. 
+
+Now that we have decided upon the value of $D$, can calculate the value of $s$ and inturn calculate the corresponding $w_H$ for the codeword produced using (\ref{eq3}).
+\begin{equation}
+s= \text{min}\Big\{3\Big(tD \bmod L\Big),~3\Big(t(L-D) \bmod L\Big) \Big\}
+\label{eq6}
+\end{equation}
+
+(\ref{eq3}) then becomes,
+\begin{equation}
+\begin{split}
+w_H=&6+\Big(\frac{t+s}{3}\Big)w_0\\
+=&\text{min}\Bigg\{6+\Bigg(\frac{t+3\Big(tD \bmod L\Big)}{3}\Bigg)w_0,~6+\Bigg(\frac{t+3\Big(t(L-D) \bmod L\Big)}{3}\Bigg)w_0 \Bigg\}
+\end{split}
+\label{eq7}
+\end{equation}
+
+Finding the value of D which maximizes the value of post interleaving pattern distance for weight-$3$ RTZ is a bit more diifficult. Figure shows the coset interleaver array for interleaver on length $N$ divided into blocks of length$N_c$ with the focus on the first 2 blocks. We refer to RTZ inputs that occur within a block as intra-block RTZ inputs and those that occur between 2 blocks as inter-block RTZ inputs. Let  $L \bmod 3 =0$. In the case of weight-2 RTZ inputs, there are no inter-block RTZ inputs and the only inter-block input is $1+x^9$ and its shifted versions. For the case of weight-3 RTZ inputs, there are multiple intra-block RTZ inputs as well as inter-block RTZ inputs. These are listed in Table
+
+In choosing the value of $D$ to maximize the post-interleaving layer distances, the algorithm below is used. 
+
+\begin{algorithm}
+    \caption{Weight-$3$ RTZ input max D Algorithm}
+    \label{alg4}
+\begin{algorithmic}
+    \REQUIRE	 $i=0,~k=0,~j=0,~r=0$
+    \FOR{$i=0$ to $N-1$}
+    \STATE $y[i] = \bc^k[j]$
+    \STATE $j=j+D \mod L$
+    \IF{$i +1 \mod 3= r$}
+    \STATE $k=k+1 \mod 3$
+    \ELSIF {$i +1 \mod L= 0$}
+    \STATE $k=k+1 \mod 3$
+    \STATE $r=i+1 \mod 3$
+    \ENDIF
+    \ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+Having chosen the value of $D$ using Algorithm \ref{alg4}, we go ahead an calculate the minimum Hamming distance of the codeword produced by weight-$3$ RTZ inputs. 
+From the above algorithm, we have the weight-$3$ RTZ input that produces the codeword with the largest minimum distance. The pre-interleaving layer distance with respect to that input is
+\begin{equation}
+l_1 = \Big\lfloor \frac{c - a}{3} \Big\rfloor
+\end{equation}
+and the post-interleaving layer distance is 
+\begin{equation}
+l'_1 = \text{min}\Bigg\{\Big\lfloor \frac{D(c - a)}{3} \Big\rfloor, \Big\lfloor \frac{(L-D)(c - a)}{3} \Big\rfloor\Bigg\}
+\end{equation}
+Substituting into ({eq4}) gives
+
+ \begin{equation}
+ \begin{split}
+ w_H =& 2 (\max(l_1,l_2))+2 + 2 (\max(l'_1,l'_2))+2 +3\\
+ &=7+2 \Big(\max(l_1,l_2) + \max(l'_1,l'_2) \Big)\\
+ &=\text{min}\Bigg\{  7+2 \Big( \Big\lfloor \frac{c - a}{3} \Big\rfloor + \Big\lfloor \frac{D(c - a)}{3} \Big\rfloor \Big), 7+2 \Big( \Big\lfloor \frac{c - a}{3} \Big\rfloor + \Big\lfloor \frac{(L-D)(c - a)}{3} \Big\rfloor \Big) \Bigg\}
+ \end{split}
+ \label{eq9}
+ \end{equation}
+ \end{document}

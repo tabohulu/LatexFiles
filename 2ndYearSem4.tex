@@ -1,0 +1,136 @@
+\documentclass[20 pts]{article}
+\usepackage{xeCJK}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bm}
+\setCJKmainfont{SimSun}
+\title{Computing the Free Distance of Turbo Codes and Serially Concatenated Codes
+ with Interleavers: Algorithms and Applications} 
+\author{Kwame Ackah Bohulu}
+\date{2017/11/21}
+\begin{document}
+\maketitle
+
+\newpage
+
+
+
+\section{Algorithm For Computing the Free Distance of Turbo Codes and SCC Codes}
+ターボ符号とSCC符号の自由距離を計算するのに使える二つのアルゴリズムを紹介する。
+このアルゴリズムを使うことで、符号の自由距離($d_{free}$), 自由距離をもつ符号語の数、
+($N_free$)と $d_{free}$を作り出した情報系列の合計重み($w_free$)が計算できる。
+
+\subsection{Algorithm to Compute the Free Distance of Turbo Codes}
+レート 1/3のターボ符号があるとする。それぞれの要素符号のトレリスは$\Gamma_1$と
+$\Gamma_2$で示され、トレリスの長さは、(N+v)である。入力された情報系列は
+$\mathbf{u}^{(i)}=\{u_0,u_1,...,u_{i-1}\}\,\,\,\,\, i\leq N$ で示される。
+
+アルゴリズムの核心(かくしん)は、$\mathbf{u}^{(i)}$と
+N-ビット情報系列$\mathbf{u}=\{u_0,u_1,...,u_{N-1}\}$の最初のiビットがひとし場合、
+$\mathbf{u}$によって作られたターボ符号語の
+最小ハミング重みの計算である。
+
+最小ハミング重み($\mathit{v(\mathbf{u}^{(i)})}$)は、以下の式で計算する。
+$$\mathit{v(\mathbf{u}^{(i)})}=\mathit{v_1(\mathbf{u}^{(i)})}+
+\mathit{v_2(\mathbf{u}^{(i)})}$$
+
+$\mathit{v_1(\mathbf{u}^{(i)})}$を計算する場合、
+$\mathbf{u}^{(i)}$を要素符号1に入力して、符号のハミング距離を計算する。次に、状態0
+($0_{\sum}$)に戻すのに必要v―ビットに対するパリティービットのハミング距離を計算する。
+$$\mathit{v_1(\mathbf{u}^{(i)})}=\mathit{w}_H(c_1^{(i)})+v(\sigma_1^{(i)})$$
+
+$\mathit{v_2(\mathbf{u}^{(i)})}$を計算する場合、constrained subcodeの考え方を
+使用する。入力シーケンス$\mathbf{u}^{(i)}$は、
+基数iの制約セット$V(\mathbf{u}^{(i)})$を誘導し、$\mathit{v_2(\mathbf{u}^{(i)})}$
+は制約付きサブコード$\mathit{C}_2(V(\mathbf{u}^{(i)}))$の最小距離である。
+$$\mathit{v}_2(\mathbf{u}^{(i)}) = min\mathit{W}_H({p_2}^{(i)})\,\,\, p_2 \in
+\mathit{C}_2(V(\mathbf{u}^{(i)}))$$
+
+アルゴリズムの手順は以下で説明される。\\
+【１．】$d_{free}=d*, N_free =0,w_{free}=0$.
+二つの長さ１の情報系列、$\mathbf{u}^{(1)}=(1)$,$\mathbf{u}^{(1)}=(0)$から始まる。
+
+【2.a】$\mathit{v(\mathbf{u}^{(i)})}=\mathit{v_1(\mathbf{u}^{(i)})}+
+\mathit{v_2(\mathbf{u}^{(i)})}$を計算する。
+$\mathit{v}(\mathbf{u}^{(i)}) \leq d_{free}$の場合以外、$\mathbf{u}^{(i)}$を捨てる。
+
+【2b.】$\sigma_1^{(i)}=0_{\sum}\,\,(\sigma_1^{(i-1)}\neq 0_{\sum})$の場合、
+$\mathbf{u}=\{ \mathbf{u}^{(i)},0_{N-i}\}$をターボ符号器に入力し、符号語
+$\mathbf{ｃ}$の重み$\mathit{w}_H(\mathbf{c})$を計算する。もし
+$\mathit{w}_H(\mathbf{c})＝d_{free}$であれば、$N_{free}$を1つ増やし、$w_{free}$
+を$w=\mathit{w}_H(\mathbf{u}^{(i)})$増やす。
+
+もし
+$\mathit{w}_H(\mathbf{c})<d_{free}$であれば、
+$d_{free}$を$\mathit{w}_H(\mathbf{c})$にし、$N_{free}$の値を1にし、$w_{free}$
+の値を$w$にする。
+
+【3.】セット$\mathbf{u}^{(i)}$に残したもの長さを1増やして、$\mathbf{u}^{(i+1)}$を作って、
+前のステップをやる。
+
+【4.】i=Nの場合、セット$\mathbf{u}^{(i)}$に残したものそれぞれターボ符号器に入力し、
+符号語を作る。もし
+$\mathit{w}_H(\mathbf{c})＝d_{free}$であれば、$N_{free}$を1つ増やし、$w_{free}$
+を$w=\mathit{w}_H(\mathbf{u}^{(N)})$増やす。
+
+もし
+$\mathit{w}_H(\mathbf{c})<d_{free}$であれば、
+$d_{free}$を$\mathit{w}_H(\mathbf{c})$にし、$N_{free}$の値を1にし、$w_{free}$
+の値を$w$にする。
+
+
+\subsection{Algorithm to Compute the Free Distance of SCC Codes}
+レート 1/3のSCC符号があるとする。それぞれの要素符号のトレリスは$\Gamma_1$と
+$\Gamma_2$で示され、$\Gamma_1$の長さは、(k+v)である。$\Gamma_1$の長さは、
+(N+v)である。入力された情報系列は
+$\mathbf{u}^{(i)}=\{u_0,u_1,...,u_{i-1}\}\,\,\,\,\, i\leq N$ で示される。
+
+アルゴリズムの核心(かくしん)は、$\mathbf{u}^{(i)}$と
+N-ビット情報系列$\mathbf{u}=\{u_0,u_1,...,u_{N-1}\}$の最初のiビットがひとし場合、
+$\mathbf{u}$によって作られたターボ符号語の
+最小ハミング重みの計算である。
+
+
+
+$\mathit{v(\mathbf{u}^{(i)})}$を計算する場合、最初に
+$\mathbf{u}^{(i)}$を要素符号1に入力して、符号語$\mathbf{c}_1^{(i)}$の
+ハミング距離を計算する。次に、constrained subcodeの考え方を
+使用する。$\mathbf{c}_1^{(i)}$は、
+基数(きすう)2iの制約セット$V(\mathbf{c}_1^{(i)})$を誘導し(ゆうどうし)、$\mathit{v(\mathbf{u}^{(i)})}$
+は制約付きサブコード$\mathit{C}_2(V(\mathbf{u}^{(i)}))$の最小距離である。
+$$\mathit{v}(\mathbf{u}^{(i)}) = min\mathit{W}_H({c_2}^{(i)})\,\,\, c_2 \in
+\mathit{C}_2(V(\mathbf{u}^{(i)}))$$
+
+アルゴリズムの手順は以下で説明される。\\
+【１．】$d_{free}=d*, N_free =0,w_{free}=0$.
+二つの長さ１の情報系列、$\mathbf{u}^{(1)}=(1)$,$\mathbf{u}^{(1)}=(0)$から始まる。
+
+【2.a】$\mathit{v(\mathbf{u}^{(i)})}=\mathit{v_1(\mathbf{u}^{(i)})}+
+\mathit{v_2(\mathbf{u}^{(i)})}$を計算する。
+$\mathit{v}(\mathbf{u}^{(i)}) \leq d_{free}$の場合以外、$\mathbf{u}^{(i)}$を捨てる。
+
+【2b.】$\sigma_1^{(i)}=0_{\sum}\,\,(\sigma_1^{(i-1)}\neq 0_{\sum})$の場合、
+$\mathbf{u}=\{ \mathbf{u}^{(i)},0_{N-i}\}$をSCC符号器に入力し、符号語
+$\mathbf{c}$の重み$\mathit{w}_H(\mathbf{c})$を計算する。もし
+$\mathit{w}_H(\mathbf{c})＝d_{free}$であれば、$N_{free}$を1つ増やし、$w_{free}$
+を$w=\mathit{w}_H(\mathbf{u}^{(i)})$増やす。
+
+もし
+$\mathit{w}_H(\mathbf{c})<d_{free}$であれば、
+$d_{free}$を$\mathit{w}_H(\mathbf{c})$にし、$N_{free}$の値を1にし、$w_{free}$
+の値を$w$にする。
+
+【3.】セット$\mathbf{u}^{(i)}$に残したもの長さを1増やして、$\mathbf{u}^{(i+1)}$を作って、
+前のステップをやる。
+
+【4.】i=Nの場合、セット$\mathbf{u}^{(i)}$に残したものそれぞれターボ符号器に入力し、
+符号語を作る。もし
+$\mathit{w}_H(\mathbf{c})＝d_{free}$であれば、$N_{free}$を1つ増やし、$w_{free}$
+を$w=\mathit{w}_H(\mathbf{u}^{(N)})$増やす。
+
+もし
+$\mathit{w}_H(\mathbf{c})<d_{free}$であれば、
+$d_{free}$を$\mathit{w}_H(\mathbf{c})$にし、$N_{free}$の値を1にし、$w_{free}$
+の値を$w$にする。
+\end{document}

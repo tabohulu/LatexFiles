@@ -1,0 +1,79 @@
+\documentclass[11pt, oneside, dvipdfmx]{book}
+\newcommand{\folder}{/usr/local/share/texmf}
+\input{\folder/hfiles/ebook}
+%\setCJKmainfont{SimSun}
+\title{IEEE TIT Journal Presentation}
+\author{Kwame Ackah Bohulu}
+\date{\today}
+\begin{document}
+
+\maketitle
+
+\chapter{``Sparse and Balanced Reed–Solomon and Tamo–Barg Codes'' by Wael Halbawi, Zihan Liu, Iwan M. Duursma, Hoang Dau , Babak Hassibi}
+
+\section{Abstract}
+We study the problem of constructing balanced generator matrices for Reed-Solomon and Tamo-Barg codes. More specifically, we are interested in realizing generator matrices, for the full-length cyclic versions of these codes, where all rows have the same weight and the difference in weight between any columns is at most one. The results presented in this paper translate to computationally balanced encoding schemes, which can be appealing in distributed storage applications. Indeed, the balancedness of these generator matrices guarantees that the computation effort exerted by any storage node is essentially the same. In general, the framework presented can accommodate various values for the required row weight. We emphasize the possibility of constructing sparsest and balanced generator matrices for Reed-Solomon codes, i.e., each row is a minimum distance codeword. The number of storage nodes contacted once a message symbol is updated decreases with the row weight, so sparse constructions are appealing in that context. Results of similar flavor are presented for cyclic Tamo-Barg codes. In particular, we show that for a code with minimum distance $d$ and locality $r$, a construction in which every row is of weight $d+r-1$ is possible. The constructions presented are deterministic and operate over the code's original underlying finite field. As a result, efficient decoding from both errors and erasures is possible thanks to the plethora of efficient decoders available for the codes considered.
+\section{Introduction}
+Due to the very huge amount of data present to us, there is a need to store data in a robust way and this means designing error correcting codes capable of doing so efficiently with respect to specified metrics
+
+\begin{description}
+\item[total redundancy] Amount of extra data required to protect a fixed amount of data. Reed-Solomon (R-S) codes which are widely used in this field are very efficient when it comes to this metric. 
+
+\item[decoding complexity] in terms of decoding complexity, it is realised that the complexity is independent of the number of symbol errors that need correcting. This issue is dealt with using Locally recoverable codes(LCRs). 
+
+\item[locality] The central aim of these codes is to minimize the locality $r$ of the code, which is the number of number of code symbols required to recover a few erased ones, with respect to the number of data symbols. The cost incured in trying to reduce locality is an increase in redundancy for LCRs.
+
+\item[encoding speed] The final metric whic requires consideration is encoding speed. This is important when u consider that a lot of the data that is stored is never read again. There is therefore a need to optimize this process at the expense of other benefits. In simple terms , if many $n$ nodes are involved in the process of encoding a message symbol each using column $g_i$ of generator matrix $\bG$. The speed is affected by the number of ones present in $g_i$. The encoding time can be minimized using a systematic $\bG$
+\end{description}
+ 
+In this paper a middle ground solution is proposed in the form of balanced generator matrices, where the row weights $w$ are the same by can be adjusted and the column weights differ by atmost $1$. This gets rid of possible bottle necks in the encoding process and a maximum of $w$ storage nodes are required in the encoding process. By setting $w=d$(code's minimum distance) sparce and balanced generator matrices are obtained
+
+
+\subsection{Problem Formulation and Contributions}
+
+\begin{MyDefinition}{$w$-Balanced Matrix} 
+A matrix $\bA$ of size $k \times n$ which meets the below criteria
+
+\begin{enumerate}
+\item Every row of $\bA$ has same weight $w$
+
+\item Every column is of weight $ \lfloor\frac{kw}{n} \rfloor$ or $ \lceil\frac{kw}{n} \rceil$
+\end{enumerate}
+
+\end{MyDefinition}
+
+
+\begin{MyDefinition}{Contributions of this work} 
+
+
+\begin{enumerate}
+\item A method for the generation of a balanced generator matrix for a given full-length cyclic R-S code where specifically, each row is a codeword of weight $w$ such that $d \leq w \leq n-1$
+
+\item A method for the construction of a balanced generator matrix for a given full-length cyclic Tamo-Barg (LCR) code with locality $r$ where $\Bigg ( \frac{n}{r+1} -\frac{k}{r} -1\Bigg) (r+1) \leq w \leq \Bigg ( \frac{n}{r+1}  -1\Bigg)(r+1)$
+\end{enumerate}
+
+\end{MyDefinition}
+
+
+\chapter{``BP-LED Decoding Algorithm for LDPC Codes Over AWGN Channels '' by Irina E. Bocharova  ; Boris D. Kudryashov  ; Vitaly Skachek  ; Yauhen Yakimenka }
+
+
+\section{Abstract}
+A new method is presented for low-complexity near-maximum-likelihood (ML) decoding of low-density parity-check (LDPC) codes over the additive white Gaussian noise channel. The proposed method termed belief-propagation-list erasure decoding (BP-LED) is based on erasing carefully chosen unreliable bits performed in case of BP decoding failure. A strategy of introducing erasures into the received vector and a new erasure decoding algorithm are proposed. The new erasure decoding algorithm, called list erasure decoding, combines ML decoding over the BEC with list decoding applied if the ML decoder fails to find a unique solution. The asymptotic exponent of the average list size for random regular LDPC codes from the Gallager ensemble is analyzed. Furthermore, a few examples of irregular quasi-cyclic LDPC as well as randomly constructed regular LDPC codes of short and moderate lengths are studied by simulations and their performance is compared to the tightened upper bound on the LDPC ensemble-average performance and the upper bound on the average performance of random linear codes under ML decoding. A comparison of the BP decoding and BP-LED performance of the WiMAX standard codes and performance of the near-ML BEAST decoding are presented. The new algorithm is applied to decoding a short nonbinary (NB) LDPC code over extensions of the binary Galois field. The obtained simulation results are compared to the tightened upper bound on the ensemble-average performance of the binary image of regular NB LDPC codes.
+
+
+\section {Introduction}
+
+
+The popularity of LDPC codes has risen since their rediscovery in 1995 and this is manly due to their near Shannon limit performance. in general, the belief propagation (BP) decoding performance of LDPC codes compared to that of Maximum Likelihood (ML) decoding is inferior, with the gap in performance increasing with increasing SNR. To make matters a little bit worse, the ML decoding algorithms are feasible for LDPC codes with maximum length of 200 bits . it is desirable to boost the performance of BP decoding and this is usually done by using additional decoding techniques.
+
+LDPC codes also have an error floor and a number of methods that can be used to reduce this error floor, including identifying and removing trapping sets , information set decoding which is based on the the Box-and-Match algorithm, just ro mention a few.
+
+
+Low complexity suboptimal decoding techniques for LDPC codes involve  either adding redundant rows and columns to the original parity check matrix or carrying out post processing in the case of BP decoing failure. This post processing involves the solving of a system of linear equation of a reduced order.
+
+In this paper, a novel approach to solving these system of equations dubbed  list erasure decoding (LED) is proposed. This is not a new idea having appeared in previous works. However, this research paper proposes a new decoding algorithm which differs significantly both in the strategy for introducing erasures and in the erasure decoding algorithm. This LED is combined with BP as a post-processing step in case of failure.
+
+Evaluation of this algorithm is carried out by comparing it to the ML algorithm.
+ \end{document}
+ 

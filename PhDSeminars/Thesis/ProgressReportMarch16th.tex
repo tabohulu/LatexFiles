@@ -1,0 +1,136 @@
+\documentclass[11pt, oneside, dvipdfmx]{book}
+\newcommand{\folder}{/usr/local/share/texmf}
+\input{\folder/hfiles/ebook}
+\usepackage{graphics}
+%\setCJKmainfont{SimSun}
+\title{``
+Coset Interleaver Idea Progress'' }
+\author{Kwame Ackah Bohulu}
+\date{\today}
+\begin{document}
+
+\maketitle
+
+
+
+
+\section{March 16th}
+An idea for the coset interleaving method is presented for interlearver length $N=n\tau,~n=\{9,10,...\}$. 
+The notations to be used are listed below.
+
+ \subsection{Notations}
+ \begin{enumerate}
+ \item $N$ :- Interleaver Length, Interleaver size.
+  \item $\mathcal{C}^i$ :- Coset ,$i,~i=\{0,1,...,\tau-1 \}$
+ \item $L=N/\tau$ :- Coset length, Coset size.
+ \item $\tau$ :- Cycle length of RSC encoder ($\tau= 3$ for $5/7$RSC encoder)
+ \item $p(x)=x^{p_0}+x^{p_1}+x^{p_2}$: - Polynomial representation of a weight 3-input message, where $p_0,p_1,p_2$ are integer values and $p_0<p_1<p_2$
+ \item $\mathcal{P}$: - the set representing the indices of the ``1'' bits in a weight 3-error event. $\mathcal{P}= \{p_0,p_1,p_2\}$
+ \item $\bar{p}(x)$:- is the normalized version of $p(x)$. $\bar{p}(x)=\frac{p(x)}{x^{\min\{\mathcal{P} \}}}$
+ \item Seperation:- Assume that there is a set $\mathcal{A}=\{a,b,c,...\},~b>a,c>b,$ etc. For any 2 elements in set, the seperation is defined as the difference between the elements. For example, the seperation between $b$ and $a$ is $b-a$
+ \item Step:- Assume that there is a set $\mathcal{A}=\{a,b,c,...\},~b>a,c>b,$ etc . For any 2 elements in set, the step is defined as the difference between the index of two elements. For example, from $a$ to $b$ as step of $1$ is required and from $a$ to $c$ a step of $2$ is required.
+ \item Strictly divisible:- Lets assume we have an integer $a$, and  set of $n$ integers $\mathcal{B}=\{b,c,d,...\}$. $a$ is strictly dividible by $b$ if $b$ is the only element in set $\mathcal{B}$ which divides $a$ without a remainder.
+ \item $D_1$ :-Interleaving step
+ \item $s$ :- post-interleaving seperation
+ \item $t$ :- pre-interleaving seperation
+ 
+
+ \end{enumerate}
+ 
+ \subsection{Weight-$3$ input errors}
+ Assume we have a weight 3 input message, written in polynomial form as $p(x)=x^{p_0}+x^{p_1}+x^{p_2}$ as defined above. This weight 3 input message has a potential of producing low-weight parity bits if $\mathcal{P} \mod 3 =(0,1,2)$. We refer to to such weight 3 inputs as weight-$3$ input errors. The most common of such inputs is any input such that $\bar{p}(x)=1+x+x^2$, which corresponds to 3 consecutive ``1'' bits in the input bit sequence. We wish to design an interleaver to break such inputs. 
+ 
+ \subsection{Interleaving Idea and Procedure}
+ As stated above, we wish to break errors of the type $\bar{p}(x)=1+x+x^2$. We will break the cases into 3. 
+ \begin{enumerate}
+ 
+  \item $N=3n,~n=\{0,1,...\}$ divisible by $3,6$
+  
+ \item $N=3n,~n=\{0,1,...\}$ and is divisible by $3,6,9$
+ 
+ \item $N=3n,~n=\{0,1,...\}$ strictly divisible $3$
+ \end{enumerate}
+ 
+ For each case we wish to come up with a coset interleaving pattern such that even when the interleaving step $D1$ is set to 1, there is no time when $\bar{p}(x)=1+x+x^2$ is interleaved to $\bar{p}(x)'=1+x+x^2$
+ 
+ %\paragraph{case 2: $N=3n,~n=\{0,1,...\}$ and is divisible by $3,6,9$:-} For Interleaver lengths which meet this condition, the coset interleaving pattern is a repitition of the set $\{0\rightarrow 0 \rightarrow 0 \rightarrow 1 \rightarrow 1 \rightarrow 1 \rightarrow 2 \rightarrow 2 \rightarrow 2 \}$. By doing this we get rid rid of errors of the form $\bar{p}(x)=1+x+x^2$. However, other  weight-$3$ input errors remain. In normalized polynomial form, these are 
+ 
+ %\begin{equation}
+ %\begin{split}
+% &\bar{p}(x)=1+x^5+x^7\\ 
+ %&\bar{p}(x)=1+x^2+x^7\\
+ %&\bar{p}(x)=1+x^4+x^5\\
+% &\bar{p}(x)=1+x+x^5\\
+% &\bar{p}(x)=1+x^4+x^8\\
+ %&\bar{p}(x)=1+x^2+x^4
+ %\end{split}
+ %\end{equation}
+ %In the design, we should make sure that the input bits at these positions are spread as much as possible.
+ 
+ \paragraph{case 1: $N=3n,~n=\{0,1,...\}$ and is divisible by $3,6$:-}
+ Let $\mathcal{A}$ and $\mathcal{A}'$ represent the set before interleaving and the set after interleaving. Also, Let $\mathcal{C}^{i}=(c^i_0,c^i_1,...,c^i_{L-1})$ and $\mathcal{C}'^{j}=(c'^j_0,c'^i_1,...,c'^i_{L-1})$ prime represent the coset before interleaving and the coset after interleaving respectively. $\mathcal{C}^{i} \rightarrow \mathcal{C}'^{j}$ represents the mapping of an element in $\mathcal{C}^{i}$ to an element in $\mathcal{C}'^{j}$.
+ 
+by adapting the interleaving pattern to be described,we can get rid rid of errors of the form $\bar{p}(x)=1+x+x^2$. However, the next dominant weight-$3$ input error which remains is
+ \begin{equation}
+ p(x)=(1+x^2+x^4)x^t,~t=0,1,...,N-4
+ \end{equation}
+ 
+The interleaving procedure is as follows
+ \begin{enumerate}
+ \item seperate the elements in $\mathcal{A}$ and seperate them into even-numbers and odd numbers. 
+ 
+ \item take the even-numbered elements in $\mathcal{A},~(a_0,a_2,a_4,...)$. in coset notation, it can be written as $\{c^0_0,c^2_0,c^1_1,c^0_2,c^2_2,c^1_3,...   \}$
+ 
+ \item Map the first even-numbered element $c^0_0$ to $c'^{(0)}_0$, the second element $c^2_0$ to and $c'^{(1)}_{D_1}$ , the third element $c^1_1$ to $c'^{(2)}_{2D_1}$, the fourth element $c^0_2$ to $c'^{(0)}_{3D_1}$ and continue this process untill all the even-numbered elements in $\mathcal{A}$ are mapped to elements in $\mathcal{A}'$
+ 
+ \item For the odd-numbered elements repeat steps $3$ with the first odd-numbered element $c^1_0$ being mapped to  $c'^{(0)}_{ND_1/2}$untill all odd-numbered elements in $\mathcal{A}$ have been mapped to elements in $\mathcal{A}'$
+ 
+ \end{enumerate}
+ It is worth noting that the product $a_iD_1$ is calculated modulo $L$.
+  
+ We need to select $D1$ such that for all values of $t,~ p(x)=(1+x^2+x^4)x^t$ is mapped to a weight $3$ input which produces a parity bit sequence with a large weight.
+ 
+ %\paragraph{case 3: $N=3n,~n=\{0,1,...\}$ and is strictly divisible by $3$:-}
+ 
+ \subsection{Maximizing the Seperation for Weight 3 error events for case 1}
+Let $\bar{p}(x)=1+x^{p_1}+x^{p_2}$ be a normalized weight-$3$ input error event polynomial. Using the interleaving procedure described above, we wish to transform it into a normalized weight $3$ output error event $\bar{p}(x)'=1+x^{q_1}+x^{q_2}$, where $q_1>>p_1~\text{and}~q_2>>p_2$ The corresponding Hamming weight for the turbo codeword can be calculated using the formula below.
+
+\begin{equation}
+\begin{split}
+w_H &= 2\Bigg(\frac{p_2-(p_2\mod 3)}{3}  \Bigg)+2+2\Bigg(\frac{q_2-(q_2\mod 3)}{3}  \Bigg)+2+3\\
+&=2\Bigg(\frac{\Big(p_2-(p_2\mod 3)  \Big) + \Big( q_2-(q_2\mod 3) \Big)}{3}  \Bigg)+7
+\end{split}
+\end{equation}
+
+to maximize the values of $q_1$ and $q_2$, using the interleaving method described above, we choose $$ D_1=\text{max} \begin{cases}
+       a\leq\lfloor\frac{L}{3}\rfloor ~|~ \text{gcd}(a,L)=1
+    \end{cases}
+$$
+ 
+ \subsection{Codeword Weight for Weight-$3$ input events}
+ The equation for calculating the hamming weight for weight-$3$ error events is
+ 
+ \begin{equation}
+w_H =2\Bigg(\frac{\Big(p_2-(p_2\mod 3)  \Big) + \Big( q_2-(q_2\mod 3) \Big)}{3}  \Bigg)+7
+\end{equation} 
+
+From the interleaving patern explained above,we already know that $p_2=4$, what we are left with is finding the value of $q_2$. By writing $q_2$ in terms of $D_2$, we should be able to easily calculate the corresponding hamming weights. let $p(x)'=x^{r_0}+x^{r_1}+x^{r_2}$ and $\bar{p}(x)'=1+x^{q_1}+x^{q_2}$ be the polynomial representation of the interleaved weight $3$ error sequence and its normalized polynomial representation respectively. Depending on wether the minimum power of $p(x)'$ is odd or even, the value of $q_2$ for $\bar{p}(x)'$ is affected. Therefore we need to find the value of $q_2$ for both even and odd cases to be able to accurately predict the minimum weight of the interleaved sequence.
+
+
+\paragraph{1. Case where the minimum power of $p(x)'$ is even}
+For this case, $q_2$ is very easy to calculate if we assume that the minimum power of $p(x)'$ is $0$. This means $q_2=(\tau D_1p_2/2) +(p_2/2 \mod \tau) \mod N$ and  
+ 
+ \paragraph{2. Case where the minimum power of $p(x)'$ is odd}
+ This case is a little more comlpicated. First, we need to find the values for $r_0,r_1,r_2$, whic will be equal to $\tau D_1(N/2) (N/2 \mod \tau) \mod N,~,\tau D_1(N/2+1) (N/2 +1 \mod \tau) \mod N,~,\tau D_1(N/2 +2) (N/2 +2\mod \tau) \mod N$ respectively.
+ 
+ Next, find $z=\min \{r_1,r_2,r3\}$. Then $q2=\max\{r_1-z,r2-z,r3-z\}$
+ 
+ 
+ Using this procedure for Interleaver of length $N=258$ and $D=29$ for the even case, $q_2=176$ and for the odd case $r_1=,129,r_2=217,r_3=47$ and $q_2 = 170$
+ 
+ The corresponding Hamming distances for both cases are $125$ for the even case and $121$ for the even case. This means we can have a minimum hamming weight of up to $121$ for weight-$3$ error events using the above interleaving procedure. 
+ 
+
+ 
+ 
+ \end{document}

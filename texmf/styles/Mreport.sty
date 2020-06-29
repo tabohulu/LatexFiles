@@ -1,0 +1,146 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Mreport.sty
+% created & modified by Professor Itoh, S.
+% modified by Kishi, N.
+%
+\def\kintokanjiskip{\kanjiskip=0pt plus 1fil minus 1fil%
+\xkanjiskip=\kanjiskip}
+\def\kinto#1#2{\hbox to #1{\kintokanjiskip#2}}
+\pagestyle{empty}
+\oddsidemargin -1.0cm
+\topmargin 0.5cm
+\headheight 0pt\headsep0pt
+\textwidth 21cm
+\textheight 29.6cm
+%%% 以下は試行
+\textwidth 17cm
+\textheight 25cm
+\makeatletter
+%
+% define variables
+%
+\def\今年度#1{\gdef\@thisyear{#1}}\gdef\@thisyear{}		% 今年度
+\def\判定#1{\gdef\@judgement{#1}}\gdef\@judgement{}		% 判定
+\def\入学年度#1{\gdef\@year{#1}}\gdef\@year{}			% 年度
+\def\学籍番号#1{\gdef\@number{#1}}\gdef\@number{}		% 学籍番号
+\def\研究科#1{\gdef\@depertment{#1}}\gdef\@depertment{}		% 研究科
+\def\専攻#1{\gdef\@course{#1}}\gdef\@course{}			% 専攻
+\def\氏名#1{\gdef\@name{#1}}\gdef\@name{}			% 学生氏名
+\long\def\論文題目#1{\gdef\@title{#1}}\gdef\@title{}			% 論文題目
+\def\指導教員一#1{\gdef\@adviserone{#1}}\gdef\@adviserone{}	% 指導教員1
+\def\指導教員二#1{\gdef\@advisertwo{#1}}\gdef\@advisertwo{}	% 指導教員2
+\def\指導教員三#1{\gdef\@adviserthree{#1}}\gdef\@adviserthree{}% 指導教員3
+\long\def\要旨#1{\gdef\@report{#1}}\gdef\@report{}		% 審査報告
+\def\分野#1{\gdef\@field{#1}}\gdef\@field{}			% 学位の分野
+\def\審査委員一#1{\gdef\@committeeone{#1}}\gdef\@committeeone{}	% 審査委員1
+\def\審査委員二#1{\gdef\@committeetwo{#1}}\gdef\@committeetwo{}	% 審査委員2
+\def\審査委員三#1{\gdef\@committeethree{#1}}\gdef\@committeethree{}% 審査委員3
+\def\審査委員四#1{\gdef\@committeefour{#1}}\gdef\@committeefour{}% 審査委員4
+\def\審査委員五#1{\gdef\@committeefive{#1}}\gdef\@committeefive{}% 審査委員5
+\def\審査委員六#1{\gdef\@committeesix{#1}}\gdef\@committeesix{}	% 審査委員6
+\def\報告年月日#1{\def\rdate{#1}}\報告年月日{...}%報告年月日
+%
+% define macro(s)
+%
+\def\MARU#1{{\rm\ooalign{\hfil\lower.168ex\hbox{#1}\hfil
+  \crcr\mathhexbox20D}}}
+\def\hiduke#1.#2.#3.{平成#1年#2月#3日}
+\def\日付#1{\hiduke #1}
+%
+% style file
+%
+\def\writeall{
+\setlength{\unitlength}{0.1mm}%
+\begin{picture}(1500,2400)(0,0)
+\put(85,25){\makebox(0,0)[l]{(備考)指導教員欄の◎印は主任指導教員を、
+審査委員欄の◎印は主査を示す。}}%
+\linethickness{0.5mm}%
+\put(0,65){\framebox(1760,2270){}}%	外枠
+\put(0,65){\framebox(1760,290){}}%	審査委員枠
+\linethickness{0.1mm}%
+\put(80,65){\line(0,1){290}}%		審査委員枠縦線1
+\put(646,65){\line(0,1){290}}%		審査委員枠縦線2
+\put(1222,65){\line(0,1){290}}%		審査委員枠縦線3
+\put(80,210){\line(1,0){1680}}%		審査委員枠横線
+\put(32,100){\shortstack[l]{審\\査\\委\\員}}%
+\put(94,292){\makebox(0,0)[bl]{◎}}%
+\put(565,125){\makebox(0,0)[bl]{印}}%
+\put(565,265){\makebox(0,0)[bl]{印}}%
+\put(1160,125){\makebox(0,0)[bl]{印}}%
+\put(1160,265){\makebox(0,0)[bl]{印}}%
+\put(1689,125){\makebox(0,0)[bl]{印}}%
+\put(1689,265){\makebox(0,0)[bl]{印}}%
+\put(150,262){\makebox(0,0)[bl]{\large\bf\@committeeone}}%
+\put(716,262){\makebox(0,0)[bl]{\large\bf\@committeethree}}%
+\put(1292,262){\makebox(0,0)[bl]{\large\bf\@committeefive}}%
+\put(150,127){\makebox(0,0)[bl]{\large\bf\@committeetwo}}%
+\put(716,127){\makebox(0,0)[bl]{\large\bf\@committeefour}}%
+\put(1292,127){\makebox(0,0)[bl]{\large\bf\@committeesix}}%
+%
+\put(0,358){\framebox(390,140){授与する学位の分野}}%
+\put(391,358){\framebox(289,140){\@field}}%
+%
+\put(670,358){\makebox(390,140){報告年月日:}}%
+\put(980,358){\makebox(390,140){\bf\expandafter\hiduke\rdate}}
+%
+\linethickness{0.5mm}%
+\put(0,1550){\line(1,0){1760}}%		審査報告横線
+\linethickness{0.1mm}%
+\put(55,1500){\makebox(0,0)[bl]{(論文要旨及び審査報告)}}%
+\put(60,1445){\makebox(0,0)[lt]{\noindent
+	\begin{minipage}{16.5cm}\parindent11pt\noindent
+	\@report
+	\end{minipage}}}%
+% 
+\put(80,1550){\line(0,1){790}}%
+\put(22,1720){\shortstack[l]{論\\[.5cm]文\\[.5cm]提\\[.5cm]出\\[.5cm]者}}%
+\put(80,1690){\line(1,0){1680}}%
+\put(80,1550){\framebox(284,139){指\ 導\ 教\ 員}}%
+\put(380,1620){\makebox(0,0)[l]{◎}}%
+\put(530,1620){\makebox(0,0){\large\bf\@adviserone}}%
+\put(955,1620){\makebox(0,0){\large\bf\@advisertwo}}%
+\put(1320,1620){\makebox(0,0){\large\bf\@adviserthree}}%
+\put(365,1550){\line(0,1){140}}%
+\put(830,1550){\line(0,1){140}}%
+\put(1295,1550){\line(0,1){140}}%
+\put(80,1690){\framebox(284,234){論\ 文\ 題\ 目}}%
+\put(365,1925){\line(1,0){1395}}%
+\put(400,1812){\makebox(0,0)[lc]{\noindent
+	\begin{minipage}{13cm}
+	\large\bf\baselineskip0.6cm%
+	\@title
+	\end{minipage}}}%
+\put(80,1925){\framebox(284,134){氏\ \ \ \ \ \ \ \ 名}}%
+\put(400,1990){\makebox(0,0)[l]{\large\bf\@name}}%
+\put(365,2060){\line(1,0){1395}}%
+\put(80,2060){\framebox(284,134){研究科\hspace{-.5mm}・\hspace{-.5mm}専攻}}%
+\put(365,2195){\line(1,0){1395}}%
+\put(400,2130){\makebox(0,0)[l]{大学院{\bf\@depertment}研究科}}%
+%\put(800,2130){\makebox(0,0)[l]{研究科}}%
+%\put(780,2130){\makebox(0,0)[r]{\bf\@depertment}}%
+\put(1580,2130){\makebox(0,0)[l]{専攻}}%
+\put(1560,2130){\makebox(0,0)[r]{\large\bf\@course}}%
+\put(300,2265){\makebox(0,0)[l]{平成}}%
+\put(510,2265){\makebox(0,0)[l]{年度入学}}%
+\put(470,2265){\makebox(0,0)[r]{\large\bf\@year}}%
+\put(810,2265){\makebox(0,0)[l]{学籍番号}}%
+\put(1020,2265){\makebox(0,0)[l]{\large\bf\@number}}%
+%
+%\put(300,2560){\makebox(0,0)[l]{\bf 平成~\@thisyear~年度}}%
+\put(400,2560){\makebox(0,0)[l]{\bf 修\ \ \ 士\ \ \ 論\ \ \ 文\ \ \ 審\ \ \ 査\ \ \  結\ \ \ 果\ \ \ 報\ \ \ 告\ \ \ 書}}%
+\linethickness{0.5mm}%
+\put(1465,2340){\framebox(295,190){}}%
+\linethickness{0.1mm}%
+\put(1490,2415){\shortstack{判\\[0cm]定}}%
+\put(1630,2435){\makebox(0,0){\Large\bf\@judgement}}
+\end{picture}
+%
+}
+%\def\maketitle{\relax}
+\def\結論{よって本論文は\@field 学位論文として価値があると認める。}
+\makeatother
+\研究科{情報理工学}
+\専攻{情報・ネットワーク工学}
+\分野{修士(工学)}
+\判定{合格}
+\endinput

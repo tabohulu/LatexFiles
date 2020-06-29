@@ -1,0 +1,364 @@
+\documentclass[11pt, oneside, dvipdfmx]{book}
+\newcommand{\folder}{/usr/local/share/texmf}
+\input{\folder/hfiles/ebook}
+%\setCJKmainfont{SimSun}
+\title{``A Code-Mathed Interleaver Design for Turbo Codes'' by Wen Feng, Jinhong Yuan and Branka S. Vucetic}
+\author{Kwame Ackah Bohulu}
+\date{\today}
+\begin{document}
+
+\maketitle
+
+\section{Abstract}
+A code-matched interleaver design for turbo codes
+in which a particular interleaver is constructed to match the code
+weight distribution is proposed. The design method is based on the
+code distance spectrum. The low weight paths in the code trellis
+which give large contributions to the error probability in the
+signal-to-noise ratio region of interest for practical communication
+systems are eliminated so that they do not appear in the overall
+code trellis after interleaving. The proposed interleaver improves
+the code error performance at moderate to high signal-to-noise
+ratio and considerably increases the asymptotic slope of the error
+probability curves.
+\section{Introduction}
+interleavers are widely used with error control coding for channels which exibit bursty error characteristics and cancatenated codes, especially Turbo codes.
+Basic role of an interleaver is to construct a long random code and can be used to change the weight distribution of the Turbo code. A number of Interleavers have been used in combination with turbo codes.
+
+\begin{description}
+\item[block interleaver] Matrix of $N=r \times l$ where $r$ is the number of rows and $l$ is the number of colums. input data is written along row and read out along columns. A type of block interleaver that terminates both component encoders in the same state was also proposed, known as ``simile'' interleaver
+
+\item[Pseudorandom interleaver] variation of the block interleaver where data is written sequentiallly and read out in a pseudo-random manner.The S-random interleaver is an improved version of this interleaver and can ``spread'' low-weight input patterns to generate higher weight codewords.
+
+\item[convolutional interleaver] data is multiplexed into and out of a fixed number of shift registers
+
+\item[prime interleaver] it is also based on block interleaving and can make turbo code generate codewords with good hamming distance
+\end{description}
+ 
+Through a lot of research, it has been shown that the asymptotic performance of the turbo code is dominated by its free distance. This free distance is relatively small and is the cause of the error floor in the medium to high Signal to Noise (SNR) region. [13] can be used to estimate the error floor for a given turbo code. Furthermore, the performance analysis of turbo codes in [12], [14] and [15] have shown that the interleaver does have an effect on the distance spectrum of the code. It is therefore possible to design an interleaver such that low-weight input sequences which generate low-weight parity check sequences at the output of the first component encoder (CE1) do not appear in the second convolutional encoder (CE2).
+
+Recent research work done on interleaver design based on turbo code weight distribution is given below.
+
+
+\begin{description}
+\item in [16] Code design is used to improve the code performance at low SNR and and interleaver design is used to improve code performance at high SNR.
+
+\item in [17] an interleaver is designed in such a way that with reference to weight 2, 3 and 4 input weight sequences, atleast one encoder output has a relatively high weight whenever the output decoder has a low weight output. It is only suitable for short interleaver frame sizes since complexity increases with frame size.
+\end{description}
+
+In [16], it is worth noting that at medium to high SNR, the error performance is determined by the first several spectral lines. This makes it possible to design interleavers which can reduce the effect of low-weight distance spectrum lines and reduce the error floor of the turbo code.
+
+\section{Code Performance Analysis}
+it is possible to represent a rate $k/n$ turbo code by an equivalent $(n(N+m),kN)$ block code, where $N$ is the Interleaver length, $n$ is the encoded sequence length ,$k$ is the information sequence length, if trellis termination is used to drive the constituent encoders to the all-zero state. For block codes, the bit error probability (BER) assuming maximul likelihood (ML) decoding and transmission over an AWGN channel can be upper bound by (\ref{1})
+
+\begin{equation}
+P_b \leq \sum_{d=d_{\text{min}}}^{} B_dQ\Bigg(  \sqrt{d \cdot \frac{2RE_b}{N_o}}\Bigg)
+\label{1}
+\end{equation}
+
+where 
+\begin{description}
+\item [$R$] is code rate
+\item [$E_b/N_o$] is SNR per information bit
+\item [$d_{\text{min}}$] is the minimum hamming distance 
+\item [$B_d$] is
+the error coefficient, i.e. the average number of bit
+errors caused by the transition between the all-zero codeword
+and codewords of weight $d (d \geq d_{min})$
+\end{description}
+The set of all pairs of $(d,B_d)$ represents the turbo code distance spectrum and it determines the contribution of the codewords with the same weigth $d$ to the bit error probability.  
+
+$B_d$ is calculated using the fast algorithm to be described and the uniform interleaver[14] is used in the calculation. 
+
+The encoding process can be represented by a trellis diagram. The following definitions are necessary.
+
+\begin{MyDefinition}{state input-redundancy weight enumerating function(SIRWEF)}
+\begin{equation}
+\bA(N,S,W,Z) =\sum_{w,j} \bA_{N,S,w,j} \bW^w \bZ^j
+\end{equation} 
+where $ \bA_{N,S,w,j}$ is the number of paths in the trellis entering state $S$ at time $N$ with information weight $w$ and parity-check weight $j$, $W,Z$ are dummy variables
+\end{MyDefinition}
+
+\begin{MyDefinition}{input-redundancy weight enumerating function(IRWEF)}
+Assuming that the decoding process begins and ends at state $0$, we have
+\begin{equation}
+\bA(W,Z) =\sum_{w,j} \bA_{w,j} \bW^w \bZ^j=\bA(N,0,W,Z)
+\label{3}
+\end{equation} 
+where $ \bA_{,w,j} $ is the number of codewords generated by an information sequence of Hamming weight $w$ whose parity-check bits have Hamming weight $j$.
+\end{MyDefinition}
+For a turbo code, we denote the SIRWEF of the two constituent encoders by $\bA^{C_x}(N,S,W,Z) =\sum_{w,j} \bA^{C_x}_{N,S,w,j} \bW^w \bZ^j,~x=\{1,2\}$
+
+For each time $k$, $\bA^{C_x}_{k,S,w,j} $ can be calculated recursively as follows\begin{equation}
+\bA^{C_x}_{k,S,w,j} =\sum_{S',S;u_k} \bA^{C_x}_{k-1,S',w',j'} ~(1 \leq k \leq N)
+\end{equation}
+$w,j$ can be calculated using the equations below
+
+\begin{equation}
+w=w' +i(S',S)~~~~j=j'+\theta(S',S)
+\end{equation}
+where
+
+\begin{description}
+\item[$S',S$] are states in the trellis
+
+\item[$k$] is the time instant
+
+\item[$u_k$] is the input bit which causes the state transition from $S'$ to $S$ at time $k$
+
+\item[$w'$] is the information weight of the paths entering state $S'$ at time $k-1$
+
+\item[$j'$] is the parity-check weight of those paths at time $k-1$
+
+\item[$i(S',S)$] is the weight of the input information symbol that causes the state transition from $S' \rightarrow S$
+
+\item[$\theta(S',S)$] is the weight of the parity-check symbol of the codeword generated by the state transition from $S' \rightarrow S$
+\end{description}
+
+For turbo codes (\ref{3}) can be obtained using the equation below
+
+\begin{equation}
+\bA_{w,j} =\sum_{j=j_1+j_2} \frac{\bA^{C_1}(N,0,w,j_1) \cdot \bA^{C_2}(N,0,w,j_2)}{\binom{N}{w}}
+\label{6}
+\end{equation}
+
+Having obtained the IRWEF of the turbo code using (\ref{6}), we may calculate the error coefficient as follows 
+
+\begin{equation}
+B_d =\sum_{d=w+j} \frac{w}{N}\cdot \bA_{w,j}
+\label{7}
+\end{equation}
+ It is now possible to obtain the contribution of each spectral line to the BER performance from the code spectrum
+ 
+ The contribution of a spectral line with distance $d$ to the overall BER denoted $P_d(\gamma_b)$ can be wtitted as 
+ 
+ \begin{equation}
+ P_d(\gamma_b) =\bA_dQ \Bigg( \sqrt{2dR\gamma_b} \Bigg),~\gamma_b=E_b/N_o
+ \end{equation}
+ 
+ The relative contribution to the overall BER can be written as 
+ \begin{equation}
+ \bar{P_d}(\gamma_b) =\frac{P_d(\gamma_b)}{\sum_{d}P_d(\gamma_b)}
+ \end{equation}
+ 
+ Finally the contribution of the spectral line in an SNR range $[a,b]$ is obtained as 
+ \begin{equation}
+ F_{ab}^{d}=\int_{a}^{b} \bar{P_d}(\gamma_b) d\gamma_b
+ \end{equation}
+ 
+ and a further normalization yields
+ \begin{equation}
+ \bar{F}_{ab}^{d}\frac{F_{ab}}{\sum_{d}F_{ab}}
+ \end{equation}
+ 
+  $\bar{F}_{ab}^{d}$ and  $\bar{F}_{ab}^{d}$ are the \textit{relative contribution integral} and \textit{contribution integral} respectively
+ 
+ $\bar{F}_{ab}^{d}$ accurately represents the relative contribution of each spectral line in a given SNR region. It is therefore used as a criteria to determine the contribution of each spectral line in a given SNR region. (See original paper for examples)
+ 
+ 
+ \section{Code Matched Interleaver Design}
+ From the analysis performed in the previous section, we formulate the following design criterion for a code matched interleaver.
+ 
+ \begin{enumerate}
+ \item Get rid of low-weight codewords which contribute significantly to the error performance
+ 
+ \item Reduce the multiplicity of codewords that could not be eliminated
+ \end{enumerate}
+ 
+ To accomplish step one, we need to breakdown the codewords to identify the inputs that generate them.  
+ 
+ We define a mapping condition set $\Phi$ which is the set of all conditions which need to satisfied simultaneously in the interleaving process. To show how $\Phi$ may be constructed, we consider an example using the $(5,7)$ RSC encoder for both CE1 and CE2. We assume that CE1 receives an input sequence $\bP$ of length $N$ and generates the output parity-check sequence $\bY^1$ whiles CE2 receives an interleaved version of $\bP,~\pi(\bP)$ and generates the output parity-sequence sequence $\bY^2$. Both parity-check sequences also have lenght $N$
+ 
+ The overall weight of the generated codeword $\bC$ is 
+ 
+ \begin{equation}
+ w_H(\bC) =w_H(\bP)+w_H(\bY^1)+w_H(\bY^2)
+ \end{equation}
+ where $w_H(\cdot)$ is the Hamming weight of the sequence
+ 
+ \subsection{Mapping condition for weight-2 inputs}
+ We can represent weight-2 inputs that generate a finite weight codeword by the polynomial $$ P_2(D) =(1 +D^{rk_1})D^{\tau_1}$$
+ 
+ where 
+ 
+ \begin{description}
+ \item[$k_1$] =$1,2,3,...$
+ \item[$r$] is the minimum distance(seperation) between two $1$ bits in $P_2(D)$
+ \item[$\tau_1$] =$1,2,3,...$ is the time delay(shift factor)
+ \end{description}
+ 
+ Similarly, we may write the input to CE2 as $$ Q_2(D) =(1 +D^{rk_2})D^{\tau_2}$$
+ 
+ For a given CE we may calculate $w_H(\bY^j)~j=\{1,2\}$ as 
+ \begin{equation}
+ k_j \cdot (z_{\min}-2)+2
+ \end{equation} 
+ where $z_{\min}$ is the minimum
+weight of the parity-check sequence generated by $P_2(D)$. The overall codeword weight can be calculated as 
+
+\begin{equation}
+6+(k_1+k_2) \cdot (z_{\min}-2)
+\label{14}
+\end{equation}
+
+Returning to the derivation of the mapping condition for $P_2(D)$, we denote the position of the $1$ bits by $i_1,i_2$ and their interleaved version as $\pi(i_1),\pi(i_2)$ 
+
+an interleaver will map $P_2(D)$ to $Q_2(D),~P_2(D)==Q_2(D)$ and reduce overall codeperformance if the following condition is met
+
+\begin{equation}
+|i_1 -i_2| \mod r =0 \text{and}~|\pi(i_1) - \pi(i_2)| \mod r =0
+\end{equation}
+
+Which gives rise to the mapping condition 
+\begin{equation}
+|\pi(i_1) - \pi(i_2)| \mod r \neq 0 ,~\text{whenever}~ |i_1 -i_2| \mod r =0 
+\end{equation}
+
+We do not need to consider all input patterns that meet this criteria, just the ones that have the largest contribution to the performance of the code. We denote the maximum weight of the codewords generated by
+the weight-$w$ input patterns that should be eliminated by
+interleaving by $d^w_{\text{max}}$ and for weight 2 inputs, $d^2_{\text{max}}$ can be determined by the relative contribution integral. From (\ref{14}) we have 
+
+\begin{equation}
+6+(k_1+k_2) \cdot (z_{\min}-2) \leq d^2_{\text{max}}
+\end{equation}
+
+This is equivalent to 
+
+\begin{equation}
+k_1+k_2  \leq \frac{d^2_{\text{max}}-6}{z_{\min}-2}
+\end{equation}
+
+\subsection{Mapping condition for weight-4 inputs}
+We consider weight-4 input sequences that are made up of 2 weight-2 input patterns. 
+
+
+We can represent weight-4 inputs that generate a finite weight codeword by the polynomial $$ P_4(D) =(1 +D^{rk_1})D^{\tau_1} +(1 +D^{rk_2})D^{\tau_2} $$
+ 
+ where $\tau_2 > \tau_1 + rk_1$
+ 
+ Similarly, we may write the input to CE2 as $$ Q_4(D) =(1 +D^{rk_3})D^{\tau_3} +(1 +D^{rk_4})D^{\tau_4}$$
+ 
+  where $\tau_4 > \tau_3 + rk_3$
+ 
+ The overall codeword weight can be calculated as 
+
+\begin{equation}
+12+(k_1+k_2+k_3+k_4) \cdot (z_{\min}-2)
+\label{14}
+\end{equation}
+
+It should be noted that except for the indices, the variables hav the same meaning as those the previous subsection.
+
+Again, we denote the position of the $1$ bits by $i_1,i_2,i_3,i_4$ and their interleaved version as $\pi(i_1),\pi(i_2),\pi(i_3),\pi(i_4)$ , where the ordering is in ascending order of index.
+
+if the interleaver mapping function meets the following conditions 
+
+\begin{equation*}
+    \begin{cases}
+      &|i_1-1_2| \mod r =0 ~\text{and}~ |i_3-1_4| \mod r =0\\
+      &|\pi(i_1)-\pi(1_3)| \mod r =0\\
+      &|\pi(i_2)-\pi(1_4)| \mod r =0
+    \end{cases}
+  \end{equation*}
+  
+  or 
+  
+  \begin{equation*}
+    \begin{cases}
+     
+      &|i_1-1_2| \mod r =0 ~\text{and}~ |i_3-1_4| \mod r =0\\
+      &|\pi(i_1)-\pi(1_4)| \mod r =0\\
+      &|\pi(i_2)-\pi(1_3)| \mod r =0
+    \end{cases}
+  \end{equation*}
+
+an interleaver will map $P_4(D)$ to $Q_4(D),~P_4(D)==Q_4(D)$ . In order to avoid this mapping the following condition should be added to $\Phi$
+
+\begin{equation*}
+   \begin{split}
+ 	&|\pi(i_1)-\pi(1_3)| \mod r \neq 0\\
+ 	&\text{and}\\
+     &|\pi(i_2)-\pi(1_4)| \mod r \neq 0 \\
+     &\text{whenever}
+      |i_1-1_2| \mod r =0 \\
+      &\text{and}~ |i_3-1_4| \mod r =0
+      \end{split}
+\end{equation*}
+
+or
+
+\begin{equation*}
+   \begin{split}
+ 	&|\pi(i_1)-\pi(1_4)| \mod r \neq 0\\
+ 	&\text{and}\\
+     &|\pi(i_2)-\pi(1_3)| \mod r \neq 0 \\
+     &\text{whenever}
+      |i_1-1_2| \mod r =0 \\
+      &\text{and}~ |i_3-1_4| \mod r =0
+      \end{split}
+\end{equation*} 
+Similar to the previous subsection, we only need to consider only those weight-4
+input patterns that generate low weight codewords, which have large contributions to the error performance for elimination, which turns out to be only the weight-4 input patterns that generate codewords with weight no larger than $d^4_{\text{max}}$are considered. This leads to the equation below.
+
+\begin{equation}
+k_1+k_2+k_3+k_4  \leq \frac{d^4_{\text{max}}-12}{z_{\min}-2}
+\end{equation}
+
+\subsection{Mapping Condition for weight-3 inputs}
+Higher weight inputs are not considered since they usually have very little effect on the overall performance of the turbo code. From above discussion, we can write out the complete interleaver mapping set $\Phi$,which is defined as follows. Each randomly selected integer is compared to the $S$ previously
+selected integers. If the absolute value of the difference between
+the current selected integer and any of the $S$ previous selected
+integers is smaller than $S$, then the current selected integer is rejected
+
+
+
+
+Higher weight inputs are not considered since they usually have very little effect on the overall performance of the turbo code and can be broken up by the $S$-random criteria. From above discussion, we can write out the complete interleaver mapping set $\Phi$,which is
+
+\begin{enumerate}
+\item $|\pi(i_1) - \pi(i_2)| \mod r \neq 0 ,~\text{whenever}~ |i_1 -i_2| \mod r =0 $ and $k_1+k_2  \leq \frac{d^2_{\text{max}}-6}{z_{\min}-2}$
+
+\item \begin{equation*}
+   \begin{split}
+ 	&|\pi(i_1)-\pi(1_3)| \mod r \neq 0\\
+ 	&\text{and}\\
+     &|\pi(i_2)-\pi(1_4)| \mod r \neq 0 \\
+     &\text{whenever}
+      |i_1-1_2| \mod r =0 \\
+      &\text{and}~ |i_3-1_4| \mod r =0\\
+       &\text{and} ~ k_1+k_2+k_3+k_4  \leq \frac{d^4_{\text{max}}-12}{z_{\min}-2}
+      \end{split}
+\end{equation*}
+
+or
+
+\begin{equation*}
+   \begin{split}
+ 	&|\pi(i_1)-\pi(1_4)| \mod r \neq 0\\
+ 	&\text{and}\\
+     &|\pi(i_2)-\pi(1_3)| \mod r \neq 0 \\
+     &\text{whenever}
+      |i_1-1_2| \mod r =0 \\
+      &\text{and}~ |i_3-1_4| \mod r =0\\
+       &\text{and} ~ k_1+k_2+k_3+k_4  \leq \frac{d^4_{\text{max}}-12}{z_{\min}-2}
+      \end{split}
+\end{equation*} 
+
+\item $S > L_s$, where $L_s$ is an integer-valued design parameter
+
+\end{enumerate}
+
+\section{A Method to Construct a Code Matched Interleaver}
+
+\section{Performance Of Turbo Codes with Code Matched Interleavers}
+The performance of the code-Matched interleaver is compared to that of the $S$-random interleaver and the  random interleaver. The comparison is done by simulation and the parameters are given below
+
+\begin{description}
+\item[interleaver size $N$] 1024 and 4096 for all interleavers
+
+\item[minimum interleaver distance $S$] For $S$-random 22 and 42 for respective interleaver sizes. for Code-Matched interleaver and $N=1024$ 17 for (5,7) RSC and 16-state RSC, and 20 for 8-state RSC whiles for $N=4096, ~S=35$
+
+\item[BCJR iterations] For $N=1024,~8$, and for $N=4096,~18$
+\end{description}
+
+ \end{document}

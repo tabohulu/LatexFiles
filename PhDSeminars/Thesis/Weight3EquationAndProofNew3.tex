@@ -128,7 +128,7 @@ w_p=2(j-i)+2
 (\bzero_{3}~\cdots~\bzero_{3}~\bphi_2~\bphi''_2~\cdots~\bphi''_2~\bphi''_2\bphi''_2~\cdots)\\
 +(\bzero_{3}~\cdots~\bzero_{3}~\bphi_3~\bphi_2~\cdots~\bphi_2~\bphi_2~\bphi_2~\cdots)\\
 \cline{1-2}
-(\bzero_{3}~\cdots~\bzero_{3}~\bphi''_1~\bphi_2~\cdots~\bphi_2~\bphi_3~\bzero_3~\cdots)
+(\bzero_{3}~\cdots~\bzero_{3}~\bphi''_1~\bphi'_2~\cdots~\bphi'_2~\bphi_3~\bzero_3~\cdots)
 \end{align*}
 derived vector : $(\bzero_{3j}~\bphi''_1~(\bphi_2)_{i-j-1}~\bphi_3~\bzero_3~\cdots)$\newline
 Parity weight: \begin{equation}
@@ -363,14 +363,18 @@ w_p=
 \end{cases}
 \end{equation}
 where $l=\max \{ i,j,k \} - \min \{ i,j,k \}$ is known as the layer distance.
-Assuming that after interleaving, another weight-$3$ RTZ input is produced. Let $i',j',k',l'$ and $w'_p$ be similarly defined. Then the Hamming weight $w_h$of the turbo codeword produced can be calculated as
+
+We consider two weight-3 RTZ inputs $P(x)=1+x^2+x^4$ and $P'(x)=x^2+x^4+x^6$, which is a shifted version of $P(x)$. 
+For $P(x),~k=0,~j=1,~i=0,~l=1$ and since $i=k$, we use the equation $w_p=2l+2=2(1)+2=4$
+For $P(x),~k=2~j=1,~i=0,~l=2$ and since $i<k$, we use the equation $w_p=2l=2(2)=4$
+
+This means that shifted versions of a weight-$3$ RTZ input have the same weight and without loss of generality, we may assume that all weight-$3$ begin at index 0 which means that we may ignore the case where $i<k$. We therefore have
+
+\begin{equation}w_p=2l+2\end{equation}
+Assuming that after interleaving, another weight-$3$ RTZ input is produced. Let $i',j',k',l'$ and $w'_p$ be similarly defined. Then the Hamming weight $w_H$of the turbo codeword produced can be calculated as
 \begin{equation}
 w_H=
-\begin{cases}
-3+2(l+l'),& i<k ,~i'<k'\\
-7+2(l+l') & i \geq k,~i' \geq k'\\
-5+2(l+l')& i \geq k,~i'<k' ~\text{or}~i<k ~ i' \geq k'
-\end{cases}
+7+2(l+l') 
 \end{equation}
 
 \end{proof}
